@@ -59,7 +59,7 @@ export default function HomePage() {
           </Link>
 
           {/* Nav Links */}
-          <div className="hidden md:flex items-center gap-1">
+          <div className="hidden md:flex items-center gap-4">
             {navLinks.map((link, i) => (
               <button
                 key={link}
