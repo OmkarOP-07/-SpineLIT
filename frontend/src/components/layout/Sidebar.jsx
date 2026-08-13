@@ -1,4 +1,5 @@
 import { NavLink, useNavigate } from 'react-router-dom'
+import logo from '../../assets/logo.png'
 import {
   LayoutDashboard, Users, ScanLine, FileText, History,
   MessageSquare, BookOpen, BarChart3, Settings, User,
@@ -28,25 +29,18 @@ export default function Sidebar() {
       zIndex: 30, boxShadow: '4px 0 24px rgba(0,0,0,0.18)'
     }}>
       {/* Logo */}
-      <div style={{ padding: '28px 24px 22px', borderBottom: '1px solid rgba(255,255,255,0.08)' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-          <div style={{
-            width: '42px', height: '42px', borderRadius: '14px', flexShrink: 0,
-            background: 'linear-gradient(135deg,#6366F1,#06B6D4)',
-            display: 'flex', alignItems: 'center', justifyContent: 'center',
-            boxShadow: '0 4px 14px rgba(99,102,241,0.4)'
-          }}>
-            <Zap size={20} color="white" />
-          </div>
-          <div>
-            <h1 style={{ fontSize: '18px', fontWeight: 800, color: 'white', lineHeight: 1 }}>
-              Spine<span style={{ color: '#67E8F9' }}>LIT</span>
-            </h1>
-            <p style={{ fontSize: '10px', color: '#64748B', marginTop: '4px', lineHeight: 1 }}>
-              AI-Powered Spine Intelligence
-            </p>
-          </div>
-        </div>
+      <div style={{
+        height: '68px',
+        background: 'white',
+        borderBottom: '1px solid #E2E8F0',
+        display: 'flex',
+        alignItems: 'center',
+        padding: '0 24px',
+        boxSizing: 'border-box'
+      }}>
+        <NavLink to="/" style={{ textDecoration: 'none', display: 'flex', alignItems: 'center' }}>
+          <img src={logo} alt="SpineLIT Logo" style={{ height: '60px', width: 'auto', objectFit: 'contain' }} />
+        </NavLink>
       </div>
 
       {/* Nav */}
