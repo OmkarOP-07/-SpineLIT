@@ -17,8 +17,8 @@ export default function DoctorFeedbackPage() {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '28px', maxWidth: '1100px' }} className="animate-fadeIn">
       <div>
-        <h1 style={{ fontSize: '24px', fontWeight: 800, color: '#0F172A' }}>Doctor Feedback</h1>
-        <p style={{ fontSize: '15px', color: '#64748B', marginTop: '6px' }}>Review AI analyses and provide clinical feedback</p>
+        <h1 style={{ fontSize: '24px', fontWeight: 800, color: 'var(--text-dark)' }}>Doctor Feedback</h1>
+        <p style={{ fontSize: '15px', color: 'var(--text-muted)', marginTop: '6px' }}>Review AI analyses and provide clinical feedback</p>
       </div>
 
       {/* Stats */}
@@ -26,16 +26,16 @@ export default function DoctorFeedbackPage() {
         {[
           { label: 'Pending Review',    value: '3',    color: '#D97706', bg: '#FFFBEB', icon: Clock          },
           { label: 'Completed Today',   value: '7',    color: '#059669', bg: '#ECFDF5', icon: CheckCircle2   },
-          { label: 'Total Feedbacks',   value: '124',  color: '#4F46E5', bg: '#EEF2FF', icon: MessageSquare  },
+          { label: 'Total Feedbacks',   value: '124',  color: 'var(--text-dark)', bg: 'var(--bg-warm)', icon: MessageSquare  },
           { label: 'AI Agreement Rate', value: '91%',  color: '#7C3AED', bg: '#F5F3FF', icon: ThumbsUp       },
         ].map(({ label, value, color, bg, icon: Icon }) => (
-          <div key={label} style={{ background: 'white', border: '1.5px solid #E2E8F0', borderRadius: '18px', padding: '24px', boxShadow: '0 2px 8px rgba(0,0,0,0.04)', display: 'flex', alignItems: 'center', gap: '16px' }}>
+          <div key={label} style={{ background: 'var(--bg-card)', border: '1.5px solid rgba(139, 92, 246, 0.15)', borderRadius: '18px', padding: '24px', boxShadow: '0 2px 8px rgba(0,0,0,0.04)', display: 'flex', alignItems: 'center', gap: '16px' }}>
             <div style={{ width: '48px', height: '48px', borderRadius: '14px', background: bg, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
               <Icon size={22} color={color} />
             </div>
             <div>
               <p style={{ fontSize: '28px', fontWeight: 900, color, lineHeight: 1 }}>{value}</p>
-              <p style={{ fontSize: '13px', fontWeight: 600, color: '#64748B', marginTop: '6px' }}>{label}</p>
+              <p style={{ fontSize: '13px', fontWeight: 600, color: 'var(--text-muted)', marginTop: '6px' }}>{label}</p>
             </div>
           </div>
         ))}
@@ -44,24 +44,24 @@ export default function DoctorFeedbackPage() {
       {/* Pending */}
       <div>
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '20px' }}>
-          <h2 style={{ fontSize: '18px', fontWeight: 700, color: '#0F172A' }}>Pending Review</h2>
+          <h2 style={{ fontSize: '18px', fontWeight: 700, color: 'var(--text-dark)' }}>Pending Review</h2>
           <span style={{ width: '28px', height: '28px', borderRadius: '999px', background: '#F59E0B', color: 'white', fontSize: '13px', fontWeight: 700, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>3</span>
         </div>
         <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
           {pending.map(item => (
-            <div key={item.pid} style={{ background: 'white', border: '1.5px solid #E2E8F0', borderRadius: '20px', padding: '28px', boxShadow: '0 2px 8px rgba(0,0,0,0.04)' }}>
+            <div key={item.pid} style={{ background: 'var(--bg-card)', border: '1.5px solid rgba(139, 92, 246, 0.15)', borderRadius: '20px', padding: '28px', boxShadow: '0 2px 8px rgba(0,0,0,0.04)' }}>
               <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', marginBottom: '20px' }}>
                 <div style={{ display: 'flex', alignItems: 'flex-start', gap: '16px' }}>
-                  <div style={{ width: '46px', height: '46px', borderRadius: '14px', background: 'linear-gradient(135deg,#6366F1,#4F46E5)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white', fontSize: '14px', fontWeight: 700, flexShrink: 0 }}>
+                  <div style={{ width: '46px', height: '46px', borderRadius: '14px', background: 'linear-gradient(135deg,var(--primary-dark),var(--primary))', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white', fontSize: '14px', fontWeight: 700, flexShrink: 0 }}>
                     {item.name.split(' ').map(n => n[0]).join('')}
                   </div>
                   <div>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '10px', flexWrap: 'wrap' }}>
-                      <span style={{ fontSize: '16px', fontWeight: 700, color: '#0F172A' }}>{item.name}</span>
-                      <span style={{ fontSize: '13px', color: '#94A3B8' }}>({item.pid})</span>
+                      <span style={{ fontSize: '16px', fontWeight: 700, color: 'var(--text-dark)' }}>{item.name}</span>
+                      <span style={{ fontSize: '13px', color: 'var(--text-muted)' }}>({item.pid})</span>
                       <span style={{ ...item.sevStyle, display: 'inline-flex', alignItems: 'center', borderRadius: '999px', padding: '3px 12px', fontSize: '12px', fontWeight: 600 }}>{item.severity}</span>
                     </div>
-                    <p style={{ fontSize: '13px', color: '#64748B', marginTop: '5px' }}>{item.type} · {item.time}</p>
+                    <p style={{ fontSize: '13px', color: 'var(--text-muted)', marginTop: '5px' }}>{item.type} · {item.time}</p>
                   </div>
                 </div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '6px 14px', background: '#FFFBEB', border: '1px solid #FDE68A', borderRadius: '10px', flexShrink: 0 }}>
@@ -70,19 +70,19 @@ export default function DoctorFeedbackPage() {
                 </div>
               </div>
 
-              <div style={{ background: '#EEF2FF', border: '1px solid #C7D2FE', borderRadius: '14px', padding: '16px 20px', marginBottom: '20px' }}>
+              <div style={{ background: 'var(--bg-warm)', border: '1px solid #C7D2FE', borderRadius: '14px', padding: '16px 20px', marginBottom: '20px' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
-                  <AlertCircle size={15} color="#4F46E5" />
+                  <AlertCircle size={15} color="var(--text-dark)" />
                   <span style={{ fontSize: '13px', fontWeight: 700, color: '#4338CA' }}>AI Assessment</span>
                 </div>
-                <p style={{ fontSize: '14px', color: '#475569', lineHeight: '1.6' }}>{item.aiNote}</p>
+                <p style={{ fontSize: '14px', color: 'var(--text-dark)', lineHeight: '1.6' }}>{item.aiNote}</p>
               </div>
 
               <textarea
                 value={text[item.pid] || ''}
                 onChange={e => setText({ ...text, [item.pid]: e.target.value })}
                 placeholder="Enter your clinical feedback and notes..."
-                style={{ width: '100%', padding: '14px 16px', fontSize: '14px', fontFamily: 'inherit', border: '1.5px solid #E2E8F0', borderRadius: '12px', background: '#F8FAFC', outline: 'none', resize: 'none', height: '88px', lineHeight: '1.6', marginBottom: '14px' }}
+                style={{ width: '100%', padding: '14px 16px', fontSize: '14px', fontFamily: 'inherit', border: '1.5px solid rgba(139, 92, 246, 0.15)', borderRadius: '12px', background: 'var(--bg-warm)', outline: 'none', resize: 'none', height: '88px', lineHeight: '1.6', marginBottom: '14px' }}
               />
               <div style={{ display: 'flex', gap: '12px' }}>
                 <button className="btn btn-primary" style={{ flex: 1, justifyContent: 'center' }}><ThumbsUp size={16} /> Agree &amp; Submit</button>
@@ -98,25 +98,25 @@ export default function DoctorFeedbackPage() {
 
       {/* Completed */}
       <div>
-        <h2 style={{ fontSize: '18px', fontWeight: 700, color: '#0F172A', marginBottom: '16px' }}>Recently Completed</h2>
-        <div style={{ background: 'white', border: '1.5px solid #E2E8F0', borderRadius: '20px', overflow: 'hidden', boxShadow: '0 2px 8px rgba(0,0,0,0.04)' }}>
+        <h2 style={{ fontSize: '18px', fontWeight: 700, color: 'var(--text-dark)', marginBottom: '16px' }}>Recently Completed</h2>
+        <div style={{ background: 'var(--bg-card)', border: '1.5px solid rgba(139, 92, 246, 0.15)', borderRadius: '20px', overflow: 'hidden', boxShadow: '0 2px 8px rgba(0,0,0,0.04)' }}>
           <table style={{ width: '100%', borderCollapse: 'collapse' }}>
             <thead>
-              <tr style={{ background: '#F8FAFC', borderBottom: '1px solid #F1F5F9' }}>
+              <tr style={{ background: 'var(--bg-warm)', borderBottom: '1px solid rgba(139, 92, 246, 0.15)' }}>
                 {['Patient', 'Scan Type', 'Feedback Summary', 'Date', 'Status'].map(h => (
-                  <th key={h} style={{ textAlign: 'left', padding: '14px 20px', fontSize: '11px', fontWeight: 700, color: '#94A3B8', textTransform: 'uppercase', letterSpacing: '0.05em' }}>{h}</th>
+                  <th key={h} style={{ textAlign: 'left', padding: '14px 20px', fontSize: '11px', fontWeight: 700, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>{h}</th>
                 ))}
               </tr>
             </thead>
             <tbody>
               {completed.map(r => (
-                <tr key={r.pid} style={{ borderBottom: '1px solid #F8FAFC' }}
-                  onMouseEnter={e => e.currentTarget.style.background = '#F8FAFC'}
+                <tr key={r.pid} style={{ borderBottom: '1px solid #F5F0E8' }}
+                  onMouseEnter={e => e.currentTarget.style.background = 'var(--bg-warm)'}
                   onMouseLeave={e => e.currentTarget.style.background = 'transparent'}>
-                  <td style={{ padding: '16px 20px', fontSize: '14px', fontWeight: 600, color: '#1E293B' }}>{r.name} <span style={{ color: '#94A3B8', fontWeight: 400, fontSize: '12px' }}>({r.pid})</span></td>
-                  <td style={{ padding: '16px 20px', fontSize: '14px', color: '#475569' }}>{r.type}</td>
-                  <td style={{ padding: '16px 20px', fontSize: '14px', color: '#64748B', maxWidth: '300px' }}>{r.feedback}</td>
-                  <td style={{ padding: '16px 20px', fontSize: '14px', color: '#64748B' }}>{r.date}</td>
+                  <td style={{ padding: '16px 20px', fontSize: '14px', fontWeight: 600, color: 'var(--text-dark)' }}>{r.name} <span style={{ color: 'var(--text-muted)', fontWeight: 400, fontSize: '12px' }}>({r.pid})</span></td>
+                  <td style={{ padding: '16px 20px', fontSize: '14px', color: 'var(--text-dark)' }}>{r.type}</td>
+                  <td style={{ padding: '16px 20px', fontSize: '14px', color: 'var(--text-muted)', maxWidth: '300px' }}>{r.feedback}</td>
+                  <td style={{ padding: '16px 20px', fontSize: '14px', color: 'var(--text-muted)' }}>{r.date}</td>
                   <td style={{ padding: '16px 20px' }}>
                     <span style={{ display: 'inline-flex', alignItems: 'center', borderRadius: '999px', padding: '4px 14px', fontSize: '12px', fontWeight: 600, ...(r.status === 'Agreed' ? { background: '#D1FAE5', color: '#065F46', border: '1px solid #A7F3D0' } : { background: '#DBEAFE', color: '#1E40AF', border: '1px solid #BFDBFE' }) }}>{r.status}</span>
                   </td>

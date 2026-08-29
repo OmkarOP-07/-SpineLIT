@@ -21,7 +21,7 @@ const riskStyle = {
 const statusStyle = {
   Active:       { background: '#D1FAE5', color: '#065F46', border: '1px solid #A7F3D0' },
   'In Progress':{ background: '#DBEAFE', color: '#1E40AF', border: '1px solid #BFDBFE' },
-  Discharged:   { background: '#F1F5F9', color: '#64748B', border: '1px solid #E2E8F0' },
+  Discharged:   { background: 'rgba(139, 92, 246, 0.15)', color: 'var(--text-muted)', border: '1px solid rgba(139, 92, 246, 0.15)' },
 }
 
 const pill = (style, text) => (
@@ -45,8 +45,8 @@ export default function PatientsPage() {
       {/* Header */}
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
         <div>
-          <h1 style={{ fontSize: '24px', fontWeight: 800, color: '#0F172A' }}>Patients</h1>
-          <p style={{ fontSize: '15px', color: '#64748B', marginTop: '6px' }}>Manage and view all registered patients</p>
+          <h1 style={{ fontSize: '24px', fontWeight: 800, color: 'var(--text-dark)' }}>Patients</h1>
+          <p style={{ fontSize: '15px', color: 'var(--text-muted)', marginTop: '6px' }}>Manage and view all registered patients</p>
         </div>
         <button className="btn btn-primary">
           <Plus size={18} /> Add Patient
@@ -56,14 +56,14 @@ export default function PatientsPage() {
       {/* Stats */}
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', gap: '18px' }}>
         {[
-          { label: 'Total Patients', value: '42', color: '#4F46E5', bg: '#EEF2FF' },
+          { label: 'Total Patients', value: '42', color: 'var(--text-dark)', bg: 'var(--bg-warm)' },
           { label: 'High Risk',      value: '5',  color: '#DC2626', bg: '#FEF2F2' },
           { label: 'Active',         value: '35', color: '#059669', bg: '#ECFDF5' },
           { label: 'New This Month', value: '6',  color: '#0891B2', bg: '#ECFEFF' },
         ].map(({ label, value, color, bg }) => (
-          <div key={label} style={{ background: 'white', border: '1.5px solid #E2E8F0', borderRadius: '18px', padding: '24px', boxShadow: '0 2px 8px rgba(0,0,0,0.04)', textAlign: 'center' }}>
+          <div key={label} style={{ background: 'var(--bg-card)', border: '1.5px solid rgba(139, 92, 246, 0.15)', borderRadius: '18px', padding: '24px', boxShadow: '0 2px 8px rgba(0,0,0,0.04)', textAlign: 'center' }}>
             <p style={{ fontSize: '36px', fontWeight: 900, color, lineHeight: 1 }}>{value}</p>
-            <p style={{ fontSize: '14px', fontWeight: 600, color: '#475569', marginTop: '8px' }}>{label}</p>
+            <p style={{ fontSize: '14px', fontWeight: 600, color: 'var(--text-dark)', marginTop: '8px' }}>{label}</p>
           </div>
         ))}
       </div>
@@ -71,7 +71,7 @@ export default function PatientsPage() {
       {/* Search */}
       <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
         <div style={{ position: 'relative', flex: 1, maxWidth: '420px' }}>
-          <Search size={16} color="#94A3B8" style={{ position: 'absolute', left: '16px', top: '50%', transform: 'translateY(-50%)' }} />
+          <Search size={16} color="var(--text-muted)" style={{ position: 'absolute', left: '16px', top: '50%', transform: 'translateY(-50%)' }} />
           <input
             value={search}
             onChange={e => setSearch(e.target.value)}
@@ -79,8 +79,8 @@ export default function PatientsPage() {
             style={{
               width: '100%', paddingLeft: '46px', paddingRight: '16px',
               paddingTop: '12px', paddingBottom: '12px',
-              fontSize: '14px', border: '1.5px solid #E2E8F0', borderRadius: '12px',
-              background: 'white', outline: 'none', fontFamily: 'inherit', lineHeight: '1.5'
+              fontSize: '14px', border: '1.5px solid rgba(139, 92, 246, 0.15)', borderRadius: '12px',
+              background: 'var(--bg-card)', outline: 'none', fontFamily: 'inherit', lineHeight: '1.5'
             }}
           />
         </div>
@@ -90,51 +90,51 @@ export default function PatientsPage() {
       </div>
 
       {/* Table */}
-      <div style={{ background: 'white', border: '1.5px solid #E2E8F0', borderRadius: '20px', overflow: 'hidden', boxShadow: '0 2px 8px rgba(0,0,0,0.04)' }}>
-        <div style={{ padding: '20px 28px', borderBottom: '1px solid #F1F5F9' }}>
-          <span style={{ fontSize: '15px', fontWeight: 700, color: '#0F172A' }}>
-            All Patients <span style={{ color: '#94A3B8', fontWeight: 400 }}>({filtered.length})</span>
+      <div style={{ background: 'var(--bg-card)', border: '1.5px solid rgba(139, 92, 246, 0.15)', borderRadius: '20px', overflow: 'hidden', boxShadow: '0 2px 8px rgba(0,0,0,0.04)' }}>
+        <div style={{ padding: '20px 28px', borderBottom: '1px solid rgba(139, 92, 246, 0.15)' }}>
+          <span style={{ fontSize: '15px', fontWeight: 700, color: 'var(--text-dark)' }}>
+            All Patients <span style={{ color: 'var(--text-muted)', fontWeight: 400 }}>({filtered.length})</span>
           </span>
         </div>
         <div style={{ overflowX: 'auto' }}>
           <table style={{ width: '100%', borderCollapse: 'collapse' }}>
             <thead>
-              <tr style={{ background: '#F8FAFC', borderBottom: '1px solid #F1F5F9' }}>
+              <tr style={{ background: 'var(--bg-warm)', borderBottom: '1px solid rgba(139, 92, 246, 0.15)' }}>
                 {['Patient ID', 'Name', 'Age', 'Gender', 'Phone', 'Last Visit', 'Risk Level', 'Status', 'Analyses', 'Actions'].map(h => (
-                  <th key={h} style={{ textAlign: 'left', padding: '14px 20px', fontSize: '11px', fontWeight: 700, color: '#94A3B8', textTransform: 'uppercase', letterSpacing: '0.05em', whiteSpace: 'nowrap' }}>{h}</th>
+                  <th key={h} style={{ textAlign: 'left', padding: '14px 20px', fontSize: '11px', fontWeight: 700, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em', whiteSpace: 'nowrap' }}>{h}</th>
                 ))}
               </tr>
             </thead>
             <tbody>
               {filtered.map(p => (
                 <tr key={p.id}
-                  style={{ borderBottom: '1px solid #F8FAFC', cursor: 'pointer' }}
-                  onMouseEnter={e => e.currentTarget.style.background = '#F8FAFC'}
+                  style={{ borderBottom: '1px solid #F5F0E8', cursor: 'pointer' }}
+                  onMouseEnter={e => e.currentTarget.style.background = 'var(--bg-warm)'}
                   onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
                 >
-                  <td style={{ padding: '16px 20px', fontFamily: 'monospace', fontSize: '12px', color: '#94A3B8' }}>{p.id}</td>
-                  <td style={{ padding: '16px 20px', fontSize: '14px', fontWeight: 600, color: '#1E293B', whiteSpace: 'nowrap' }}>{p.name}</td>
-                  <td style={{ padding: '16px 20px', fontSize: '14px', color: '#475569' }}>{p.age}</td>
-                  <td style={{ padding: '16px 20px', fontSize: '14px', color: '#475569' }}>{p.gender}</td>
-                  <td style={{ padding: '16px 20px', fontSize: '14px', color: '#64748B', whiteSpace: 'nowrap' }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}><Phone size={13} color="#CBD5E1" />{p.phone}</div>
+                  <td style={{ padding: '16px 20px', fontFamily: 'monospace', fontSize: '12px', color: 'var(--text-muted)' }}>{p.id}</td>
+                  <td style={{ padding: '16px 20px', fontSize: '14px', fontWeight: 600, color: 'var(--text-dark)', whiteSpace: 'nowrap' }}>{p.name}</td>
+                  <td style={{ padding: '16px 20px', fontSize: '14px', color: 'var(--text-dark)' }}>{p.age}</td>
+                  <td style={{ padding: '16px 20px', fontSize: '14px', color: 'var(--text-dark)' }}>{p.gender}</td>
+                  <td style={{ padding: '16px 20px', fontSize: '14px', color: 'var(--text-muted)', whiteSpace: 'nowrap' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}><Phone size={13} color="rgba(139, 92, 246, 0.15)" />{p.phone}</div>
                   </td>
-                  <td style={{ padding: '16px 20px', fontSize: '14px', color: '#64748B', whiteSpace: 'nowrap' }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}><Calendar size={13} color="#CBD5E1" />{p.lastVisit}</div>
+                  <td style={{ padding: '16px 20px', fontSize: '14px', color: 'var(--text-muted)', whiteSpace: 'nowrap' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}><Calendar size={13} color="rgba(139, 92, 246, 0.15)" />{p.lastVisit}</div>
                   </td>
                   <td style={{ padding: '16px 20px' }}>{pill(riskStyle[p.risk], p.risk)}</td>
                   <td style={{ padding: '16px 20px' }}>{pill(statusStyle[p.status], p.status)}</td>
-                  <td style={{ padding: '16px 20px', fontSize: '14px', fontWeight: 600, color: '#475569' }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}><Activity size={14} color="#818CF8" />{p.analyses}</div>
+                  <td style={{ padding: '16px 20px', fontSize: '14px', fontWeight: 600, color: 'var(--text-dark)' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}><Activity size={14} color="var(--text-muted)" />{p.analyses}</div>
                   </td>
                   <td style={{ padding: '16px 20px' }}>
                     <div style={{ display: 'flex', gap: '8px' }}>
                       {[Eye, Edit2].map((Icon, i) => (
-                        <button key={i} style={{ width: '36px', height: '36px', borderRadius: '10px', border: '1.5px solid #E2E8F0', background: 'white', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'all 0.15s' }}
-                          onMouseEnter={e => e.currentTarget.style.background = '#EEF2FF'}
+                        <button key={i} style={{ width: '36px', height: '36px', borderRadius: '10px', border: '1.5px solid rgba(139, 92, 246, 0.15)', background: 'var(--bg-card)', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'all 0.15s' }}
+                          onMouseEnter={e => e.currentTarget.style.background = 'var(--bg-warm)'}
                           onMouseLeave={e => e.currentTarget.style.background = 'white'}
                         >
-                          <Icon size={15} color="#64748B" />
+                          <Icon size={15} color="var(--text-muted)" />
                         </button>
                       ))}
                     </div>

@@ -25,7 +25,7 @@ const scanTypeData = [
 ]
 
 const kpis = [
-  { label: 'Total Analyses',    value: '199',   change: '+18%', up: true,  color: '#4F46E5' },
+  { label: 'Total Analyses',    value: '199',   change: '+18%', up: true,  color: 'var(--text-dark)' },
   { label: 'Avg. Accuracy',     value: '95.2%', change: '+1.3%',up: true,  color: '#059669' },
   { label: 'Avg. Response',     value: '11.8s', change: '-0.4s',up: true,  color: '#0891B2' },
   { label: 'High Risk Cases',   value: '31',    change: '+4',   up: false, color: '#DC2626' },
@@ -37,15 +37,15 @@ export default function AnalyticsPage() {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '28px', maxWidth: '1300px' }} className="animate-fadeIn">
       <div>
-        <h1 style={{ fontSize: '24px', fontWeight: 800, color: '#0F172A' }}>Analytics</h1>
-        <p style={{ fontSize: '15px', color: '#64748B', marginTop: '6px' }}>Insights into patient outcomes and system performance</p>
+        <h1 style={{ fontSize: '24px', fontWeight: 800, color: 'var(--text-dark)' }}>Analytics</h1>
+        <p style={{ fontSize: '15px', color: 'var(--text-muted)', marginTop: '6px' }}>Insights into patient outcomes and system performance</p>
       </div>
 
       {/* KPIs */}
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', gap: '18px' }}>
         {kpis.map(({ label, value, change, up, color }) => (
-          <div key={label} style={{ background: 'white', border: '1.5px solid #E2E8F0', borderRadius: '18px', padding: '24px', boxShadow: '0 2px 8px rgba(0,0,0,0.04)' }}>
-            <p style={{ fontSize: '13px', fontWeight: 600, color: '#94A3B8', marginBottom: '10px', textTransform: 'uppercase', letterSpacing: '0.04em' }}>{label}</p>
+          <div key={label} style={{ background: 'var(--bg-card)', border: '1.5px solid rgba(139, 92, 246, 0.15)', borderRadius: '18px', padding: '24px', boxShadow: '0 2px 8px rgba(0,0,0,0.04)' }}>
+            <p style={{ fontSize: '13px', fontWeight: 600, color: 'var(--text-muted)', marginBottom: '10px', textTransform: 'uppercase', letterSpacing: '0.04em' }}>{label}</p>
             <p style={{ fontSize: '32px', fontWeight: 900, color, lineHeight: 1 }}>{value}</p>
             <p style={{ fontSize: '13px', fontWeight: 600, color: up ? '#059669' : '#DC2626', marginTop: '8px' }}>
               {up ? '▲' : '▼'} {change} vs last month
@@ -57,33 +57,33 @@ export default function AnalyticsPage() {
       {/* Area + Pie */}
       <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '24px' }}>
 
-        <div style={{ background: 'white', border: '1.5px solid #E2E8F0', borderRadius: '20px', padding: '28px', boxShadow: '0 2px 8px rgba(0,0,0,0.04)' }}>
-          <h3 style={{ fontSize: '16px', fontWeight: 700, color: '#0F172A', marginBottom: '24px' }}>Monthly Activity Trend</h3>
+        <div style={{ background: 'var(--bg-card)', border: '1.5px solid rgba(139, 92, 246, 0.15)', borderRadius: '20px', padding: '28px', boxShadow: '0 2px 8px rgba(0,0,0,0.04)' }}>
+          <h3 style={{ fontSize: '16px', fontWeight: 700, color: 'var(--text-dark)', marginBottom: '24px' }}>Monthly Activity Trend</h3>
           <ResponsiveContainer width="100%" height={240}>
             <AreaChart data={monthlyData} margin={{ top: 5, right: 10, left: -20, bottom: 0 }}>
               <defs>
                 <linearGradient id="gAnalyses" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%"  stopColor="#4F46E5" stopOpacity={0.25} />
-                  <stop offset="95%" stopColor="#4F46E5" stopOpacity={0}    />
+                  <stop offset="5%"  stopColor="var(--primary)" stopOpacity={0.25} />
+                  <stop offset="95%" stopColor="var(--primary)" stopOpacity={0}    />
                 </linearGradient>
                 <linearGradient id="gReports" x1="0" y1="0" x2="0" y2="1">
                   <stop offset="5%"  stopColor="#06B6D4" stopOpacity={0.25} />
                   <stop offset="95%" stopColor="#06B6D4" stopOpacity={0}    />
                 </linearGradient>
               </defs>
-              <CartesianGrid strokeDasharray="3 3" stroke="#F1F5F9" />
-              <XAxis dataKey="month" tick={{ fontSize: 12, fill: '#94A3B8' }} axisLine={false} tickLine={false} />
-              <YAxis tick={{ fontSize: 12, fill: '#94A3B8' }} axisLine={false} tickLine={false} />
+              <CartesianGrid strokeDasharray="3 3" stroke="rgba(139, 92, 246, 0.15)" />
+              <XAxis dataKey="month" tick={{ fontSize: 12, fill: '#948979' }} axisLine={false} tickLine={false} />
+              <YAxis tick={{ fontSize: 12, fill: '#948979' }} axisLine={false} tickLine={false} />
               <Tooltip contentStyle={ttStyle} />
               <Legend wrapperStyle={{ fontSize: '13px', paddingTop: '16px' }} />
-              <Area type="monotone" dataKey="analyses" stroke="#4F46E5" strokeWidth={2.5} fill="url(#gAnalyses)" name="Analyses" />
+              <Area type="monotone" dataKey="analyses" stroke="var(--primary)" strokeWidth={2.5} fill="url(#gAnalyses)" name="Analyses" />
               <Area type="monotone" dataKey="reports"  stroke="#06B6D4" strokeWidth={2.5} fill="url(#gReports)"  name="Reports"  />
             </AreaChart>
           </ResponsiveContainer>
         </div>
 
-        <div style={{ background: 'white', border: '1.5px solid #E2E8F0', borderRadius: '20px', padding: '28px', boxShadow: '0 2px 8px rgba(0,0,0,0.04)' }}>
-          <h3 style={{ fontSize: '16px', fontWeight: 700, color: '#0F172A', marginBottom: '24px' }}>Severity Distribution</h3>
+        <div style={{ background: 'var(--bg-card)', border: '1.5px solid rgba(139, 92, 246, 0.15)', borderRadius: '20px', padding: '28px', boxShadow: '0 2px 8px rgba(0,0,0,0.04)' }}>
+          <h3 style={{ fontSize: '16px', fontWeight: 700, color: 'var(--text-dark)', marginBottom: '24px' }}>Severity Distribution</h3>
           <ResponsiveContainer width="100%" height={180}>
             <PieChart>
               <Pie data={severityData} cx="50%" cy="50%" innerRadius={45} outerRadius={75} paddingAngle={4} dataKey="value">
@@ -96,8 +96,8 @@ export default function AnalyticsPage() {
             {severityData.map(({ name, value, color }) => (
               <div key={name} style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                 <div style={{ width: '10px', height: '10px', borderRadius: '999px', background: color, flexShrink: 0 }} />
-                <span style={{ fontSize: '12px', color: '#64748B' }}>{name}</span>
-                <span style={{ fontSize: '12px', fontWeight: 700, color: '#1E293B', marginLeft: 'auto' }}>{value}%</span>
+                <span style={{ fontSize: '12px', color: 'var(--text-muted)' }}>{name}</span>
+                <span style={{ fontSize: '12px', fontWeight: 700, color: 'var(--text-dark)', marginLeft: 'auto' }}>{value}%</span>
               </div>
             ))}
           </div>
@@ -105,16 +105,16 @@ export default function AnalyticsPage() {
       </div>
 
       {/* Bar Chart */}
-      <div style={{ background: 'white', border: '1.5px solid #E2E8F0', borderRadius: '20px', padding: '28px', boxShadow: '0 2px 8px rgba(0,0,0,0.04)' }}>
-        <h3 style={{ fontSize: '16px', fontWeight: 700, color: '#0F172A', marginBottom: '24px' }}>Scan Type by Region</h3>
+      <div style={{ background: 'var(--bg-card)', border: '1.5px solid rgba(139, 92, 246, 0.15)', borderRadius: '20px', padding: '28px', boxShadow: '0 2px 8px rgba(0,0,0,0.04)' }}>
+        <h3 style={{ fontSize: '16px', fontWeight: 700, color: 'var(--text-dark)', marginBottom: '24px' }}>Scan Type by Region</h3>
         <ResponsiveContainer width="100%" height={220}>
           <BarChart data={scanTypeData} margin={{ top: 5, right: 10, left: -20, bottom: 0 }}>
-            <CartesianGrid strokeDasharray="3 3" stroke="#F1F5F9" />
-            <XAxis dataKey="type" tick={{ fontSize: 12, fill: '#94A3B8' }} axisLine={false} tickLine={false} />
-            <YAxis tick={{ fontSize: 12, fill: '#94A3B8' }} axisLine={false} tickLine={false} />
+            <CartesianGrid strokeDasharray="3 3" stroke="rgba(139, 92, 246, 0.15)" />
+            <XAxis dataKey="type" tick={{ fontSize: 12, fill: '#948979' }} axisLine={false} tickLine={false} />
+            <YAxis tick={{ fontSize: 12, fill: '#948979' }} axisLine={false} tickLine={false} />
             <Tooltip contentStyle={ttStyle} />
             <Legend wrapperStyle={{ fontSize: '13px', paddingTop: '16px' }} />
-            <Bar dataKey="lumbar"   name="Lumbar"   fill="#4F46E5" radius={[6,6,0,0]} />
+            <Bar dataKey="lumbar"   name="Lumbar"   fill="var(--primary)" radius={[6,6,0,0]} />
             <Bar dataKey="cervical" name="Cervical" fill="#06B6D4" radius={[6,6,0,0]} />
             <Bar dataKey="thoracic" name="Thoracic" fill="#10B981" radius={[6,6,0,0]} />
           </BarChart>

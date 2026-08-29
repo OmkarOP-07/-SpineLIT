@@ -1,310 +1,301 @@
-import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import logo from '../assets/logo.png'
+import spineMri from '../assets/spine_mri.png'
+import './HomePage.css'
 import {
-  Zap, Brain, TrendingUp, Eye, Users, Activity, Shield,
-  ArrowRight, Play, Send, X, Minus, Bot, Upload,
-  BarChart2, BookOpen, ChevronRight, Lock, Cpu, CheckCircle
+  ArrowRight, Upload, Brain, FileText, Users, Activity, Shield,
+  CheckCircle, Zap, TrendingUp, Eye, Heart, Lock, Send,
+  ExternalLink, Globe, MessageCircle, Mail, ChevronRight, Search
 } from 'lucide-react'
 
-const features = [
-  { icon: Brain, title: 'AI-Powered Analysis', desc: 'Advanced deep learning models for accurate spine assessment' },
-  { icon: TrendingUp, title: 'Longitudinal Monitoring', desc: 'Track progression and compare with previous clinical records' },
-  { icon: Eye, title: 'Explainable AI', desc: 'Transparent predictions with visual explanations you can trust' },
-  { icon: Activity, title: 'Continuous Learning', desc: 'Improves over time with doctor feedback and real-world data' },
-]
-
-const featureCards = [
-  { icon: Upload, title: 'Upload & Analyze', desc: 'Upload X-ray or MRI scans and get AI-powered analysis within seconds.' },
-  { icon: BarChart2, title: 'Severity Assessment', desc: 'Get severity grading and risk assessment with confidence scores.' },
-  { icon: TrendingUp, title: 'Progression Tracking', desc: 'Compare with previous records and visualize disease progression.' },
-  { icon: BookOpen, title: 'Clinical Reports', desc: 'Generate explainable reports with insights and recommendations.' },
-  { icon: Brain, title: 'Knowledge Retrieval', desc: 'RAG-powered retrieval of similar cases, guidelines, and medical knowledge.' },
-]
+const navLinks = ['Home', 'About Us', 'How It Works', 'Features', 'For Doctors', 'Resources', 'Contact']
 
 const stats = [
-  { value: '5,000+', label: 'Patients Analyzed', sub: 'And growing every day', icon: Users },
-  { value: '12,000+', label: 'Analyses Performed', sub: 'Across many hospitals', icon: Activity },
-  { value: '95%+', label: 'AI Accuracy', sub: 'Validated by experts', icon: CheckCircle },
+  { value: '5,000+', label: 'Patients Analyzed', sub: 'and growing every day', icon: Users },
+  { value: '12,000+', label: 'Analyses Performed', sub: 'across hospitals', icon: Activity },
+  { value: '95%+', label: 'AI Accuracy', sub: 'validated by experts', icon: CheckCircle },
   { value: '100%', label: 'Data Security', sub: 'HIPAA Compliant', icon: Shield },
 ]
 
-const suggestedQuestions = [
-  'How does SpineLIT work?',
-  'What types of scans can I upload?',
-  'How accurate is the AI analysis?',
-  'How is my data protected?',
-  'Talk to a human',
+const trustedBy = [
+  { name: 'Apollo', letter: 'A' },
+  { name: 'medanta', letter: 'M' },
+  { name: 'MAX', letter: 'M' },
+  { name: 'Fortis', letter: 'F' },
+  { name: 'Narayana Health', letter: 'N' },
+  { name: 'AIIMS', letter: 'A' },
 ]
 
-const chatHistory = [
-  { from: 'bot', text: "Hello! 👋\nI'm your SpineLIT assistant.\nHow can I help you today?", time: '10:30 AM' },
-  { from: 'user', text: 'What is SpineLIT?', time: '10:31 AM' },
-  { from: 'bot', text: 'SpineLIT is an AI-powered clinical decision support system that analyzes spine scans, assesses severity, monitors progression, and provides explainable insights to assist doctors in better clinical decisions.', time: '10:31 AM' },
+const steps = [
+  { icon: Upload, title: 'Upload Scan', desc: 'Upload MRI / X-ray scans securely and enter patient information.' },
+  { icon: Brain, title: 'AI Analysis', desc: 'Our AI models analyze scans and assess severity with high accuracy.' },
+  { icon: FileText, title: 'Insights & Report', desc: 'Get detailed insights, visualizations and explainable reports.' },
+  { icon: Users, title: 'Clinical Decision', desc: 'Support better clinical decisions and monitor progress over time.' },
 ]
 
-const navLinks = ['Home', 'About', 'How It Works', 'Features', 'For Doctors', 'Resources', 'Contact']
+const features = [
+  { icon: Brain, title: 'Advanced AI Analysis', desc: 'Deep learning models detect spinal abnormalities and grade severity.' },
+  { icon: TrendingUp, title: 'Longitudinal Monitoring', desc: 'Track progression over time with AI-powered trend analysis.' },
+  { icon: Eye, title: 'Explainable AI', desc: 'Interpretable results with visual explanations and heatmaps.' },
+  { icon: FileText, title: 'Smart Reports', desc: 'Generate comprehensive reports in seconds with key measurements.' },
+  { icon: Lock, title: 'Secure & Compliant', desc: 'Enterprise-grade security with HIPAA compliance and data encryption.' },
+]
 
 export default function HomePage() {
-  const [chatOpen, setChatOpen] = useState(true)
-  const [chatMessage, setChatMessage] = useState('')
-
   return (
-    <div className="min-h-screen font-sans">
-      {/* Navbar */}
-      <nav className="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-slate-200 shadow-sm">
-        <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
-          <Link to="/" className="flex items-center">
-            <img src={logo} alt="SpineLIT Logo" style={{ height: '60px' }} className="w-auto object-contain" />
+    <div className="landing-page">
+      {/* ── Navbar ── */}
+      <nav className="lp-navbar">
+        <div className="lp-navbar-inner">
+          <Link to="/" style={{ display: 'flex', alignItems: 'center' }}>
+            <img src={logo} alt="Spine-LIT" style={{ height: 40, filter: 'invert(1) hue-rotate(210deg) brightness(1.5)', mixBlendMode: 'screen' }} />
           </Link>
 
-          {/* Nav Links */}
-          <div className="hidden md:flex items-center gap-4">
+          <div className="lp-nav-links">
             {navLinks.map((link, i) => (
-              <button
-                key={link}
-                className={`px-4 py-2 text-sm font-medium rounded-lg transition-colors ${i === 0
-                  ? 'text-indigo-600 border-b-2 border-indigo-600 rounded-none'
-                  : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
-                  }`}
-              >
+              <button key={link} className={`lp-nav-link${i === 0 ? ' active' : ''}`}>
                 {link}
+                {link === 'Resources' && <span style={{ marginLeft: 4, fontSize: 10 }}>▾</span>}
               </button>
             ))}
           </div>
 
-          {/* CTA */}
-          <div className="flex items-center gap-3">
-            <Link
-              to="/dashboard"
-              className="px-5 py-2 text-sm font-medium text-slate-700 border border-slate-300 rounded-xl hover:bg-slate-50 transition-all"
-            >
-              Login
-            </Link>
-            <Link
-              to="/dashboard"
-              className="px-5 py-2 text-sm font-medium text-white bg-gradient-to-r from-indigo-600 to-indigo-700 rounded-xl hover:from-indigo-700 hover:to-indigo-800 transition-all shadow-md shadow-indigo-200 flex items-center gap-2"
-            >
-              Get Started <ArrowRight size={14} />
+          <div className="lp-nav-cta">
+            <Link to="/dashboard" className="lp-btn-login">Log In</Link>
+            <Link to="/dashboard" className="lp-btn-get-started">
+              Get Started
             </Link>
           </div>
         </div>
       </nav>
 
-      {/* Hero */}
-      <section className="hero-bg py-20 px-6 overflow-hidden">
-        <div className="max-w-7xl mx-auto">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
-            {/* Left */}
-            <div className="animate-fadeInUp">
-              {/* Badge */}
-              <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-indigo-50 border border-indigo-200 rounded-full text-indigo-700 text-xs font-medium mb-6">
-                <Zap size={12} className="text-indigo-500" />
-                AI-Powered Clinical Decision Support
-              </div>
-
-              <h1 className="text-5xl font-extrabold text-slate-900 leading-tight mb-4">
-                Intelligent{' '}
-                <span className="gradient-text">Spine Analysis.</span>
-                <br />
-                Better Clinical Decisions.
-              </h1>
-              <p className="text-slate-600 text-lg leading-relaxed mb-8 max-w-lg">
-                SpineLIT uses advanced AI and explainable intelligence to analyze spine scans, assess severity, monitor progression, and assist doctors in making confident, data-driven decisions.
-              </p>
-
-              <div className="flex items-center gap-4">
-                <Link
-                  to="/dashboard"
-                  className="inline-flex items-center gap-2 px-7 py-3.5 bg-gradient-to-r from-indigo-600 to-indigo-700 text-white font-semibold rounded-2xl shadow-lg shadow-indigo-200 hover:shadow-xl hover:shadow-indigo-300 transition-all hover:-translate-y-0.5 text-sm"
-                >
-                  <Zap size={16} /> Start Analysis <ArrowRight size={14} />
-                </Link>
-                <button className="inline-flex items-center gap-2 px-7 py-3.5 text-slate-700 font-semibold rounded-2xl border-2 border-slate-200 hover:border-indigo-300 hover:text-indigo-700 transition-all text-sm">
-                  <div className="w-6 h-6 rounded-full bg-indigo-100 flex items-center justify-center">
-                    <Play size={10} className="text-indigo-600 ml-0.5" />
-                  </div>
-                  Learn More
-                </button>
-              </div>
+      {/* ── Hero ── */}
+      <section className="lp-hero">
+        <div className="lp-hero-inner">
+          <div className="animate-fadeInUp">
+            <div className="lp-badge">
+              <Zap size={12} /> AI-POWERED CLINICAL DECISION SUPPORT
             </div>
 
-            {/* Right - Feature list + Spine image */}
-            <div className="relative animate-fadeInUp delay-200">
-              <div className="grid grid-cols-1 gap-3 mb-6">
-                {features.map(({ icon: Icon, title, desc }) => (
-                  <div key={title} className="flex items-start gap-3 bg-white/70 backdrop-blur-sm rounded-2xl p-4 border border-white shadow-sm card-lift">
-                    <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-indigo-50 to-indigo-100 flex items-center justify-center shrink-0">
-                      <Icon size={17} className="text-indigo-600" />
+            <h1>
+              Intelligent <span className="purple">Spine Analysis.</span><br />
+              Better Clinical Decisions.
+            </h1>
+
+            <p className="lp-hero-desc">
+              Spine-LIT combines advanced AI, explainable intelligence,
+              and longitudinal insights to analyze spine scans, assess
+              severity, monitor progression, and support doctors in
+              delivering better patient outcomes.
+            </p>
+
+            <div className="lp-hero-btns">
+              <Link to="/dashboard" className="lp-btn-primary">
+                <Upload size={16} /> Upload & Analyze
+              </Link>
+              <button className="lp-btn-outline">
+                <Search size={16} /> Explore Features
+              </button>
+            </div>
+
+            <div className="lp-trust-badges">
+              <span><CheckCircle size={14} /> HIPAA Compliant</span>
+              <span>•</span>
+              <span><Shield size={14} /> Secure</span>
+              <span>•</span>
+              <span><Lock size={14} /> Privacy Protected</span>
+            </div>
+          </div>
+
+          {/* Analysis Card */}
+          <div className="animate-fadeInUp delay-200">
+            <div className="lp-analysis-card">
+              <div className="lp-analysis-header">
+                <span className="dot" /> Spine-LIT Analysis
+              </div>
+              <div className="lp-patient-info">
+                <span>Patient ID: 12453</span>
+                <span>38 yrs</span>
+                <span>Male</span>
+              </div>
+              <div className="lp-analysis-body">
+                <div className="lp-spine-image">
+                  <img src={spineMri} alt="Spine MRI Scan" />
+                </div>
+                <div className="lp-score-panel">
+                  <div className="lp-severity-score">
+                    <p className="label">AI Severity Score</p>
+                    <p className="score">7.2 <small>/ 10</small></p>
+                    <p className="level">Moderate</p>
+                    <div className="lp-score-bar"><div className="lp-score-bar-fill" /></div>
+                    <div className="lp-score-labels">
+                      <span>0</span><span>5</span><span>10</span>
                     </div>
-                    <div>
-                      <p className="text-slate-900 font-semibold text-sm">{title}</p>
-                      <p className="text-slate-500 text-xs mt-0.5 leading-relaxed">{desc}</p>
-                    </div>
                   </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Stats */}
-      <section className="py-14 px-6 bg-white border-y border-slate-100">
-        <div className="max-w-7xl mx-auto">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-            {stats.map(({ value, label, sub, icon: Icon }, i) => (
-              <div
-                key={label}
-                className={`flex items-center gap-4 p-5 rounded-2xl ${i === 0 ? 'bg-slate-50' : ''} animate-fadeInUp`}
-                style={{ animationDelay: `${i * 0.1}s` }}
-              >
-                <div className="w-11 h-11 rounded-xl bg-indigo-50 flex items-center justify-center shrink-0">
-                  <Icon size={20} className="text-indigo-600" />
-                </div>
-                <div>
-                  <p className="text-2xl font-extrabold text-slate-900">{value}</p>
-                  <p className="text-slate-700 text-sm font-semibold">{label}</p>
-                  <p className="text-slate-400 text-xs">{sub}</p>
+                  <div className="lp-findings">
+                    <h4>Key Findings</h4>
+                    <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
+                      <li>Disc height reduction at L4-L5</li>
+                      <li>Mild spinal canal narrowing</li>
+                      <li>Degenerative changes detected</li>
+                    </ul>
+                  </div>
                 </div>
               </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Features Section */}
-      <section className="py-20 px-6 bg-slate-50">
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-extrabold text-slate-900 mb-2">
-              Powerful Features for Better Spine Care
-            </h2>
-            <div className="w-12 h-1 bg-gradient-to-r from-indigo-500 to-cyan-500 rounded-full mx-auto" />
-          </div>
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-5">
-            {featureCards.map(({ icon: Icon, title, desc }, i) => (
-              <div
-                key={title}
-                className="bg-white rounded-2xl p-5 border border-slate-100 card-lift animate-fadeInUp shadow-sm"
-                style={{ animationDelay: `${i * 0.08}s` }}
-              >
-                <div className="w-11 h-11 rounded-xl bg-indigo-50 flex items-center justify-center mb-4">
-                  <Icon size={20} className="text-indigo-600" />
-                </div>
-                <h3 className="text-slate-900 font-semibold text-sm mb-2">{title}</h3>
-                <p className="text-slate-500 text-xs leading-relaxed">{desc}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Security Banner */}
-      <section className="py-10 px-6 bg-[#0F172A]">
-        <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
-          <div className="flex items-center gap-4">
-            <div className="w-12 h-12 rounded-2xl bg-white/10 flex items-center justify-center">
-              <Lock size={22} className="text-indigo-400" />
-            </div>
-            <div>
-              <h3 className="text-white font-bold text-base">Secure. Compliant. Trusted.</h3>
-              <p className="text-slate-400 text-sm mt-0.5">Your patient data is protected with enterprise-grade security and privacy standards.</p>
-            </div>
-          </div>
-          <div className="flex items-center gap-8">
-            <div className="flex items-center gap-2.5">
-              <div className="w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center">
-                <Shield size={18} className="text-cyan-400" />
-              </div>
-              <div>
-                <p className="text-white font-semibold text-sm">HIPAA</p>
-                <p className="text-slate-400 text-xs">Compliant</p>
-              </div>
-            </div>
-            <div className="flex items-center gap-2.5">
-              <div className="w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center">
-                <Cpu size={18} className="text-emerald-400" />
-              </div>
-              <div>
-                <p className="text-white font-semibold text-sm">AES-256</p>
-                <p className="text-slate-400 text-xs">Encryption</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* AI Chat Widget */}
-      {chatOpen && (
-        <div className="fixed bottom-6 right-6 z-50 w-80 bg-white rounded-2xl shadow-2xl border border-slate-200 flex flex-col overflow-hidden animate-slideInRight">
-          {/* Chat Header */}
-          <div className="bg-gradient-to-r from-indigo-600 to-indigo-700 px-4 py-3 flex items-center justify-between">
-            <div className="flex items-center gap-2.5">
-              <div className="w-9 h-9 rounded-xl bg-white shadow-md flex items-center justify-center shrink-0">
-                <Bot size={18} className="text-indigo-600" />
-              </div>
-              <div>
-                <p className="text-white font-bold text-sm leading-none">SpineLIT Assistant</p>
-                <p className="text-indigo-100 text-[11px] font-medium mt-1">Your AI Healthcare Assistant</p>
-              </div>
-            </div>
-            <div className="flex items-center gap-1.5">
-              <span className="w-2 h-2 bg-emerald-400 rounded-full animate-pulse-soft" />
-              <span className="text-indigo-100 text-[11px] font-medium">Online</span>
-              <button onClick={() => setChatOpen(false)} className="ml-1 text-indigo-100 hover:text-white p-1 rounded-lg hover:bg-white/10 transition-colors">
-                <X size={15} />
+              <button className="lp-view-report">
+                View Full Report <ArrowRight size={14} />
               </button>
             </div>
           </div>
-
-          {/* Messages */}
-          <div className="flex-1 p-3 space-y-3 max-h-64 overflow-y-auto bg-slate-50">
-            {chatHistory.map((msg, i) => (
-              <div key={i} className={`flex ${msg.from === 'user' ? 'justify-end' : 'items-start gap-2'}`}>
-                {msg.from === 'bot' && (
-                  <div className="w-8 h-8 rounded-xl bg-indigo-600 flex items-center justify-center shrink-0 mt-1 shadow-sm">
-                    <Bot size={15} className="text-white" />
-                  </div>
-                )}
-                <div className={`max-w-[80%] px-3.5 py-2.5 text-xs leading-relaxed ${msg.from === 'bot' ? 'chat-bubble-bot text-slate-800 font-medium' : 'chat-bubble-user font-medium'}`}>
-                  {msg.text.split('\n').map((line, j) => <p key={j}>{line}</p>)}
-                  <p className={`text-[9px] mt-1 ${msg.from === 'bot' ? 'text-slate-400' : 'text-indigo-200'}`}>{msg.time}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-
-          {/* Input */}
-          <div className="px-3 py-2.5 border-t border-slate-100 bg-white flex items-center gap-2">
-            <input
-              value={chatMessage}
-              onChange={(e) => setChatMessage(e.target.value)}
-              placeholder="Type your message..."
-              className="flex-1 text-xs px-3 py-2 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-indigo-300 focus:border-transparent bg-slate-50"
-            />
-            <button className="w-8 h-8 rounded-xl bg-indigo-600 flex items-center justify-center shadow-md hover:bg-indigo-700 transition-all">
-              <Send size={13} className="text-white" />
-            </button>
-          </div>
-          <p className="text-center text-[9px] text-slate-400 pb-2 bg-white">
-            This AI assistant can make mistakes. Please verify important information.
-          </p>
         </div>
-      )}
+      </section>
 
-      {/* Chat toggle when closed */}
-      {!chatOpen && (
-        <button
-          onClick={() => setChatOpen(true)}
-          className="fixed bottom-6 right-6 z-50 w-12 h-12 rounded-2xl bg-indigo-600 border-2 border-white shadow-xl shadow-indigo-500/40 flex items-center justify-center hover:scale-105 transition-all"
-        >
-          <div className="w-12 h-12 rounded-2xl bg-white flex items-center justify-center shadow-sm">
-            <Bot size={22} className="text-indigo-600" />
+      {/* ── Stats ── */}
+      <section className="lp-stats">
+        <div className="lp-stats-inner">
+          {stats.map(({ value, label, sub, icon: Icon }) => (
+            <div key={label} className="lp-stat-card">
+              <div className="lp-stat-icon"><Icon size={22} /></div>
+              <div>
+                <div className="lp-stat-value">{value}</div>
+                <div className="lp-stat-label">{label}</div>
+                <div className="lp-stat-sub">{sub}</div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* ── Trusted By ── */}
+      <section className="lp-trusted">
+        <h2>Trusted by Healthcare Professionals & Institutions</h2>
+        <div className="lp-trusted-logos">
+          {trustedBy.map(({ name, letter }) => (
+            <div key={name} className="lp-logo-item">
+              <span className="logo-icon">{letter}</span>
+              {name}
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* ── How It Works ── */}
+      <section className="lp-how">
+        <div className="lp-section-title">
+          <h2>How <span className="purple">Spine-LIT</span> Works</h2>
+        </div>
+        <div className="lp-steps">
+          {steps.map(({ icon: Icon, title, desc }, i) => (
+            <div key={title} style={{ display: 'flex', alignItems: 'flex-start' }}>
+              <div className="lp-step">
+                <div className="lp-step-icon"><Icon size={28} /></div>
+                <h3>{title}</h3>
+                <p>{desc}</p>
+              </div>
+              {i < steps.length - 1 && (
+                <div className="lp-step-arrow">----→</div>
+              )}
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* ── Features ── */}
+      <section className="lp-features">
+        <div className="lp-section-title">
+          <h2>Powerful <span className="purple">Features</span> for Better Spine Care</h2>
+        </div>
+        <div className="lp-features-grid">
+          {features.map(({ icon: Icon, title, desc }) => (
+            <div key={title} className="lp-feature-card">
+              <div className="lp-feature-icon"><Icon size={22} /></div>
+              <h3>{title}</h3>
+              <p>{desc}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* ── CTA ── */}
+      <section className="lp-cta">
+        <div className="lp-cta-inner">
+          <div>
+            <h2>Ready to Transform Spine Care?</h2>
+            <p>Join Spine-LIT and experience the future of<br />AI-powered spine intelligence.</p>
           </div>
-          <span className="absolute -top-1 -right-1 w-5 h-5 bg-red-500 border-2 border-white text-white text-[10px] font-bold rounded-full flex items-center justify-center shadow-sm">3</span>
-        </button>
-      )}
+          <div style={{ textAlign: 'center' }}>
+            <Link to="/dashboard" className="lp-cta-btn">
+              Get Started Free <ArrowRight size={16} />
+            </Link>
+            <div className="lp-cta-note">
+              <CheckCircle size={12} /> No credit card required
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ── Footer ── */}
+      <footer className="lp-footer">
+        <div className="lp-footer-inner">
+          <div className="lp-footer-brand">
+            <img src={logo} alt="Spine-LIT" style={{ height: 36, filter: 'invert(1) hue-rotate(210deg) brightness(1.5)', mixBlendMode: 'screen' }} />
+            <p>AI-powered clinical decision support system for spine analysis, severity assessment and better patient outcomes.</p>
+            <div className="lp-footer-social">
+              <a href="#"><ExternalLink size={16} /></a>
+              <a href="#"><Globe size={16} /></a>
+              <a href="#"><MessageCircle size={16} /></a>
+              <a href="#"><Mail size={16} /></a>
+            </div>
+          </div>
+
+          <div className="lp-footer-col">
+            <h4>Quick Links</h4>
+            <ul>
+              <li><a href="#">About Us</a></li>
+              <li><a href="#">How It Works</a></li>
+              <li><a href="#">Features</a></li>
+              <li><a href="#">For Doctors</a></li>
+              <li><a href="#">Contact</a></li>
+            </ul>
+          </div>
+
+          <div className="lp-footer-col">
+            <h4>Resources</h4>
+            <ul>
+              <li><a href="#">Blog</a></li>
+              <li><a href="#">Case Studies</a></li>
+              <li><a href="#">User Guide</a></li>
+              <li><a href="#">Privacy Policy</a></li>
+              <li><a href="#">Terms of Service</a></li>
+            </ul>
+          </div>
+
+          <div className="lp-footer-col">
+            <h4>Support</h4>
+            <ul>
+              <li><a href="#">Help Center</a></li>
+              <li><a href="#">FAQs</a></li>
+              <li><a href="#">Contact Support</a></li>
+              <li><a href="#">Report an Issue</a></li>
+            </ul>
+          </div>
+
+          <div className="lp-footer-col">
+            <h4>Stay Updated</h4>
+            <p style={{ fontSize: 13, color: '#94a3b8', marginBottom: 8 }}>
+              Subscribe to our newsletter for latest updates.
+            </p>
+            <div className="lp-newsletter-input">
+              <input type="email" placeholder="Enter your email" />
+              <button><ArrowRight size={16} /></button>
+            </div>
+          </div>
+        </div>
+
+        <div className="lp-footer-bottom">
+          © 2024 Spine-LIT. All rights reserved.
+        </div>
+      </footer>
     </div>
   )
 }

@@ -37,8 +37,8 @@ export default function ReportsPage() {
       {/* Header */}
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
         <div>
-          <h1 style={{ fontSize: '24px', fontWeight: 800, color: '#0F172A' }}>Reports</h1>
-          <p style={{ fontSize: '15px', color: '#64748B', marginTop: '6px' }}>View and manage all clinical reports</p>
+          <h1 style={{ fontSize: '24px', fontWeight: 800, color: 'var(--text-dark)' }}>Reports</h1>
+          <p style={{ fontSize: '15px', color: 'var(--text-muted)', marginTop: '6px' }}>View and manage all clinical reports</p>
         </div>
         <button className="btn btn-primary"><Plus size={18} /> Generate Report</button>
       </div>
@@ -46,18 +46,18 @@ export default function ReportsPage() {
       {/* Stats */}
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', gap: '18px' }}>
         {[
-          { label: 'Total Reports',   value: '12', color: '#4F46E5', icon: FileText },
+          { label: 'Total Reports',   value: '12', color: 'var(--text-dark)', icon: FileText },
           { label: 'Final Reports',   value: '9',  color: '#059669', icon: FileText },
           { label: 'Pending Review',  value: '2',  color: '#D97706', icon: FileText },
-          { label: 'Drafts',          value: '1',  color: '#64748B', icon: FileText },
+          { label: 'Drafts',          value: '1',  color: 'var(--text-muted)', icon: FileText },
         ].map(({ label, value, color, icon: Icon }) => (
-          <div key={label} style={{ background: 'white', border: '1.5px solid #E2E8F0', borderRadius: '18px', padding: '24px', boxShadow: '0 2px 8px rgba(0,0,0,0.04)', display: 'flex', alignItems: 'center', gap: '16px' }}>
+          <div key={label} style={{ background: 'var(--bg-card)', border: '1.5px solid rgba(139, 92, 246, 0.15)', borderRadius: '18px', padding: '24px', boxShadow: '0 2px 8px rgba(0,0,0,0.04)', display: 'flex', alignItems: 'center', gap: '16px' }}>
             <div style={{ width: '48px', height: '48px', borderRadius: '14px', background: color + '18', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
               <Icon size={22} color={color} />
             </div>
             <div>
               <p style={{ fontSize: '32px', fontWeight: 900, color, lineHeight: 1 }}>{value}</p>
-              <p style={{ fontSize: '13px', fontWeight: 600, color: '#475569', marginTop: '6px' }}>{label}</p>
+              <p style={{ fontSize: '13px', fontWeight: 600, color: 'var(--text-dark)', marginTop: '6px' }}>{label}</p>
             </div>
           </div>
         ))}
@@ -66,51 +66,51 @@ export default function ReportsPage() {
       {/* Search */}
       <div style={{ display: 'flex', gap: '12px' }}>
         <div style={{ position: 'relative', flex: 1, maxWidth: '420px' }}>
-          <Search size={16} color="#94A3B8" style={{ position: 'absolute', left: '16px', top: '50%', transform: 'translateY(-50%)' }} />
+          <Search size={16} color="var(--text-muted)" style={{ position: 'absolute', left: '16px', top: '50%', transform: 'translateY(-50%)' }} />
           <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Search reports..."
-            style={{ width: '100%', paddingLeft: '46px', paddingRight: '16px', paddingTop: '12px', paddingBottom: '12px', fontSize: '14px', border: '1.5px solid #E2E8F0', borderRadius: '12px', background: 'white', outline: 'none', fontFamily: 'inherit' }} />
+            style={{ width: '100%', paddingLeft: '46px', paddingRight: '16px', paddingTop: '12px', paddingBottom: '12px', fontSize: '14px', border: '1.5px solid rgba(139, 92, 246, 0.15)', borderRadius: '12px', background: 'var(--bg-card)', outline: 'none', fontFamily: 'inherit' }} />
         </div>
         <button className="btn btn-outline" style={{ padding: '11px 20px' }}><Filter size={16} /> Filter</button>
       </div>
 
       {/* Table */}
-      <div style={{ background: 'white', border: '1.5px solid #E2E8F0', borderRadius: '20px', overflow: 'hidden', boxShadow: '0 2px 8px rgba(0,0,0,0.04)' }}>
-        <div style={{ padding: '20px 28px', borderBottom: '1px solid #F1F5F9' }}>
-          <span style={{ fontSize: '15px', fontWeight: 700, color: '#0F172A' }}>All Reports <span style={{ color: '#94A3B8', fontWeight: 400 }}>({filtered.length})</span></span>
+      <div style={{ background: 'var(--bg-card)', border: '1.5px solid rgba(139, 92, 246, 0.15)', borderRadius: '20px', overflow: 'hidden', boxShadow: '0 2px 8px rgba(0,0,0,0.04)' }}>
+        <div style={{ padding: '20px 28px', borderBottom: '1px solid rgba(139, 92, 246, 0.15)' }}>
+          <span style={{ fontSize: '15px', fontWeight: 700, color: 'var(--text-dark)' }}>All Reports <span style={{ color: 'var(--text-muted)', fontWeight: 400 }}>({filtered.length})</span></span>
         </div>
         <div style={{ overflowX: 'auto' }}>
           <table style={{ width: '100%', borderCollapse: 'collapse' }}>
             <thead>
-              <tr style={{ background: '#F8FAFC', borderBottom: '1px solid #F1F5F9' }}>
+              <tr style={{ background: 'var(--bg-warm)', borderBottom: '1px solid rgba(139, 92, 246, 0.15)' }}>
                 {['Report ID', 'Patient', 'Report Type', 'Date', 'Pages', 'Severity', 'Status', 'Actions'].map(h => (
-                  <th key={h} style={{ textAlign: 'left', padding: '14px 20px', fontSize: '11px', fontWeight: 700, color: '#94A3B8', textTransform: 'uppercase', letterSpacing: '0.05em', whiteSpace: 'nowrap' }}>{h}</th>
+                  <th key={h} style={{ textAlign: 'left', padding: '14px 20px', fontSize: '11px', fontWeight: 700, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em', whiteSpace: 'nowrap' }}>{h}</th>
                 ))}
               </tr>
             </thead>
             <tbody>
               {filtered.map(r => (
-                <tr key={r.id} style={{ borderBottom: '1px solid #F8FAFC' }}
-                  onMouseEnter={e => e.currentTarget.style.background = '#F8FAFC'}
+                <tr key={r.id} style={{ borderBottom: '1px solid #F5F0E8' }}
+                  onMouseEnter={e => e.currentTarget.style.background = 'var(--bg-warm)'}
                   onMouseLeave={e => e.currentTarget.style.background = 'transparent'}>
-                  <td style={{ padding: '16px 20px', fontFamily: 'monospace', fontSize: '12px', color: '#94A3B8' }}>{r.id}</td>
+                  <td style={{ padding: '16px 20px', fontFamily: 'monospace', fontSize: '12px', color: 'var(--text-muted)' }}>{r.id}</td>
                   <td style={{ padding: '16px 20px' }}>
-                    <p style={{ fontSize: '14px', fontWeight: 600, color: '#1E293B' }}>{r.patient}</p>
-                    <p style={{ fontSize: '12px', color: '#94A3B8', marginTop: '2px' }}>{r.pid}</p>
+                    <p style={{ fontSize: '14px', fontWeight: 600, color: 'var(--text-dark)' }}>{r.patient}</p>
+                    <p style={{ fontSize: '12px', color: 'var(--text-muted)', marginTop: '2px' }}>{r.pid}</p>
                   </td>
-                  <td style={{ padding: '16px 20px', fontSize: '14px', color: '#475569' }}>{r.type}</td>
-                  <td style={{ padding: '16px 20px', fontSize: '14px', color: '#64748B', whiteSpace: 'nowrap' }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}><Calendar size={13} color="#CBD5E1" />{r.date}</div>
+                  <td style={{ padding: '16px 20px', fontSize: '14px', color: 'var(--text-dark)' }}>{r.type}</td>
+                  <td style={{ padding: '16px 20px', fontSize: '14px', color: 'var(--text-muted)', whiteSpace: 'nowrap' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}><Calendar size={13} color="rgba(139, 92, 246, 0.15)" />{r.date}</div>
                   </td>
-                  <td style={{ padding: '16px 20px', fontSize: '14px', fontWeight: 600, color: '#475569' }}>{r.pages} pages</td>
+                  <td style={{ padding: '16px 20px', fontSize: '14px', fontWeight: 600, color: 'var(--text-dark)' }}>{r.pages} pages</td>
                   <td style={{ padding: '16px 20px' }}>{pill(sevStyle[r.severity], r.severity)}</td>
                   <td style={{ padding: '16px 20px' }}>{pill(statusStyle[r.status], r.status)}</td>
                   <td style={{ padding: '16px 20px' }}>
                     <div style={{ display: 'flex', gap: '8px' }}>
                       {[Eye, Download].map((Icon, i) => (
-                        <button key={i} style={{ width: '36px', height: '36px', borderRadius: '10px', border: '1.5px solid #E2E8F0', background: 'white', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'all 0.15s' }}
-                          onMouseEnter={e => e.currentTarget.style.background = '#EEF2FF'}
+                        <button key={i} style={{ width: '36px', height: '36px', borderRadius: '10px', border: '1.5px solid rgba(139, 92, 246, 0.15)', background: 'var(--bg-card)', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'all 0.15s' }}
+                          onMouseEnter={e => e.currentTarget.style.background = 'var(--bg-warm)'}
                           onMouseLeave={e => e.currentTarget.style.background = 'white'}>
-                          <Icon size={15} color="#64748B" />
+                          <Icon size={15} color="var(--text-muted)" />
                         </button>
                       ))}
                     </div>
