@@ -1,9 +1,10 @@
 import { NavLink, useNavigate } from 'react-router-dom'
 import logo from '../../assets/logo.png'
+import { useAuth } from '../../context/AuthContext'
 import {
   LayoutDashboard, Users, ScanLine, FileText, History,
   MessageSquare, BookOpen, BarChart3, Settings, User,
-  LogOut, Shield, Zap
+  LogOut, Shield, ChevronLeft, ChevronRight, GripVertical
 } from 'lucide-react'
 
 const navItems = [
@@ -19,32 +20,114 @@ const navItems = [
   { to: '/dashboard/profile', label: 'Profile', icon: User },
 ]
 
-export default function Sidebar() {
+export default function Sidebar({
+  width = 240,
+  isDragging = false,
+  onStartDrag,
+  isCollapsed = false,
+  onToggleCollapse
+}) {
   const navigate = useNavigate()
+  const { logout } = useAuth()
+
+  const handleLogout = async () => {
+    await logout()
+    navigate('/')
+  }
+
+  // If collapsed, only render the subtle expand trigger button
+  if (isCollapsed || width === 0) {
+    return (
+      <button
+        onClick={onToggleCollapse}
+        title="Expand Sidebar"
+        style={{
+          position: 'fixed', left: '12px', top: '14px', zIndex: 60,
+          width: '38px', height: '38px', borderRadius: '12px',
+          background: 'linear-gradient(135deg, var(--primary), var(--primary-dark))',
+          color: 'white', border: '1px solid rgba(167, 139, 250, 0.4)',
+          boxShadow: '0 4px 16px rgba(124, 58, 237, 0.4)',
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+          cursor: 'pointer', transition: 'all 0.2s cubic-bezier(0.4, 0, 0.2, 1)'
+        }}
+        onMouseEnter={e => e.currentTarget.style.transform = 'scale(1.08)'}
+        onMouseLeave={e => e.currentTarget.style.transform = 'scale(1)'}
+      >
+        <ChevronRight size={20} />
+      </button>
+    )
+  }
 
   return (
     <aside style={{
-      position: 'fixed', left: 0, top: 0, height: '100vh', width: '240px',
+      position: 'fixed', left: 0, top: 0, height: '100vh',
+      width: `${width}px`,
       background: 'var(--bg-card)', display: 'flex', flexDirection: 'column',
-      zIndex: 30, boxShadow: '4px 0 24px rgba(0,0,0,0.18)', borderRight: '1px solid rgba(139, 92, 246, 0.15)'
+      zIndex: 40, boxShadow: '4px 0 24px rgba(0,0,0,0.25)',
+      borderRight: '1px solid rgba(139, 92, 246, 0.15)',
+      transition: isDragging ? 'none' : 'width 0.18s cubic-bezier(0.4, 0, 0.2, 1)',
+      userSelect: isDragging ? 'none' : 'auto',
+      overflow: 'hidden'
     }}>
-      {/* Logo */}
+
+      {/* ── Drag Handle (Right Border) ── */}
+      <div
+        onPointerDown={onStartDrag}
+        title="Drag to resize (Up to 70% screen) or double click to collapse"
+        onDoubleClick={onToggleCollapse}
+        style={{
+          position: 'absolute', right: 0, top: 0, bottom: 0,
+          width: '7px', cursor: 'col-resize', zIndex: 50,
+          background: isDragging ? 'var(--primary-light)' : 'transparent',
+          transition: 'background 0.2s',
+          display: 'flex', alignItems: 'center', justifyContent: 'center'
+        }}
+        onMouseEnter={e => e.currentTarget.style.background = 'rgba(167, 139, 250, 0.5)'}
+        onMouseLeave={e => { if (!isDragging) e.currentTarget.style.background = 'transparent' }}
+      >
+        <div style={{
+          width: '2px', height: '32px', borderRadius: '999px',
+          background: isDragging ? 'white' : 'rgba(167, 139, 250, 0.4)',
+          pointerEvents: 'none'
+        }} />
+      </div>
+
+      {/* Logo & Collapse Button Header */}
       <div style={{
         height: '68px',
         background: 'var(--bg-warm)',
         borderBottom: '1px solid rgba(139, 92, 246, 0.15)',
         display: 'flex',
         alignItems: 'center',
-        padding: '0 24px',
+        justifyContent: 'space-between',
+        padding: '0 16px 0 20px',
         boxSizing: 'border-box'
       }}>
-        <NavLink to="/" style={{ textDecoration: 'none', display: 'flex', alignItems: 'center' }}>
-          <img src={logo} alt="SpineLIT Logo" style={{ height: '60px', width: 'auto', objectFit: 'contain', filter: 'invert(1) hue-rotate(210deg) brightness(1.5)', mixBlendMode: 'screen' }} />
+        <NavLink to="/" style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', minWidth: 0 }}>
+          <img src={logo} alt="SpineLIT Logo" style={{ height: '52px', width: 'auto', objectFit: 'contain', filter: 'invert(1) hue-rotate(210deg) brightness(1.5)', mixBlendMode: 'screen' }} />
         </NavLink>
+
+        <button
+          onClick={onToggleCollapse}
+          title="Hide Sidebar"
+          style={{
+            width: '32px', height: '32px', borderRadius: '10px',
+            background: 'rgba(255, 255, 255, 0.05)', border: '1px solid rgba(139, 92, 246, 0.2)',
+            color: 'var(--text-muted)', display: 'flex', alignItems: 'center', justifyContent: 'center',
+            cursor: 'pointer', transition: 'all 0.15s', flexShrink: 0
+          }}
+          onMouseEnter={e => { e.currentTarget.style.background = 'rgba(124, 58, 237, 0.15)'; e.currentTarget.style.color = 'white'; }}
+          onMouseLeave={e => { e.currentTarget.style.background = 'rgba(255, 255, 255, 0.05)'; e.currentTarget.style.color = 'var(--text-muted)'; }}
+        >
+          <ChevronLeft size={18} />
+        </button>
       </div>
 
-      {/* Nav */}
-      <nav className="sidebar-nav-scroll" style={{ flex: 1, padding: '16px 12px', overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: '4px' }}>
+      {/* Nav Items */}
+      <nav className="sidebar-nav-scroll" style={{
+        flex: 1, padding: '16px 12px', overflowY: 'auto', overflowX: 'hidden',
+        display: 'flex', flexDirection: 'column', gap: '4px'
+      }}>
         {navItems.map(({ to, label, icon: Icon, end }) => (
           <NavLink
             key={to}
@@ -55,75 +138,59 @@ export default function Sidebar() {
             {({ isActive }) => (
               <div style={{
                 display: 'flex', alignItems: 'center', gap: '12px',
-                padding: '12px 16px', borderRadius: '14px', cursor: 'pointer',
+                padding: '11px 14px', borderRadius: '12px', cursor: 'pointer',
                 fontSize: '14px', fontWeight: isActive ? 600 : 500,
                 color: isActive ? 'white' : 'var(--text-muted)',
                 background: isActive
                   ? 'linear-gradient(135deg, var(--primary), var(--primary-dark))'
                   : 'transparent',
                 boxShadow: isActive ? '0 4px 16px rgba(124,58,237,0.2)' : 'none',
-                transition: 'all 0.2s ease',
+                transition: 'all 0.18s ease',
+                whiteSpace: 'nowrap', textOverflow: 'ellipsis', overflow: 'hidden'
               }}
                 onMouseEnter={e => { if (!isActive) { e.currentTarget.style.background = 'rgba(124,58,237,0.1)'; e.currentTarget.style.color = 'white'; } }}
                 onMouseLeave={e => { if (!isActive) { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = 'var(--text-muted)'; } }}
               >
                 <Icon size={18} color={isActive ? 'white' : 'var(--text-muted)'} style={{ flexShrink: 0 }} />
-                <span>{label}</span>
+                <span style={{ overflow: 'hidden', textOverflow: 'ellipsis' }}>{label}</span>
               </div>
             )}
           </NavLink>
         ))}
       </nav>
 
-      <style>{`
-        .sidebar-nav-scroll {
-          scrollbar-width: thin;
-          scrollbar-color: rgba(124, 58, 237, 0.2) transparent;
-        }
-        .sidebar-nav-scroll::-webkit-scrollbar {
-          width: 2px;
-        }
-        .sidebar-nav-scroll::-webkit-scrollbar-track {
-          background: transparent;
-        }
-        .sidebar-nav-scroll::-webkit-scrollbar-thumb {
-          background: rgba(124, 58, 237, 0.2);
-          border-radius: 999px;
-        }
-        .sidebar-nav-scroll::-webkit-scrollbar-thumb:hover {
-          background: rgba(124, 58, 237, 0.5);
-        }
-      `}</style>
-
       {/* Footer */}
-      <div style={{ padding: '12px 12px 24px', borderTop: '1px solid rgba(139, 92, 246, 0.15)' }}>
+      <div style={{ padding: '12px 12px 20px', borderTop: '1px solid rgba(139, 92, 246, 0.15)', flexShrink: 0 }}>
         <button
-          onClick={() => navigate('/')}
+          onClick={handleLogout}
           style={{
             width: '100%', display: 'flex', alignItems: 'center', gap: '12px',
-            padding: '12px 16px', borderRadius: '14px', background: 'transparent',
+            padding: '11px 14px', borderRadius: '12px', background: 'transparent',
             fontSize: '14px', fontWeight: 500, color: 'var(--text-muted)', cursor: 'pointer',
-            transition: 'all 0.2s', border: 'none'
+            transition: 'all 0.18s', border: 'none', whiteSpace: 'nowrap'
           }}
-          onMouseEnter={e => { e.currentTarget.style.background = 'rgba(124,58,237,0.1)'; e.currentTarget.style.color = 'white'; }}
+          onMouseEnter={e => { e.currentTarget.style.background = 'rgba(239, 68, 68, 0.1)'; e.currentTarget.style.color = '#f87171'; }}
           onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = 'var(--text-muted)'; }}
         >
-          <LogOut size={18} color="var(--text-muted)" />
+          <LogOut size={18} style={{ flexShrink: 0 }} />
           <span>Logout</span>
         </button>
 
-        <div style={{
-          marginTop: '12px', padding: '14px 16px', borderRadius: '14px',
-          background: 'rgba(124, 58, 237, 0.08)', border: '1px solid rgba(139, 92, 246, 0.15)'
-        }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-            <Shield size={16} color="#10B981" />
-            <div>
-              <p style={{ fontSize: '13px', fontWeight: 600, color: 'white', lineHeight: 1 }}>Secure & HIPAA</p>
-              <p style={{ fontSize: '11px', color: 'var(--text-muted)', marginTop: '4px' }}>Compliant</p>
+        {width >= 200 && (
+          <div style={{
+            marginTop: '10px', padding: '12px 14px', borderRadius: '12px',
+            background: 'rgba(124, 58, 237, 0.08)', border: '1px solid rgba(139, 92, 246, 0.15)',
+            overflow: 'hidden'
+          }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+              <Shield size={16} color="#10B981" style={{ flexShrink: 0 }} />
+              <div style={{ overflow: 'hidden' }}>
+                <p style={{ fontSize: '12px', fontWeight: 600, color: 'white', lineHeight: 1, margin: 0, whiteSpace: 'nowrap' }}>Secure & HIPAA</p>
+                <p style={{ fontSize: '10px', color: 'var(--text-muted)', margin: '3px 0 0', whiteSpace: 'nowrap' }}>Compliant</p>
+              </div>
             </div>
           </div>
-        </div>
+        )}
       </div>
     </aside>
   )

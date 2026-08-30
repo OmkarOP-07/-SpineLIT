@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom'
+import { useAuth } from '../../context/AuthContext'
 import {
   Users, BarChart2, FileText, AlertTriangle, Eye,
   Upload, UserPlus, TrendingUp, ArrowRight, Activity, Clock, Mars
@@ -40,16 +41,23 @@ const quickActions = [
 ]
 
 export default function DashboardPage() {
+  const { user } = useAuth()
+  const displayName = user?.name || (user?.email ? user.email.split('@')[0] : 'User')
+  const isDoctor = user?.role === 'doctor'
+  const greetingName = isDoctor && !displayName.toLowerCase().startsWith('dr.')
+    ? `Dr. ${displayName}`
+    : displayName
+
   return (
     <div className="animate-fadeIn" style={{ display: 'flex', flexDirection: 'column', gap: '32px', maxWidth: '1400px' }}>
 
       {/* Welcome */}
       <div>
         <h1 style={{ fontSize: '24px', fontWeight: 800, color: 'var(--text-dark)', marginBottom: '6px' }}>
-          Welcome, Dr. Arjun Sharma
+          Welcome, {greetingName}
         </h1>
         <p style={{ fontSize: '15px', color: 'var(--text-muted)' }}>
-          Here's what's happening with your patients today.
+          {isDoctor ? "Here's what's happening with your patients today." : "Here's an overview of your spine health insights and scans."}
         </p>
       </div>
 

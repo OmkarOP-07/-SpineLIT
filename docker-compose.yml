@@ -1,9 +1,32 @@
 services:
-  spinelitapp:
+  frontend:
     build:
       context: ./frontend
       dockerfile: Dockerfile
     ports:
       - "3000:80"
     restart: unless-stopped
-    container_name: spinelitapp
+    container_name: spinelit_frontend
+    environment:
+      - VITE_API_URL=http://backend:5000
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - "5000:5000"
+    restart: unless-stopped
+    container_name: spinelit_backend
+    environment:
+      - NODE_ENV=production
+      - PORT=5000
+      - FRONTEND_URL=http://localhost:3000
+    env_file:
+      - ./backend/.env
+    volumes:
+      # Persist SQLite DB between restarts
+      - backend_data:/app/data
+
+volumes:
+  backend_data:

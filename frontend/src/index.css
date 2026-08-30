@@ -50,23 +50,33 @@ a {
   text-decoration: none;
 }
 
-/* ─── Scrollbar ──────────────────────────────────── */
-::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+/* ─── Unified Sleek Thin Scrollbar ────────────────── */
+html, body, * {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(139, 92, 246, 0.25) transparent;
 }
 
-::-webkit-scrollbar-track {
-  background: var(--bg-warm);
+*::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
 }
 
-::-webkit-scrollbar-thumb {
-  background: var(--text-muted);
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+*::-webkit-scrollbar-thumb {
+  background: rgba(139, 92, 246, 0.25);
   border-radius: 999px;
+  transition: background 0.2s ease;
 }
 
-::-webkit-scrollbar-thumb:hover {
-  background: var(--primary-light);
+*::-webkit-scrollbar-thumb:hover {
+  background: rgba(167, 139, 250, 0.6);
+}
+
+*::-webkit-scrollbar-corner {
+  background: transparent;
 }
 
 /* ─── Animations ─────────────────────────────────── */

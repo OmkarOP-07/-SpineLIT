@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom'
 import logo from '../assets/logo.png'
 import spineMri from '../assets/spine_mri.png'
 import './HomePage.css'
+import { useAuth } from '../context/AuthContext'
 import {
   ArrowRight, Upload, Brain, FileText, Users, Activity, Shield,
   CheckCircle, Zap, TrendingUp, Eye, Heart, Lock, Send,
@@ -42,6 +43,8 @@ const features = [
 ]
 
 export default function HomePage() {
+  const { user } = useAuth()
+
   return (
     <div className="landing-page">
       {/* ── Navbar ── */}
@@ -61,10 +64,26 @@ export default function HomePage() {
           </div>
 
           <div className="lp-nav-cta">
-            <Link to="/dashboard" className="lp-btn-login">Log In</Link>
-            <Link to="/dashboard" className="lp-btn-get-started">
-              Get Started
-            </Link>
+            {user ? (
+              <Link to="/dashboard" className="lp-btn-get-started" style={{ display: 'inline-flex', alignItems: 'center', gap: '8px' }}>
+                {user.photo_url || user.photo ? (
+                  <img
+                    src={user.photo_url || user.photo}
+                    alt=""
+                    referrerPolicy="no-referrer"
+                    style={{ width: '22px', height: '22px', borderRadius: '999px', objectFit: 'cover' }}
+                  />
+                ) : null}
+                Go to Dashboard <ArrowRight size={14} />
+              </Link>
+            ) : (
+              <>
+                <Link to="/login" className="lp-btn-login">Log In</Link>
+                <Link to="/signup" className="lp-btn-get-started">
+                  Get Started
+                </Link>
+              </>
+            )}
           </div>
         </div>
       </nav>
@@ -74,7 +93,7 @@ export default function HomePage() {
         <div className="lp-hero-inner">
           <div className="animate-fadeInUp">
             <div className="lp-badge">
-              <Zap size={12} /> AI-POWERED CLINICAL DECISION SUPPORT
+              <Zap size={12} /> CLINICAL DECISION SUPPORT
             </div>
 
             <h1>

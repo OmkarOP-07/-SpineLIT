@@ -1,4 +1,14 @@
-import { Award, MapPin, Phone, Mail, Calendar, Edit2, Star, TrendingUp, Users, FileText, Clock } from 'lucide-react'
+import { Award, MapPin, Phone, Mail, Calendar, Edit2, Star, TrendingUp, Users, FileText, Clock, ShieldCheck } from 'lucide-react'
+import { useAuth } from '../../context/AuthContext'
+
+function getInitials(name = '') {
+  if (!name) return 'U'
+  const parts = name.trim().split(' ')
+  if (parts.length >= 2) {
+    return (parts[0][0] + parts[1][0]).toUpperCase()
+  }
+  return name.slice(0, 2).toUpperCase()
+}
 
 const stats = [
   { label: 'Total Patients',    value: '42',    icon: Users,       color: 'var(--text-dark)', bg: 'var(--bg-warm)' },
@@ -24,6 +34,14 @@ const metrics = [
 ]
 
 export default function ProfilePage() {
+  const { user } = useAuth()
+  const displayName = user?.name || (user?.email ? user.email.split('@')[0] : 'User')
+  const isDoctor = user?.role === 'doctor'
+  const formattedName = isDoctor && !displayName.toLowerCase().startsWith('dr.')
+    ? `Dr. ${displayName}`
+    : displayName
+  const roleSubtitle = isDoctor ? 'Spine Specialist' : 'Patient'
+  const photoUrl = user?.photo_url || user?.photo
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '28px', maxWidth: '1200px' }} className="animate-fadeIn">
 
@@ -43,21 +61,36 @@ export default function ProfilePage() {
           {/* Profile info */}
           <div style={{ background: 'var(--bg-card)', border: '1.5px solid rgba(139, 92, 246, 0.15)', borderRadius: '20px', padding: '32px', boxShadow: '0 2px 8px rgba(0,0,0,0.04)', textAlign: 'center' }}>
             <div style={{ position: 'relative', display: 'inline-block', marginBottom: '20px' }}>
-              <div style={{ width: '90px', height: '90px', borderRadius: '24px', background: 'linear-gradient(135deg,var(--primary-dark),var(--primary))', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white', fontSize: '28px', fontWeight: 800, boxShadow: '0 8px 24px rgba(99,102,241,0.35)', margin: '0 auto' }}>DS</div>
+              {photoUrl ? (
+                <img
+                  src={photoUrl}
+                  alt={displayName}
+                  referrerPolicy="no-referrer"
+                  style={{
+                    width: '90px', height: '90px', borderRadius: '24px', objectFit: 'cover',
+                    border: '2px solid rgba(167, 139, 250, 0.5)',
+                    boxShadow: '0 8px 24px rgba(124, 58, 237, 0.35)', margin: '0 auto'
+                  }}
+                />
+              ) : (
+                <div style={{ width: '90px', height: '90px', borderRadius: '24px', background: 'linear-gradient(135deg,var(--primary-dark),var(--primary))', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white', fontSize: '28px', fontWeight: 800, boxShadow: '0 8px 24px rgba(99,102,241,0.35)', margin: '0 auto' }}>
+                  {getInitials(displayName)}
+                </div>
+              )}
               <div style={{ position: 'absolute', bottom: '-6px', right: '-6px', width: '30px', height: '30px', borderRadius: '10px', background: '#10B981', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 2px 8px rgba(16,185,129,0.4)' }}>
                 <Star size={15} color="white" fill="white" />
               </div>
             </div>
 
-            <h2 style={{ fontSize: '20px', fontWeight: 800, color: 'var(--text-dark)' }}>Dr. Arjun Sharma</h2>
-            <p style={{ fontSize: '14px', fontWeight: 600, color: 'var(--text-dark)', marginTop: '4px' }}>Spine Specialist</p>
+            <h2 style={{ fontSize: '20px', fontWeight: 800, color: 'var(--text-dark)' }}>{formattedName}</h2>
+            <p style={{ fontSize: '14px', fontWeight: 600, color: 'var(--text-dark)', marginTop: '4px' }}>{roleSubtitle}</p>
 
             <div style={{ marginTop: '24px', display: 'flex', flexDirection: 'column', gap: '12px', textAlign: 'left' }}>
               {[
-                { icon: MapPin, text: 'Apollo Hospitals, Mumbai' },
-                { icon: Phone,  text: '+91 98765 43210' },
-                { icon: Mail,   text: 'arjun.sharma@hospital.com' },
-                { icon: Calendar,text:'Member since Jan 2024' },
+                { icon: MapPin, text: user?.role === 'doctor' ? 'Apollo Hospitals, Mumbai' : 'Mumbai, India' },
+                { icon: Phone,  text: user?.phone || '+91 (Not provided)' },
+                { icon: Mail,   text: user?.email || 'No email' },
+                { icon: Calendar,text: user?.created_at ? `Member since ${new Date(user.created_at).toLocaleDateString('en-US', { month: 'short', year: 'numeric' })}` : 'Member since 2025' },
               ].map(({ icon: Icon, text }) => (
                 <div key={text} style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
                   <Icon size={15} color="rgba(139, 92, 246, 0.15)" />
