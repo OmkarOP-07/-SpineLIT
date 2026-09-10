@@ -4,16 +4,20 @@ import { useAuth } from '../../context/AuthContext'
 import {
   LayoutDashboard, Users, ScanLine, FileText, History,
   MessageSquare, BookOpen, BarChart3, Settings, User,
-  LogOut, Shield, ChevronLeft, ChevronRight, GripVertical
+  LogOut, Shield, ChevronLeft, ChevronRight, GripVertical,
+  Brain, TrendingUp, Activity
 } from 'lucide-react'
 
 const navItems = [
   { to: '/dashboard', label: 'Dashboard', icon: LayoutDashboard, end: true },
   { to: '/dashboard/patients', label: 'Patients', icon: Users },
-  { to: '/dashboard/image-analysis', label: 'Spine Analysis', icon: ScanLine },
-  { to: '/dashboard/reports', label: 'Reports', icon: FileText },
-  { to: '/dashboard/patient-history', label: 'Patient History', icon: History },
+  { to: '/dashboard/image-analysis', label: 'New Analysis', icon: ScanLine },
+  { to: '/dashboard/ai-analysis-result', label: 'AI Result', icon: Brain },
+  { to: '/dashboard/ai-generated-report', label: 'AI Report', icon: FileText },
+  { to: '/dashboard/patient-history', label: 'Analysis History', icon: History },
+  { to: '/dashboard/patient-longitudinal', label: 'Longitudinal View', icon: TrendingUp },
   { to: '/dashboard/doctor-feedback', label: 'Doctor Feedback', icon: MessageSquare },
+  { to: '/dashboard/doctor-feedback-learning', label: 'Learning Memory', icon: Activity },
   { to: '/dashboard/knowledge-base', label: 'Knowledge Base', icon: BookOpen },
   { to: '/dashboard/analytics', label: 'Analytics', icon: BarChart3 },
   { to: '/dashboard/settings', label: 'Settings', icon: Settings },
@@ -45,8 +49,8 @@ export default function Sidebar({
           position: 'fixed', left: '12px', top: '14px', zIndex: 60,
           width: '38px', height: '38px', borderRadius: '12px',
           background: 'linear-gradient(135deg, var(--primary), var(--primary-dark))',
-          color: 'white', border: '1px solid rgba(167, 139, 250, 0.4)',
-          boxShadow: '0 4px 16px rgba(124, 58, 237, 0.4)',
+          color: 'white', border: '1px solid rgba(168, 90, 117, 0.4)',
+          boxShadow: '0 4px 16px rgba(133, 57, 83, 0.4)',
           display: 'flex', alignItems: 'center', justifyContent: 'center',
           cursor: 'pointer', transition: 'all 0.2s cubic-bezier(0.4, 0, 0.2, 1)'
         }}
@@ -62,9 +66,9 @@ export default function Sidebar({
     <aside style={{
       position: 'fixed', left: 0, top: 0, height: '100vh',
       width: `${width}px`,
-      background: 'var(--bg-card)', display: 'flex', flexDirection: 'column',
+      background: '#2C2C2C', display: 'flex', flexDirection: 'column',
       zIndex: 40, boxShadow: '4px 0 24px rgba(0,0,0,0.25)',
-      borderRight: '1px solid rgba(139, 92, 246, 0.15)',
+      borderRight: '1px solid rgba(133, 57, 83, 0.15)',
       transition: isDragging ? 'none' : 'width 0.18s cubic-bezier(0.4, 0, 0.2, 1)',
       userSelect: isDragging ? 'none' : 'auto',
       overflow: 'hidden'
@@ -82,12 +86,12 @@ export default function Sidebar({
           transition: 'background 0.2s',
           display: 'flex', alignItems: 'center', justifyContent: 'center'
         }}
-        onMouseEnter={e => e.currentTarget.style.background = 'rgba(167, 139, 250, 0.5)'}
+        onMouseEnter={e => e.currentTarget.style.background = 'rgba(168, 90, 117, 0.5)'}
         onMouseLeave={e => { if (!isDragging) e.currentTarget.style.background = 'transparent' }}
       >
         <div style={{
           width: '2px', height: '32px', borderRadius: '999px',
-          background: isDragging ? 'white' : 'rgba(167, 139, 250, 0.4)',
+          background: isDragging ? 'white' : 'rgba(168, 90, 117, 0.4)',
           pointerEvents: 'none'
         }} />
       </div>
@@ -95,8 +99,8 @@ export default function Sidebar({
       {/* Logo & Collapse Button Header */}
       <div style={{
         height: '68px',
-        background: 'var(--bg-warm)',
-        borderBottom: '1px solid rgba(139, 92, 246, 0.15)',
+        background: '#2C2C2C',
+        borderBottom: '1px solid rgba(133, 57, 83, 0.15)',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-between',
@@ -104,7 +108,7 @@ export default function Sidebar({
         boxSizing: 'border-box'
       }}>
         <NavLink to="/" style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', minWidth: 0 }}>
-          <img src={logo} alt="SpineLIT Logo" style={{ height: '52px', width: 'auto', objectFit: 'contain', filter: 'invert(1) hue-rotate(210deg) brightness(1.5)', mixBlendMode: 'screen' }} />
+          <img src={logo} alt="SpineLCI Logo" style={{ height: '52px', width: 'auto', objectFit: 'contain' }} />
         </NavLink>
 
         <button
@@ -112,11 +116,11 @@ export default function Sidebar({
           title="Hide Sidebar"
           style={{
             width: '32px', height: '32px', borderRadius: '10px',
-            background: 'rgba(255, 255, 255, 0.05)', border: '1px solid rgba(139, 92, 246, 0.2)',
-            color: 'var(--text-muted)', display: 'flex', alignItems: 'center', justifyContent: 'center',
+            background: 'rgba(255, 255, 255, 0.05)', border: '1px solid rgba(133, 57, 83, 0.2)',
+            color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center',
             cursor: 'pointer', transition: 'all 0.15s', flexShrink: 0
           }}
-          onMouseEnter={e => { e.currentTarget.style.background = 'rgba(124, 58, 237, 0.15)'; e.currentTarget.style.color = 'white'; }}
+          onMouseEnter={e => { e.currentTarget.style.background = 'rgba(133, 57, 83, 0.15)'; e.currentTarget.style.color = 'white'; }}
           onMouseLeave={e => { e.currentTarget.style.background = 'rgba(255, 255, 255, 0.05)'; e.currentTarget.style.color = 'var(--text-muted)'; }}
         >
           <ChevronLeft size={18} />
@@ -140,18 +144,18 @@ export default function Sidebar({
                 display: 'flex', alignItems: 'center', gap: '12px',
                 padding: '11px 14px', borderRadius: '12px', cursor: 'pointer',
                 fontSize: '14px', fontWeight: isActive ? 600 : 500,
-                color: isActive ? 'white' : 'var(--text-muted)',
+                color: isActive ? 'white' : 'white',
                 background: isActive
                   ? 'linear-gradient(135deg, var(--primary), var(--primary-dark))'
                   : 'transparent',
-                boxShadow: isActive ? '0 4px 16px rgba(124,58,237,0.2)' : 'none',
+                boxShadow: isActive ? '0 4px 16px rgba(133,57,83,0.2)' : 'none',
                 transition: 'all 0.18s ease',
                 whiteSpace: 'nowrap', textOverflow: 'ellipsis', overflow: 'hidden'
               }}
-                onMouseEnter={e => { if (!isActive) { e.currentTarget.style.background = 'rgba(124,58,237,0.1)'; e.currentTarget.style.color = 'white'; } }}
-                onMouseLeave={e => { if (!isActive) { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = 'var(--text-muted)'; } }}
+                onMouseEnter={e => { if (!isActive) { e.currentTarget.style.background = 'rgba(133,57,83,0.1)'; e.currentTarget.style.color = 'white'; } }}
+                onMouseLeave={e => { if (!isActive) { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = 'white'; } }}
               >
-                <Icon size={18} color={isActive ? 'white' : 'var(--text-muted)'} style={{ flexShrink: 0 }} />
+                <Icon size={18} color={isActive ? 'white' : 'white'} style={{ flexShrink: 0 }} />
                 <span style={{ overflow: 'hidden', textOverflow: 'ellipsis' }}>{label}</span>
               </div>
             )}
@@ -160,17 +164,17 @@ export default function Sidebar({
       </nav>
 
       {/* Footer */}
-      <div style={{ padding: '12px 12px 20px', borderTop: '1px solid rgba(139, 92, 246, 0.15)', flexShrink: 0 }}>
+      <div style={{ padding: '12px 12px 20px', borderTop: '1px solid rgba(133, 57, 83, 0.15)', flexShrink: 0 }}>
         <button
           onClick={handleLogout}
           style={{
             width: '100%', display: 'flex', alignItems: 'center', gap: '12px',
             padding: '11px 14px', borderRadius: '12px', background: 'transparent',
-            fontSize: '14px', fontWeight: 500, color: 'var(--text-muted)', cursor: 'pointer',
+            fontSize: '14px', fontWeight: 500, color: 'white', cursor: 'pointer',
             transition: 'all 0.18s', border: 'none', whiteSpace: 'nowrap'
           }}
           onMouseEnter={e => { e.currentTarget.style.background = 'rgba(239, 68, 68, 0.1)'; e.currentTarget.style.color = '#f87171'; }}
-          onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = 'var(--text-muted)'; }}
+          onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = 'white'; }}
         >
           <LogOut size={18} style={{ flexShrink: 0 }} />
           <span>Logout</span>
@@ -179,14 +183,14 @@ export default function Sidebar({
         {width >= 200 && (
           <div style={{
             marginTop: '10px', padding: '12px 14px', borderRadius: '12px',
-            background: 'rgba(124, 58, 237, 0.08)', border: '1px solid rgba(139, 92, 246, 0.15)',
+            background: 'rgba(133, 57, 83, 0.08)', border: '1px solid rgba(133, 57, 83, 0.15)',
             overflow: 'hidden'
           }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
               <Shield size={16} color="#10B981" style={{ flexShrink: 0 }} />
               <div style={{ overflow: 'hidden' }}>
                 <p style={{ fontSize: '12px', fontWeight: 600, color: 'white', lineHeight: 1, margin: 0, whiteSpace: 'nowrap' }}>Secure & HIPAA</p>
-                <p style={{ fontSize: '10px', color: 'var(--text-muted)', margin: '3px 0 0', whiteSpace: 'nowrap' }}>Compliant</p>
+                <p style={{ fontSize: '10px', color: 'rgba(255,255,255,0.7)', margin: '3px 0 0', whiteSpace: 'nowrap' }}>Compliant</p>
               </div>
             </div>
           </div>

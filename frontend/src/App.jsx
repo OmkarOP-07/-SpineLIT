@@ -14,6 +14,10 @@ import KnowledgeBasePage from './pages/dashboard/KnowledgeBasePage'
 import AnalyticsPage from './pages/dashboard/AnalyticsPage'
 import SettingsPage from './pages/dashboard/SettingsPage'
 import ProfilePage from './pages/dashboard/ProfilePage'
+import AIAnalysisResultPage from './pages/dashboard/AIAnalysisResultPage'
+import AIGeneratedReportPage from './pages/dashboard/AIGeneratedReportPage'
+import PatientLongitudinalViewPage from './pages/dashboard/PatientLongitudinalViewPage'
+import DoctorFeedbackLearningMemoryPage from './pages/dashboard/DoctorFeedbackLearningMemoryPage'
 
 export default function App() {
   return (
@@ -30,9 +34,13 @@ export default function App() {
           <Route index element={<DashboardPage />} />
           <Route path="patients" element={<PatientsPage />} />
           <Route path="image-analysis" element={<ImageAnalysisPage />} />
+          <Route path="ai-analysis-result" element={<AIAnalysisResultPage />} />
+          <Route path="ai-generated-report" element={<AIGeneratedReportPage />} />
           <Route path="reports" element={<ReportsPage />} />
           <Route path="patient-history" element={<PatientHistoryPage />} />
+          <Route path="patient-longitudinal" element={<PatientLongitudinalViewPage />} />
           <Route path="doctor-feedback" element={<DoctorFeedbackPage />} />
+          <Route path="doctor-feedback-learning" element={<DoctorFeedbackLearningMemoryPage />} />
           <Route path="knowledge-base" element={<KnowledgeBasePage />} />
           <Route path="analytics" element={<AnalyticsPage />} />
           <Route path="settings" element={<SettingsPage />} />

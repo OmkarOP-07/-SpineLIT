@@ -5,41 +5,50 @@ import './HomePage.css'
 import { useAuth } from '../context/AuthContext'
 import {
   ArrowRight, Upload, Brain, FileText, Users, Activity, Shield,
-  CheckCircle, Zap, TrendingUp, Eye, Heart, Lock, Send,
-  ExternalLink, Globe, MessageCircle, Mail, ChevronRight, Search
+  CheckCircle, Zap, TrendingUp, Eye, Lock, Send,
+  ExternalLink, Globe, MessageCircle, Mail, Search, Database,
+  Cpu, Layers, GitBranch, RefreshCw, BarChart2
 } from 'lucide-react'
 
-const navLinks = ['Home', 'About Us', 'How It Works', 'Features', 'For Doctors', 'Resources', 'Contact']
-
-const stats = [
-  { value: '5,000+', label: 'Patients Analyzed', sub: 'and growing every day', icon: Users },
-  { value: '12,000+', label: 'Analyses Performed', sub: 'across hospitals', icon: Activity },
-  { value: '95%+', label: 'AI Accuracy', sub: 'validated by experts', icon: CheckCircle },
-  { value: '100%', label: 'Data Security', sub: 'HIPAA Compliant', icon: Shield },
-]
-
-const trustedBy = [
-  { name: 'Apollo', letter: 'A' },
-  { name: 'medanta', letter: 'M' },
-  { name: 'MAX', letter: 'M' },
-  { name: 'Fortis', letter: 'F' },
-  { name: 'Narayana Health', letter: 'N' },
-  { name: 'AIIMS', letter: 'A' },
-]
+const navLinks = ['Home', 'How It Works', 'Features', 'For Doctors', 'Resources', 'Contact']
 
 const steps = [
-  { icon: Upload, title: 'Upload Scan', desc: 'Upload MRI / X-ray scans securely and enter patient information.' },
-  { icon: Brain, title: 'AI Analysis', desc: 'Our AI models analyze scans and assess severity with high accuracy.' },
-  { icon: FileText, title: 'Insights & Report', desc: 'Get detailed insights, visualizations and explainable reports.' },
-  { icon: Users, title: 'Clinical Decision', desc: 'Support better clinical decisions and monitor progress over time.' },
+  { num: '01', icon: Upload,    title: 'Upload Data',            desc: 'Upload X-ray/MRI and enter clinical information.' },
+  { num: '02', icon: Brain,     title: 'AI Analysis',            desc: 'Specialized AI agents process the available information.' },
+  { num: '03', icon: Database,  title: 'Clinical Intelligence',  desc: 'RAG and historical information provide additional context.' },
+  { num: '04', icon: FileText,  title: 'Explainable Report',     desc: 'Generate an interpretable report for doctor review.' },
 ]
 
 const features = [
-  { icon: Brain, title: 'Advanced AI Analysis', desc: 'Deep learning models detect spinal abnormalities and grade severity.' },
-  { icon: TrendingUp, title: 'Longitudinal Monitoring', desc: 'Track progression over time with AI-powered trend analysis.' },
-  { icon: Eye, title: 'Explainable AI', desc: 'Interpretable results with visual explanations and heatmaps.' },
-  { icon: FileText, title: 'Smart Reports', desc: 'Generate comprehensive reports in seconds with key measurements.' },
-  { icon: Lock, title: 'Secure & Compliant', desc: 'Enterprise-grade security with HIPAA compliance and data encryption.' },
+  { icon: Brain,     title: 'AI Image Analysis',       desc: 'Analyze medical images using computer vision to detect spinal features.' },
+  { icon: TrendingUp,title: 'Longitudinal Monitoring', desc: 'Compare current and previous imaging records over time.' },
+  { icon: Eye,       title: 'Explainable AI',          desc: 'Provide visual heatmaps and textual explanations for each prediction.' },
+  { icon: FileText,  title: 'Clinical Reports',        desc: 'Generate structured AI-assisted reports for clinical documentation.' },
+  { icon: Users,     title: 'Doctor Feedback',         desc: 'Allow clinicians to validate and correct AI outputs for continuous learning.' },
+]
+
+const agents = [
+  { num: '01', title: 'Image Enhancement',             desc: 'Pre-process and enhance raw medical imaging inputs.' },
+  { num: '02', title: 'Image Parsing & Preprocessing', desc: 'Segment and extract relevant spinal structures.' },
+  { num: '03', title: 'RAG & Vector Matching',         desc: 'Retrieve similar historical cases and clinical knowledge.' },
+  { num: '04', title: 'Prediction Agent',              desc: 'Generate severity assessment and confidence scores.' },
+  { num: '05', title: 'AI Report Generation',          desc: 'Compose structured, explainable clinical summaries.' },
+  { num: '06', title: 'Feedback & Learning',           desc: 'Incorporate doctor corrections into the clinical knowledge loop.' },
+]
+
+const longitudinalSteps = [
+  { label: 'Previous Record',         desc: 'Historical imaging and baseline assessment.' },
+  { label: 'Current Record',          desc: 'Latest uploaded imaging and clinical data.' },
+  { label: 'Comparison',             desc: 'Automated feature-level diff between records.' },
+  { label: 'Trend / Progression',    desc: 'Severity change detection and progression tracking.' },
+  { label: 'Clinical Decision Support', desc: 'AI-assisted insight delivered to the clinician.' },
+]
+
+const stats = [
+  { value: 'AI-Powered', label: 'Clinical Decision Support', sub: 'Explainable & longitudinal',          icon: Brain   },
+  { value: 'Secure',     label: 'Data Protection',           sub: 'Clinician-controlled access',          icon: Shield  },
+  { value: 'HITL',       label: 'Human-in-the-Loop',         sub: 'Doctor validation required',           icon: Users   },
+  { value: 'XAI',        label: 'Transparent AI',            sub: 'Visual & textual explanations',        icon: Eye     },
 ]
 
 export default function HomePage() {
@@ -51,7 +60,7 @@ export default function HomePage() {
       <nav className="lp-navbar">
         <div className="lp-navbar-inner">
           <Link to="/" style={{ display: 'flex', alignItems: 'center' }}>
-            <img src={logo} alt="Spine-LIT" style={{ height: 40, filter: 'invert(1) hue-rotate(210deg) brightness(1.5)', mixBlendMode: 'screen' }} />
+            <img src={logo} alt="SpineLCI" style={{ height: 44, objectFit: 'contain' }} />
           </Link>
 
           <div className="lp-nav-links">
@@ -79,9 +88,7 @@ export default function HomePage() {
             ) : (
               <>
                 <Link to="/login" className="lp-btn-login">Log In</Link>
-                <Link to="/signup" className="lp-btn-get-started">
-                  Get Started
-                </Link>
+                <Link to="/signup" className="lp-btn-get-started">Get Started</Link>
               </>
             )}
           </div>
@@ -93,7 +100,7 @@ export default function HomePage() {
         <div className="lp-hero-inner">
           <div className="animate-fadeInUp">
             <div className="lp-badge">
-              <Zap size={12} /> CLINICAL DECISION SUPPORT
+              <Zap size={12} /> AI-POWERED CLINICAL DECISION SUPPORT
             </div>
 
             <h1>
@@ -102,15 +109,13 @@ export default function HomePage() {
             </h1>
 
             <p className="lp-hero-desc">
-              Spine-LIT combines advanced AI, explainable intelligence,
-              and longitudinal insights to analyze spine scans, assess
-              severity, monitor progression, and support doctors in
-              delivering better patient outcomes.
+              SpineLCI combines medical image analysis, explainable AI, longitudinal patient information
+              and clinical intelligence to support doctors in evaluating spine conditions over time.
             </p>
 
             <div className="lp-hero-btns">
-              <Link to="/dashboard" className="lp-btn-primary">
-                <Upload size={16} /> Upload & Analyze
+              <Link to="/dashboard/image-analysis" className="lp-btn-primary">
+                <Upload size={16} /> Upload &amp; Analyze
               </Link>
               <button className="lp-btn-outline">
                 <Search size={16} /> Explore Features
@@ -118,11 +123,11 @@ export default function HomePage() {
             </div>
 
             <div className="lp-trust-badges">
-              <span><CheckCircle size={14} /> HIPAA Compliant</span>
+              <span><CheckCircle size={14} /> Secure</span>
               <span>•</span>
-              <span><Shield size={14} /> Secure</span>
+              <span><Eye size={14} /> Explainable</span>
               <span>•</span>
-              <span><Lock size={14} /> Privacy Protected</span>
+              <span><Users size={14} /> Clinician-in-the-Loop</span>
             </div>
           </div>
 
@@ -130,39 +135,39 @@ export default function HomePage() {
           <div className="animate-fadeInUp delay-200">
             <div className="lp-analysis-card">
               <div className="lp-analysis-header">
-                <span className="dot" /> Spine-LIT Analysis
+                <span className="dot" /> SpineLCI Analysis
               </div>
               <div className="lp-patient-info">
-                <span>Patient ID: 12453</span>
-                <span>38 yrs</span>
-                <span>Male</span>
+                <span>Patient ID: DEMO-001</span>
+                <span>Age: Demo</span>
+                <span>Status: Completed</span>
               </div>
               <div className="lp-analysis-body">
                 <div className="lp-spine-image">
-                  <img src={spineMri} alt="Spine MRI Scan" />
+                  <img src={spineMri} alt="Demo Spine MRI" />
                 </div>
                 <div className="lp-score-panel">
                   <div className="lp-severity-score">
-                    <p className="label">AI Severity Score</p>
-                    <p className="score">7.2 <small>/ 10</small></p>
-                    <p className="level">Moderate</p>
+                    <p className="label">AI Assessment</p>
+                    <p className="score">92<small>%</small></p>
+                    <p className="level">Confidence</p>
                     <div className="lp-score-bar"><div className="lp-score-bar-fill" /></div>
                     <div className="lp-score-labels">
-                      <span>0</span><span>5</span><span>10</span>
+                      <span>0</span><span>50</span><span>100</span>
                     </div>
                   </div>
                   <div className="lp-findings">
                     <h4>Key Findings</h4>
                     <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
-                      <li>Disc height reduction at L4-L5</li>
-                      <li>Mild spinal canal narrowing</li>
-                      <li>Degenerative changes detected</li>
+                      <li>Imaging features detected</li>
+                      <li>Clinical symptoms considered</li>
+                      <li>Previous record available</li>
                     </ul>
                   </div>
                 </div>
               </div>
               <button className="lp-view-report">
-                View Full Report <ArrowRight size={14} />
+                View Analysis <ArrowRight size={14} />
               </button>
             </div>
           </div>
@@ -174,25 +179,14 @@ export default function HomePage() {
         <div className="lp-stats-inner">
           {stats.map(({ value, label, sub, icon: Icon }) => (
             <div key={label} className="lp-stat-card">
-              <div className="lp-stat-icon"><Icon size={22} /></div>
-              <div>
-                <div className="lp-stat-value">{value}</div>
-                <div className="lp-stat-label">{label}</div>
-                <div className="lp-stat-sub">{sub}</div>
+              <div className="lp-stat-icon">
+                <Icon size={22} />
               </div>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* ── Trusted By ── */}
-      <section className="lp-trusted">
-        <h2>Trusted by Healthcare Professionals & Institutions</h2>
-        <div className="lp-trusted-logos">
-          {trustedBy.map(({ name, letter }) => (
-            <div key={name} className="lp-logo-item">
-              <span className="logo-icon">{letter}</span>
-              {name}
+              <div>
+                <p className="lp-stat-value">{value}</p>
+                <p className="lp-stat-label">{label}</p>
+                <p className="lp-stat-sub">{sub}</p>
+              </div>
             </div>
           ))}
         </div>
@@ -201,18 +195,20 @@ export default function HomePage() {
       {/* ── How It Works ── */}
       <section className="lp-how">
         <div className="lp-section-title">
-          <h2>How <span className="purple">Spine-LIT</span> Works</h2>
+          <h2>How <span className="purple">SpineLCI</span> Works</h2>
+          <p className="lp-section-sub">Four clear steps from data upload to clinical insight.</p>
         </div>
         <div className="lp-steps">
-          {steps.map(({ icon: Icon, title, desc }, i) => (
+          {steps.map(({ num, icon: Icon, title, desc }, i) => (
             <div key={title} style={{ display: 'flex', alignItems: 'flex-start' }}>
               <div className="lp-step">
-                <div className="lp-step-icon"><Icon size={28} /></div>
+                <div className="lp-step-num">{num}</div>
+                <div className="lp-step-icon"><Icon size={26} /></div>
                 <h3>{title}</h3>
                 <p>{desc}</p>
               </div>
               {i < steps.length - 1 && (
-                <div className="lp-step-arrow">----→</div>
+                <div className="lp-step-arrow">→</div>
               )}
             </div>
           ))}
@@ -222,7 +218,8 @@ export default function HomePage() {
       {/* ── Features ── */}
       <section className="lp-features">
         <div className="lp-section-title">
-          <h2>Powerful <span className="purple">Features</span> for Better Spine Care</h2>
+          <h2>Intelligent <span className="purple">Clinical Support</span></h2>
+          <p className="lp-section-sub">Purpose-built tools to assist spine assessment.</p>
         </div>
         <div className="lp-features-grid">
           {features.map(({ icon: Icon, title, desc }) => (
@@ -235,19 +232,86 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* ── Agentic AI Pipeline ── */}
+      <section className="lp-agents">
+        <div className="lp-section-title">
+          <h2>Agentic <span className="purple">AI Pipeline</span></h2>
+          <p className="lp-section-sub">Six specialized agents work in sequence from raw data to verified clinical output.</p>
+        </div>
+
+        <div className="lp-pipeline">
+          {/* Input node */}
+          <div className="lp-pipeline-node lp-pipeline-input">
+            <div className="lp-pipeline-input-icon"><Users size={20} /></div>
+            <span>Patient Data &amp; Imaging</span>
+          </div>
+
+          <div className="lp-pipeline-arrow-down">↓</div>
+
+          {/* Agent nodes */}
+          <div className="lp-agents-grid">
+            {agents.map((agent, i) => (
+              <div key={agent.num} className="lp-agent-card">
+                <div className="lp-agent-num">{agent.num}</div>
+                <div className="lp-agent-body">
+                  <p className="lp-agent-title">{agent.title}</p>
+                  <p className="lp-agent-desc">{agent.desc}</p>
+                </div>
+                {i < agents.length - 1 && (
+                  <div className="lp-agent-connector">↓</div>
+                )}
+              </div>
+            ))}
+          </div>
+
+          <div className="lp-pipeline-arrow-down">↓</div>
+
+          {/* Output node */}
+          <div className="lp-pipeline-node lp-pipeline-output">
+            <div className="lp-pipeline-output-icon"><CheckCircle size={20} /></div>
+            <span>Verified Feedback Memory &amp; Future Retrieval</span>
+          </div>
+        </div>
+      </section>
+
+      {/* ── Longitudinal Intelligence ── */}
+      <section className="lp-longitudinal">
+        <div className="lp-longitudinal-inner">
+          <div className="lp-section-title" style={{ textAlign: 'left' }}>
+            <h2>Longitudinal <span className="purple">Intelligence</span></h2>
+            <p className="lp-section-sub">Track spine health progression across multiple visits over time.</p>
+          </div>
+
+          <div className="lp-long-timeline">
+            {longitudinalSteps.map((step, i) => (
+              <div key={step.label} className="lp-long-step">
+                <div className="lp-long-dot" />
+                <div className="lp-long-content">
+                  <p className="lp-long-label">{step.label}</p>
+                  <p className="lp-long-desc">{step.desc}</p>
+                </div>
+                {i < longitudinalSteps.length - 1 && (
+                  <div className="lp-long-line" />
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* ── CTA ── */}
       <section className="lp-cta">
         <div className="lp-cta-inner">
           <div>
-            <h2>Ready to Transform Spine Care?</h2>
-            <p>Join Spine-LIT and experience the future of<br />AI-powered spine intelligence.</p>
+            <h2>Bring Intelligent Clinical Support to Spine Care.</h2>
+            <p>Analyze. Compare. Explain. Improve.</p>
           </div>
           <div style={{ textAlign: 'center' }}>
-            <Link to="/dashboard" className="lp-cta-btn">
-              Get Started Free <ArrowRight size={16} />
+            <Link to={user ? '/dashboard/image-analysis' : '/signup'} className="lp-cta-btn">
+              Start Analysis <ArrowRight size={16} />
             </Link>
             <div className="lp-cta-note">
-              <CheckCircle size={12} /> No credit card required
+              <Shield size={12} /> AI-assisted · Clinician-validated · Explainable
             </div>
           </div>
         </div>
@@ -257,8 +321,11 @@ export default function HomePage() {
       <footer className="lp-footer">
         <div className="lp-footer-inner">
           <div className="lp-footer-brand">
-            <img src={logo} alt="Spine-LIT" style={{ height: 36, filter: 'invert(1) hue-rotate(210deg) brightness(1.5)', mixBlendMode: 'screen' }} />
-            <p>AI-powered clinical decision support system for spine analysis, severity assessment and better patient outcomes.</p>
+            <img src={logo} alt="SpineLCI" style={{ height: 40, objectFit: 'contain' }} />
+            <p>Explainable Agentic Clinical Decision Support System for longitudinal spine assessment.</p>
+            <p style={{ fontSize: 12, color: '#6B6B6B', marginTop: 4 }}>
+              AI-assisted · Final decisions remain with qualified clinicians.
+            </p>
             <div className="lp-footer-social">
               <a href="#"><ExternalLink size={16} /></a>
               <a href="#"><Globe size={16} /></a>
@@ -270,49 +337,39 @@ export default function HomePage() {
           <div className="lp-footer-col">
             <h4>Quick Links</h4>
             <ul>
-              <li><a href="#">About Us</a></li>
+              <li><a href="#">Home</a></li>
               <li><a href="#">How It Works</a></li>
               <li><a href="#">Features</a></li>
               <li><a href="#">For Doctors</a></li>
+              <li><a href="#">Resources</a></li>
               <li><a href="#">Contact</a></li>
-            </ul>
-          </div>
-
-          <div className="lp-footer-col">
-            <h4>Resources</h4>
-            <ul>
-              <li><a href="#">Blog</a></li>
-              <li><a href="#">Case Studies</a></li>
-              <li><a href="#">User Guide</a></li>
-              <li><a href="#">Privacy Policy</a></li>
-              <li><a href="#">Terms of Service</a></li>
             </ul>
           </div>
 
           <div className="lp-footer-col">
             <h4>Support</h4>
             <ul>
-              <li><a href="#">Help Center</a></li>
-              <li><a href="#">FAQs</a></li>
-              <li><a href="#">Contact Support</a></li>
-              <li><a href="#">Report an Issue</a></li>
+              <li><a href="#">Help</a></li>
+              <li><a href="#">FAQ</a></li>
+              <li><a href="#">Privacy Policy</a></li>
+              <li><a href="#">Terms of Service</a></li>
             </ul>
           </div>
 
           <div className="lp-footer-col">
             <h4>Stay Updated</h4>
-            <p style={{ fontSize: 13, color: '#94a3b8', marginBottom: 8 }}>
-              Subscribe to our newsletter for latest updates.
+            <p style={{ fontSize: 13, color: '#6B6B6B', marginBottom: 8 }}>
+              Subscribe for latest updates.
             </p>
             <div className="lp-newsletter-input">
               <input type="email" placeholder="Enter your email" />
-              <button><ArrowRight size={16} /></button>
+              <button><Send size={16} /></button>
             </div>
           </div>
         </div>
 
         <div className="lp-footer-bottom">
-          © 2024 Spine-LIT. All rights reserved.
+          © 2025 SpineLCI. All rights reserved. &nbsp;|&nbsp; AI-assisted clinical decision support.
         </div>
       </footer>
     </div>

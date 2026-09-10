@@ -1,114 +1,110 @@
-import { Calendar, ScanLine, FileText, TrendingUp, TrendingDown, Minus, ChevronRight } from 'lucide-react'
-
-const patients = [
-  {
-    name: 'Rohit Kumar', pid: 'PNT-2025-0487', age: 54,
-    history: [
-      { date: '20 May 2025', type: 'X-ray Lumbar Spine', severity: 'Grade II', sevStyle: { background: '#FEF3C7', color: '#92400E', border: '1px solid #FDE68A' }, note: 'Slight progression from Grade I. Disc space narrowing at L4-L5. Recommend physical therapy.', trend: 'up' },
-      { date: '12 Mar 2025', type: 'MRI Lumbar Spine',   severity: 'Grade I',  sevStyle: { background: '#D1FAE5', color: '#065F46', border: '1px solid #A7F3D0' }, note: 'Mild disc bulge at L4-L5. No neural compression. Conservative management advised.', trend: 'stable' },
-      { date: '05 Jan 2025', type: 'X-ray Lumbar Spine', severity: 'Grade I',  sevStyle: { background: '#D1FAE5', color: '#065F46', border: '1px solid #A7F3D0' }, note: 'Initial scan. Mild degenerative changes. Monitor and follow-up in 3 months.', trend: 'stable' },
-    ]
-  },
-  {
-    name: 'Ajay Singh', pid: 'PNT-2025-0485', age: 62,
-    history: [
-      { date: '19 May 2025', type: 'X-ray Lumbar Spine', severity: 'Grade III', sevStyle: { background: '#FEE2E2', color: '#991B1B', border: '1px solid #FECACA' }, note: 'Significant progression. Osteophyte formation. Surgical consultation recommended.', trend: 'up' },
-      { date: '28 Feb 2025', type: 'MRI Lumbar Spine',   severity: 'Grade II',  sevStyle: { background: '#FEF3C7', color: '#92400E', border: '1px solid #FDE68A' }, note: 'Moderate disc herniation at L3-L4. Neural foraminal narrowing observed.', trend: 'up' },
-    ]
-  },
-]
-
-const TrendIcon = ({ trend }) => {
-  if (trend === 'up')     return <TrendingUp   size={16} color="#EF4444" />
-  if (trend === 'down')   return <TrendingDown size={16} color="#10B981" />
-  return                         <Minus        size={16} color="var(--text-muted)" />
-}
-
-const pill = (style, text) => (
-  <span style={{ ...style, display: 'inline-flex', alignItems: 'center', borderRadius: '999px', padding: '4px 14px', fontSize: '12px', fontWeight: 600, whiteSpace: 'nowrap' }}>{text}</span>
-)
+import { useState } from 'react'
+import { Link } from 'react-router-dom'
+import { History, Search, Filter, Eye, FileText, Download, Calendar } from 'lucide-react'
+import { MOCK_HISTORY } from '../../services/analysisService'
 
 export default function PatientHistoryPage() {
+  const [searchTerm, setSearchTerm] = useState('')
+  const [statusFilter, setStatusFilter] = useState('All')
+
+  const filteredHistory = MOCK_HISTORY.filter(h => {
+    const matchesSearch = h.patientName.toLowerCase().includes(searchTerm.toLowerCase()) || h.patientId.toLowerCase().includes(searchTerm.toLowerCase())
+    const matchesStatus = statusFilter === 'All' || h.status === statusFilter
+    return matchesSearch && matchesStatus
+  })
+
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '28px', maxWidth: '1100px' }} className="animate-fadeIn">
-      <div>
-        <h1 style={{ fontSize: '24px', fontWeight: 800, color: 'var(--text-dark)' }}>Patient History</h1>
-        <p style={{ fontSize: '15px', color: 'var(--text-muted)', marginTop: '6px' }}>Longitudinal scan history and progression tracking</p>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '24px', maxWidth: '1200px' }} className="animate-fadeIn">
+      
+      {/* Header */}
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+        <div>
+          <h1 style={{ fontSize: '24px', fontWeight: 800, color: 'var(--text-dark)' }}>Analysis History</h1>
+          <p style={{ fontSize: '15px', color: 'var(--text-muted)', marginTop: '6px' }}>View and manage past patient analyses and reports.</p>
+        </div>
       </div>
 
-      {/* Summary */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', gap: '18px' }}>
-        {[
-          { label: 'Total Records', value: '87', color: 'var(--text-dark)' },
-          { label: 'Improving',     value: '28', color: '#059669' },
-          { label: 'Stable',        value: '41', color: 'var(--text-dark)' },
-          { label: 'Progressing',   value: '18', color: '#DC2626' },
-        ].map(({ label, value, color }) => (
-          <div key={label} style={{ background: 'var(--bg-card)', border: '1.5px solid rgba(139, 92, 246, 0.15)', borderRadius: '18px', padding: '24px', boxShadow: '0 2px 8px rgba(0,0,0,0.04)', textAlign: 'center' }}>
-            <p style={{ fontSize: '36px', fontWeight: 900, color, lineHeight: 1 }}>{value}</p>
-            <p style={{ fontSize: '14px', fontWeight: 600, color: 'var(--text-muted)', marginTop: '8px' }}>{label}</p>
-          </div>
-        ))}
+      {/* Filters */}
+      <div style={{ display: 'flex', gap: '16px', background: 'var(--bg-card)', padding: '16px 24px', borderRadius: '16px', border: '1.5px solid rgba(133,57,83,0.15)', boxShadow: '0 2px 8px rgba(0,0,0,0.04)' }}>
+        <div style={{ flex: 1, position: 'relative' }}>
+          <Search size={18} color="var(--text-muted)" style={{ position: 'absolute', left: '16px', top: '50%', transform: 'translateY(-50%)' }} />
+          <input 
+            type="text" 
+            placeholder="Search by patient name or ID..." 
+            className="form-input" 
+            style={{ paddingLeft: '44px' }}
+            value={searchTerm}
+            onChange={e => setSearchTerm(e.target.value)}
+          />
+        </div>
+        <div style={{ width: '200px' }}>
+          <select className="form-input" value={statusFilter} onChange={e => setStatusFilter(e.target.value)}>
+            <option value="All">All Statuses</option>
+            <option value="Completed">Completed</option>
+            <option value="In Progress">In Progress</option>
+          </select>
+        </div>
+        <button className="btn btn-outline" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <Calendar size={16} /> Date Range
+        </button>
       </div>
 
-      {/* Timelines */}
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
-        {patients.map(patient => (
-          <div key={patient.pid} style={{ background: 'var(--bg-card)', border: '1.5px solid rgba(139, 92, 246, 0.15)', borderRadius: '20px', overflow: 'hidden', boxShadow: '0 2px 8px rgba(0,0,0,0.04)' }}>
-
-            {/* Patient header */}
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '20px 28px', borderBottom: '1px solid rgba(139, 92, 246, 0.15)', background: 'var(--bg-warm)' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
-                <div style={{ width: '44px', height: '44px', borderRadius: '14px', background: 'linear-gradient(135deg,var(--primary),var(--primary-dark))', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white', fontSize: '14px', fontWeight: 700 }}>
-                  {patient.name.split(' ').map(n => n[0]).join('')}
-                </div>
-                <div>
-                  <p style={{ fontSize: '16px', fontWeight: 700, color: 'var(--text-dark)' }}>{patient.name}</p>
-                  <p style={{ fontSize: '13px', color: 'var(--text-muted)', marginTop: '2px' }}>{patient.pid} · Age {patient.age}</p>
-                </div>
-              </div>
-              <button style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', fontSize: '14px', fontWeight: 600, color: 'var(--text-dark)', background: 'none', border: 'none', cursor: 'pointer', fontFamily: 'inherit' }}>
-                Full History <ChevronRight size={14} />
-              </button>
-            </div>
-
-            {/* Timeline */}
-            <div style={{ padding: '28px', position: 'relative' }}>
-              <div style={{ position: 'absolute', left: '40px', top: '28px', bottom: '28px', width: '2px', background: 'rgba(139, 92, 246, 0.15)' }} />
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
-                {patient.history.map((entry, i) => (
-                  <div key={i} style={{ position: 'relative', display: 'flex', gap: '24px', paddingLeft: '48px' }}>
-                    {/* Dot */}
-                    <div style={{ position: 'absolute', left: '28px', top: '18px', width: '14px', height: '14px', borderRadius: '999px', background: 'var(--bg-card)', border: '2.5px solid var(--primary-dark)', boxShadow: '0 0 0 3px #F5F0E8' }} />
-
-                    <div style={{ flex: 1, background: 'var(--bg-warm)', border: '1px solid rgba(139, 92, 246, 0.15)', borderRadius: '16px', padding: '18px 22px' }}>
-                      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '10px', flexWrap: 'wrap', gap: '10px' }}>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flexWrap: 'wrap' }}>
-                          <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                            <Calendar size={14} color="var(--text-muted)" />
-                            <span style={{ fontSize: '13px', color: 'var(--text-muted)', fontWeight: 500 }}>{entry.date}</span>
-                          </div>
-                          <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                            <ScanLine size={14} color="var(--text-muted)" />
-                            <span style={{ fontSize: '13px', fontWeight: 600, color: 'var(--text-dark)' }}>{entry.type}</span>
-                          </div>
-                        </div>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                          <TrendIcon trend={entry.trend} />
-                          {pill(entry.sevStyle, entry.severity)}
-                        </div>
-                      </div>
-                      <p style={{ fontSize: '14px', color: 'var(--text-muted)', lineHeight: '1.6', marginBottom: '10px' }}>{entry.note}</p>
-                      <button style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', fontSize: '13px', fontWeight: 600, color: 'var(--text-dark)', background: 'none', border: 'none', cursor: 'pointer', fontFamily: 'inherit' }}>
-                        <FileText size={13} /> View Report
-                      </button>
-                    </div>
-                  </div>
+      {/* Table */}
+      <div style={{ background: 'var(--bg-card)', border: '1.5px solid rgba(133, 57, 83, 0.15)', borderRadius: '20px', overflow: 'hidden', boxShadow: '0 2px 8px rgba(0,0,0,0.04)' }}>
+        <div style={{ overflowX: 'auto' }}>
+          <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+            <thead>
+              <tr style={{ background: 'var(--bg-warm)', borderBottom: '1px solid rgba(133, 57, 83, 0.15)' }}>
+                {['Date', 'Analysis ID', 'Patient', 'Type', 'Severity', 'Status', 'Review', 'Actions'].map(h => (
+                  <th key={h} style={{ textAlign: 'left', padding: '16px 24px', fontSize: '12px', fontWeight: 700, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em', whiteSpace: 'nowrap' }}>{h}</th>
                 ))}
-              </div>
-            </div>
-          </div>
-        ))}
+              </tr>
+            </thead>
+            <tbody>
+              {filteredHistory.map(row => (
+                <tr key={row.id} style={{ borderBottom: '1px solid #F5F0E8', transition: 'background 0.2s' }} onMouseEnter={e => e.currentTarget.style.background = 'var(--bg-warm)'} onMouseLeave={e => e.currentTarget.style.background = 'transparent'}>
+                  <td style={{ padding: '16px 24px', fontSize: '14px', color: 'var(--text-dark)', whiteSpace: 'nowrap' }}>{row.date}</td>
+                  <td style={{ padding: '16px 24px', fontFamily: 'monospace', fontSize: '13px', color: 'var(--text-muted)' }}>{row.id}</td>
+                  <td style={{ padding: '16px 24px' }}>
+                    <p style={{ fontSize: '14px', fontWeight: 600, color: 'var(--text-dark)' }}>{row.patientName}</p>
+                    <p style={{ fontSize: '12px', color: 'var(--text-muted)', marginTop: '2px' }}>{row.patientId}</p>
+                  </td>
+                  <td style={{ padding: '16px 24px', fontSize: '13px', color: 'var(--text-dark)' }}>{row.scanType}</td>
+                  <td style={{ padding: '16px 24px' }}>
+                    <span style={{ padding: '4px 10px', borderRadius: '999px', fontSize: '12px', fontWeight: 600, background: row.severity.includes('III') ? '#FEE2E2' : row.severity.includes('II') ? '#FEF3C7' : '#D1FAE5', color: row.severity.includes('III') ? '#991B1B' : row.severity.includes('II') ? '#92400E' : '#065F46' }}>
+                      {row.severity}
+                    </span>
+                  </td>
+                  <td style={{ padding: '16px 24px' }}>
+                    <span style={{ padding: '4px 10px', borderRadius: '999px', fontSize: '12px', fontWeight: 600, background: row.status === 'Completed' ? '#D1FAE5' : '#DBEAFE', color: row.status === 'Completed' ? '#065F46' : '#1E40AF' }}>
+                      {row.status}
+                    </span>
+                  </td>
+                  <td style={{ padding: '16px 24px', fontSize: '13px', color: row.reviewStatus === 'Pending' ? '#D97706' : 'var(--text-muted)' }}>
+                    {row.reviewStatus}
+                  </td>
+                  <td style={{ padding: '16px 24px' }}>
+                    <div style={{ display: 'flex', gap: '8px' }}>
+                      <Link to="/dashboard/ai-analysis-result" style={{ width: '32px', height: '32px', borderRadius: '8px', background: 'var(--bg-warm)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--text-dark)', transition: 'all 0.2s' }}>
+                        <Eye size={16} />
+                      </Link>
+                      <Link to="/dashboard/ai-generated-report" style={{ width: '32px', height: '32px', borderRadius: '8px', background: 'var(--bg-warm)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--primary)', transition: 'all 0.2s' }}>
+                        <FileText size={16} />
+                      </Link>
+                    </div>
+                  </td>
+                </tr>
+              ))}
+              {filteredHistory.length === 0 && (
+                <tr>
+                  <td colSpan="8" style={{ padding: '48px', textAlign: 'center', color: 'var(--text-muted)' }}>
+                    No analysis history found.
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   )
