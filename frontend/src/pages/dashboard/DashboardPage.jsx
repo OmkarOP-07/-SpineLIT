@@ -6,9 +6,9 @@ import {
 } from 'lucide-react'
 
 const statCards = [
-  { value: '42', label: 'Total Patients',      sub: '↑ 6 this month', icon: Users,         iconBg: 'rgba(139, 92, 246, 0.15)', iconColor: 'var(--primary)', subColor: 'var(--primary)' },
+  { value: '42', label: 'Total Patients',      sub: '↑ 6 this month', icon: Users,         iconBg: 'rgba(133, 57, 83, 0.15)', iconColor: 'var(--primary)', subColor: 'var(--primary)' },
   { value: '18', label: 'Analyses This Month', sub: '↑ 3 this week',  icon: BarChart2,      iconBg: '#D1FAE5', iconColor: '#065F46', subColor: '#065F46' },
-  { value: '12', label: 'Reports Generated',   sub: '↑ 4 this week',  icon: FileText,       iconBg: 'rgba(139, 92, 246, 0.15)', iconColor: 'var(--primary)', subColor: 'var(--primary)' },
+  { value: '12', label: 'Reports Generated',   sub: '↑ 4 this week',  icon: FileText,       iconBg: 'rgba(133, 57, 83, 0.15)', iconColor: 'var(--primary)', subColor: 'var(--primary)' },
   { value: '5',  label: 'High Risk Alerts',    sub: 'View all alerts', icon: AlertTriangle, iconBg: '#FEF3C7', iconColor: '#92400E', subColor: '#92400E' },
 ]
 
@@ -34,9 +34,9 @@ const pendingFeedback = [
 ]
 
 const quickActions = [
-  { icon: Upload,     label: 'Upload New Scan',     sub: 'Start new analysis', color: 'var(--text-dark)', bg: 'rgba(139, 92, 246, 0.15)', to: '/dashboard/image-analysis' },
+  { icon: Upload,     label: 'Upload New Scan',     sub: 'Start new analysis', color: 'var(--text-dark)', bg: 'rgba(133, 57, 83, 0.15)', to: '/dashboard/image-analysis' },
   { icon: UserPlus,   label: 'Add New Patient',      sub: 'Register patient',   color: '#065F46', bg: '#D1FAE5', to: '/dashboard/patients'       },
-  { icon: FileText,   label: 'Generate Report',      sub: 'Create report',      color: 'var(--text-dark)', bg: 'rgba(139, 92, 246, 0.15)', to: '/dashboard/reports'        },
+  { icon: FileText,   label: 'Generate Report',      sub: 'Create report',      color: 'var(--text-dark)', bg: 'rgba(133, 57, 83, 0.15)', to: '/dashboard/reports'        },
   { icon: TrendingUp, label: 'Analytics Dashboard',  sub: 'View insights',      color: '#92400E', bg: '#FEF3C7', to: '/dashboard/analytics'      },
 ]
 
@@ -63,7 +63,7 @@ export default function DashboardPage() {
 
       {/* ── Featured Patient Card ── */}
       <div style={{
-        background: 'var(--bg-card)', border: '1.5px solid rgba(139, 92, 246, 0.15)', borderRadius: '20px',
+        background: 'var(--bg-card)', border: '1.5px solid rgba(133, 57, 83, 0.15)', borderRadius: '20px',
         padding: '28px 32px', display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: '28px',
         boxShadow: '0 2px 12px rgba(34,40,49,0.05)'
       }}>
@@ -87,7 +87,7 @@ export default function DashboardPage() {
           <p style={{ fontSize: '14px', color: 'var(--text-muted)' }}>Phone: +91 98765 43210</p>
         </div>
 
-        <div style={{ width: '1px', height: '64px', background: 'rgba(139, 92, 246, 0.15)', flexShrink: 0 }} />
+        <div style={{ width: '1px', height: '64px', background: 'rgba(133, 57, 83, 0.15)', flexShrink: 0 }} />
 
         {/* Meta */}
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '36px', flex: 1 }}>
@@ -130,7 +130,7 @@ export default function DashboardPage() {
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '20px' }}>
         {statCards.map(({ value, label, sub, icon: Icon, iconBg, iconColor, subColor }) => (
           <div key={label} style={{
-            background: 'var(--bg-card)', border: '1.5px solid rgba(139, 92, 246, 0.15)', borderRadius: '20px',
+            background: 'var(--bg-card)', border: '1.5px solid rgba(133, 57, 83, 0.15)', borderRadius: '20px',
             padding: '28px', boxShadow: '0 2px 8px rgba(34,40,49,0.04)',
             transition: 'box-shadow 0.2s ease'
           }}>
@@ -152,15 +152,15 @@ export default function DashboardPage() {
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 380px', gap: '24px' }}>
 
         {/* Analyses Table */}
-        <div style={{ background: 'var(--bg-card)', border: '1.5px solid rgba(139, 92, 246, 0.15)', borderRadius: '20px', overflow: 'hidden', boxShadow: '0 2px 8px rgba(34,40,49,0.04)' }}>
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '22px 28px', borderBottom: '1px solid rgba(139, 92, 246, 0.15)' }}>
+        <div style={{ background: 'var(--bg-card)', border: '1.5px solid rgba(133, 57, 83, 0.15)', borderRadius: '20px', overflow: 'hidden', boxShadow: '0 2px 8px rgba(34,40,49,0.04)' }}>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '22px 28px', borderBottom: '1px solid rgba(133, 57, 83, 0.15)' }}>
             <h2 style={{ fontSize: '16px', fontWeight: 700, color: 'var(--text-dark)' }}>Recent Analyses</h2>
             <Link to="/dashboard/image-analysis" style={{ fontSize: '14px', fontWeight: 600, color: 'var(--text-dark)' }}>View All</Link>
           </div>
           <div style={{ overflowX: 'auto' }}>
             <table style={{ width: '100%', borderCollapse: 'collapse' }}>
               <thead>
-                <tr style={{ background: 'var(--bg-warm)', borderBottom: '1px solid rgba(139, 92, 246, 0.15)' }}>
+                <tr style={{ background: 'var(--bg-warm)', borderBottom: '1px solid rgba(133, 57, 83, 0.15)' }}>
                   {['Patient ID', 'Patient Name', 'Date', 'Analysis Type', 'Severity', 'Status', 'Action'].map(h => (
                     <th key={h} style={{
                       textAlign: 'left', padding: '14px 20px', fontSize: '11px', fontWeight: 700,
@@ -187,12 +187,12 @@ export default function DashboardPage() {
                     <td style={{ padding: '16px 20px' }}>
                       <button style={{
                         width: '36px', height: '36px', borderRadius: '10px',
-                        border: '1.5px solid rgba(139, 92, 246, 0.15)', background: 'var(--bg-card)',
+                        border: '1.5px solid rgba(133, 57, 83, 0.15)', background: 'var(--bg-card)',
                         display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer',
                         transition: 'all 0.15s'
                       }}
-                        onMouseEnter={e => { e.currentTarget.style.background = 'rgba(139, 92, 246, 0.15)'; e.currentTarget.style.borderColor = '#948979'; }}
-                        onMouseLeave={e => { e.currentTarget.style.background = 'white'; e.currentTarget.style.borderColor = 'rgba(139, 92, 246, 0.15)'; }}
+                        onMouseEnter={e => { e.currentTarget.style.background = 'rgba(133, 57, 83, 0.15)'; e.currentTarget.style.borderColor = '#A85A75'; }}
+                        onMouseLeave={e => { e.currentTarget.style.background = 'var(--bg-card)'; e.currentTarget.style.borderColor = 'rgba(133, 57, 83, 0.15)'; }}
                       >
                         <Eye size={15} color="var(--text-dark)" />
                       </button>
@@ -208,7 +208,7 @@ export default function DashboardPage() {
         <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
 
           {/* Today's Activity */}
-          <div style={{ background: 'var(--bg-card)', border: '1.5px solid rgba(139, 92, 246, 0.15)', borderRadius: '20px', padding: '24px', boxShadow: '0 2px 8px rgba(34,40,49,0.04)' }}>
+          <div style={{ background: 'var(--bg-card)', border: '1.5px solid rgba(133, 57, 83, 0.15)', borderRadius: '20px', padding: '24px', boxShadow: '0 2px 8px rgba(34,40,49,0.04)' }}>
             <h2 style={{ fontSize: '16px', fontWeight: 700, color: 'var(--text-dark)', marginBottom: '20px' }}>Today's Activity</h2>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
               {todayActivity.map(({ letter, bg, title, patient, time }) => (
@@ -224,20 +224,20 @@ export default function DashboardPage() {
                 </div>
               ))}
             </div>
-            <div style={{ borderTop: '1px solid rgba(139, 92, 246, 0.15)', marginTop: '20px', paddingTop: '16px', textAlign: 'center' }}>
+            <div style={{ borderTop: '1px solid rgba(133, 57, 83, 0.15)', marginTop: '20px', paddingTop: '16px', textAlign: 'center' }}>
               <Link to="/dashboard/patient-history" style={{ fontSize: '14px', fontWeight: 600, color: 'var(--text-dark)' }}>View All Activity</Link>
             </div>
           </div>
 
           {/* Pending Feedback */}
-          <div style={{ background: 'var(--bg-card)', border: '1.5px solid rgba(139, 92, 246, 0.15)', borderRadius: '20px', padding: '24px', boxShadow: '0 2px 8px rgba(34,40,49,0.04)' }}>
+          <div style={{ background: 'var(--bg-card)', border: '1.5px solid rgba(133, 57, 83, 0.15)', borderRadius: '20px', padding: '24px', boxShadow: '0 2px 8px rgba(34,40,49,0.04)' }}>
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '20px' }}>
               <h2 style={{ fontSize: '16px', fontWeight: 700, color: 'var(--text-dark)' }}>Pending Doctor Feedback</h2>
               <span style={{ width: '26px', height: '26px', borderRadius: '999px', background: '#EF4444', color: 'white', fontSize: '12px', fontWeight: 700, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>3</span>
             </div>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
               {pendingFeedback.map(({ name, pid, type, severity, sevClass }) => (
-                <div key={pid} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '12px', padding: '14px 16px', borderRadius: '14px', background: 'var(--bg-warm)', border: '1px solid rgba(139, 92, 246, 0.15)' }}>
+                <div key={pid} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '12px', padding: '14px 16px', borderRadius: '14px', background: 'var(--bg-warm)', border: '1px solid rgba(133, 57, 83, 0.15)' }}>
                   <div style={{ minWidth: 0 }}>
                     <p style={{ fontSize: '14px', fontWeight: 600, color: 'var(--text-dark)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                       {name} <span style={{ color: 'var(--text-muted)', fontWeight: 400, fontSize: '12px' }}>({pid})</span>
@@ -248,7 +248,7 @@ export default function DashboardPage() {
                 </div>
               ))}
             </div>
-            <div style={{ borderTop: '1px solid rgba(139, 92, 246, 0.15)', marginTop: '20px', paddingTop: '16px', textAlign: 'center' }}>
+            <div style={{ borderTop: '1px solid rgba(133, 57, 83, 0.15)', marginTop: '20px', paddingTop: '16px', textAlign: 'center' }}>
               <Link to="/dashboard/doctor-feedback" style={{ fontSize: '14px', fontWeight: 600, color: 'var(--text-dark)' }}>Go to Feedback Panel</Link>
             </div>
           </div>
@@ -261,7 +261,7 @@ export default function DashboardPage() {
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '20px' }}>
           {quickActions.map(({ icon: Icon, label, sub, color, bg, to }) => (
             <Link key={label} to={to} style={{
-              background: 'var(--bg-card)', border: '1.5px solid rgba(139, 92, 246, 0.15)', borderRadius: '20px',
+              background: 'var(--bg-card)', border: '1.5px solid rgba(133, 57, 83, 0.15)', borderRadius: '20px',
               padding: '28px 20px', display: 'flex', flexDirection: 'column', alignItems: 'center',
               textAlign: 'center', gap: '16px', textDecoration: 'none',
               boxShadow: '0 2px 8px rgba(34,40,49,0.04)',

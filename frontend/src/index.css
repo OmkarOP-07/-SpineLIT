@@ -53,7 +53,7 @@ a {
 /* ─── Unified Sleek Thin Scrollbar ────────────────── */
 html, body, * {
   scrollbar-width: thin;
-  scrollbar-color: rgba(139, 92, 246, 0.25) transparent;
+  scrollbar-color: rgba(133, 57, 83, 0.25) transparent;
 }
 
 *::-webkit-scrollbar {
@@ -66,13 +66,13 @@ html, body, * {
 }
 
 *::-webkit-scrollbar-thumb {
-  background: rgba(139, 92, 246, 0.25);
+  background: rgba(133, 57, 83, 0.25);
   border-radius: 999px;
   transition: background 0.2s ease;
 }
 
 *::-webkit-scrollbar-thumb:hover {
-  background: rgba(167, 139, 250, 0.6);
+  background: rgba(168, 90, 117, 0.6);
 }
 
 *::-webkit-scrollbar-corner {
@@ -181,19 +181,21 @@ html, body, * {
 
 /* ─── Design tokens ──────────────────────────────── */
 :root {
-  --primary: #7c3aed;
-  --primary-dark: #4c1d95;
-  --primary-light: #a78bfa;
-  --accent: #8b5cf6;
+  --primary: #853953;
+  --primary-dark: #612D53;
+  --primary-light: #A85A75;
+  --accent: #853953;
   --success: #10B981;
   --warning: #F59E0B;
   --danger: #EF4444;
-  --bg-warm: #0a0b1e;
-  --bg-card: #12132d;
-  --text-dark: #f1f5f9;
-  --text-mid: #cbd5e1;
-  --text-muted: #94a3b8;
-  --text-light: #64748b;
+  --bg-warm: #F7F5F6;
+  --bg-card: #FFFFFF;
+  --text-dark: #2C2C2C;
+  --text-mid: #6B6B6B;
+  --text-muted: #6B6B6B;
+  --text-light: #6B6B6B;
+  --border: #E5E1E3;
+  --hover: #F1E7EC;
 }
 
 /* ─── Gradient text ──────────────────────────────── */
@@ -214,7 +216,7 @@ html, body, * {
   background: rgba(255, 255, 255, 0.05);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(139, 92, 246, 0.15);
+  border: 1px solid rgba(133, 57, 83, 0.15);
 }
 
 /* ─── Card hover lift ────────────────────────────── */
@@ -224,14 +226,14 @@ html, body, * {
 
 .card-lift:hover {
   transform: translateY(-3px);
-  box-shadow: 0 16px 48px rgba(124, 58, 237, 0.15);
+  box-shadow: 0 16px 48px rgba(133, 57, 83, 0.15);
 }
 
 /* ─── Sidebar active ─────────────────────────────── */
 .sidebar-active {
   background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
   color: white !important;
-  box-shadow: 0 4px 18px rgba(124, 58, 237, 0.35);
+  box-shadow: 0 4px 18px rgba(133, 57, 83, 0.35);
 }
 
 /* ─── Status badges ──────────────────────────────── */
@@ -249,9 +251,9 @@ html, body, * {
 }
 
 .badge-progress {
-  background: rgba(124, 58, 237, 0.12);
+  background: rgba(133, 57, 83, 0.12);
   color: var(--primary-light);
-  border: 1px solid rgba(124, 58, 237, 0.25);
+  border: 1px solid rgba(133, 57, 83, 0.25);
   display: inline-flex;
   align-items: center;
   border-radius: 9999px;
@@ -317,7 +319,7 @@ html, body, * {
 /* ─── Chat bubbles ───────────────────────────────── */
 .chat-bubble-bot {
   background: var(--bg-card);
-  border: 1px solid rgba(139, 92, 246, 0.15);
+  border: 1px solid rgba(133, 57, 83, 0.15);
   border-radius: 0 14px 14px 14px;
 }
 
@@ -349,12 +351,12 @@ html, body, * {
   color: white;
   padding: 10px 22px;
   font-size: 14px;
-  box-shadow: 0 4px 14px rgba(124, 58, 237, 0.35);
+  box-shadow: 0 4px 14px rgba(133, 57, 83, 0.35);
 }
 
 .btn-primary:hover {
   transform: translateY(-1px);
-  box-shadow: 0 8px 24px rgba(124, 58, 237, 0.4);
+  box-shadow: 0 8px 24px rgba(133, 57, 83, 0.4);
 }
 
 .btn-outline {
@@ -362,13 +364,13 @@ html, body, * {
   color: var(--text-dark);
   padding: 9px 20px;
   font-size: 14px;
-  border: 1.5px solid rgba(139, 92, 246, 0.3);
+  border: 1.5px solid rgba(133, 57, 83, 0.3);
 }
 
 .btn-outline:hover {
   border-color: var(--primary-light);
   color: #fff;
-  background: rgba(124, 58, 237, 0.08);
+  background: rgba(133, 57, 83, 0.08);
 }
 
 .btn-sm {
@@ -390,7 +392,7 @@ html, body, * {
   font-size: 14px;
   font-family: 'League Spartan', sans-serif;
   line-height: 1.5;
-  border: 1.5px solid rgba(139, 92, 246, 0.3);
+  border: 1.5px solid rgba(133, 57, 83, 0.3);
   border-radius: 12px;
   background: var(--bg-card);
   color: var(--text-dark);
@@ -401,5 +403,5 @@ html, body, * {
 .form-input:focus {
   border-color: var(--primary);
   background: var(--bg-warm);
-  box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.15);
+  box-shadow: 0 0 0 3px rgba(133, 57, 83, 0.15);
 }
