@@ -99,9 +99,7 @@ export default function HomePage() {
       <section className="lp-hero">
         <div className="lp-hero-inner">
           <div className="animate-fadeInUp">
-            <div className="lp-badge">
-              <Zap size={12} /> AI-POWERED CLINICAL DECISION SUPPORT
-            </div>
+            
 
             <h1>
               Intelligent <span className="purple">Spine Analysis.</span><br />

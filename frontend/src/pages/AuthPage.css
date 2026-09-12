@@ -1,9 +1,9 @@
-/* ═══════════════════════════════════════════════════
-   AuthPage.css  —  Login & Signup shared styles
+﻿/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+   AuthPage.css  â€”  Login & Signup shared styles
    Design system: matches SpineLIT dark-purple theme
-═══════════════════════════════════════════════════ */
+â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 
-/* ─── Root layout ───────────────────────────────── */
+/* â”€â”€â”€ Root layout â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .auth-root {
   min-height: 100vh;
   width: 100%;
@@ -16,7 +16,7 @@
   overflow: hidden;
 }
 
-/* ─── Animated blobs ────────────────────────────── */
+/* â”€â”€â”€ Animated blobs â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .auth-blob {
   position: fixed;
   border-radius: 50%;
@@ -28,7 +28,7 @@
 .auth-blob-1 {
   width: 500px;
   height: 500px;
-  background: radial-gradient(circle, rgba(124, 58, 237, 0.18) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(133, 57, 83, 0.12) 0%, transparent 70%);
   top: -160px;
   left: -160px;
   animation: blobDrift1 12s ease-in-out infinite alternate;
@@ -37,7 +37,7 @@
 .auth-blob-2 {
   width: 400px;
   height: 400px;
-  background: radial-gradient(circle, rgba(139, 92, 246, 0.14) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(133, 57, 83, 0.09) 0%, transparent 70%);
   bottom: -120px;
   right: -120px;
   animation: blobDrift2 14s ease-in-out infinite alternate;
@@ -46,7 +46,7 @@
 .auth-blob-3 {
   width: 300px;
   height: 300px;
-  background: radial-gradient(circle, rgba(76, 29, 149, 0.12) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(97, 45, 83, 0.08) 0%, transparent 70%);
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
@@ -66,24 +66,29 @@
   to   { transform: translate(-50%, -50%) scale(1.15); }
 }
 
-/* ─── Main card wrapper ──────────────────────────── */
+/* â”€â”€â”€ Main card wrapper â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .auth-wrapper {
   position: relative;
   z-index: 1;
   display: flex;
   width: 100%;
-  max-width: 900px;
-  min-height: 580px;
+  max-width: 480px;
+  min-height: unset;
   border-radius: 24px;
   overflow: hidden;
-  box-shadow: 0 32px 80px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(139, 92, 246, 0.15);
+  box-shadow: 0 8px 32px rgba(44, 44, 44, 0.12), 0 0 0 1px rgba(217, 227, 227, 1);
 }
 
 .auth-wrapper-wide {
   max-width: 980px;
 }
 
-/* ─── Left decorative panel ─────────────────────── */
+/* Signup-only: slightly wider to accommodate more fields */
+.auth-wrapper-signup {
+  max-width: 520px;
+}
+
+/* â”€â”€â”€ Left decorative panel â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .auth-left {
   flex: 0 0 340px;
   background: linear-gradient(145deg, #1a0b3d 0%, #0f0724 40%, #0a0b1e 100%);
@@ -111,7 +116,7 @@
   z-index: 1;
 }
 
-/* ─── Brand ──────────────────────────────────────── */
+/* â”€â”€â”€ Brand â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .auth-brand {
   display: flex;
   align-items: center;
@@ -151,7 +156,7 @@
   margin-bottom: 28px;
 }
 
-/* ─── Feature list ───────────────────────────────── */
+/* â”€â”€â”€ Feature list â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .auth-features {
   list-style: none;
   padding: 0;
@@ -174,7 +179,7 @@
   flex-shrink: 0;
 }
 
-/* ─── Stats row ──────────────────────────────────── */
+/* â”€â”€â”€ Stats row â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .auth-stat-row {
   display: flex;
   gap: 20px;
@@ -201,11 +206,11 @@
   letter-spacing: 0.5px;
 }
 
-/* ─── Password checklist (signup left panel) ─────── */
+/* â”€â”€â”€ Password checklist (signup left panel) â”€â”€â”€â”€â”€â”€â”€ */
 .auth-checklist {
   margin-top: 20px;
   padding: 14px 16px;
-  background: rgba(124, 58, 237, 0.08);
+  background: rgba(133, 57, 83, 0.08);
   border: 1px solid rgba(139, 92, 246, 0.18);
   border-radius: 12px;
 }
@@ -231,14 +236,15 @@
 .check-pass { color: #22c55e; }
 .check-fail { color: var(--text-muted); }
 
-/* ─── Right form panel ───────────────────────────── */
+/* â”€â”€â”€ Right form panel â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .auth-right {
   flex: 1;
   background: var(--bg-card);
-  padding: 40px 44px;
+  padding: 44px 48px;
   display: flex;
   flex-direction: column;
   overflow-y: auto;
+  border-radius: 24px;
 }
 
 .auth-right-scroll {
@@ -246,7 +252,7 @@
   max-height: 90vh;
 }
 
-/* ─── Back link ──────────────────────────────────── */
+/* â”€â”€â”€ Back link â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .auth-back-link {
   display: inline-flex;
   align-items: center;
@@ -261,7 +267,7 @@
 
 .auth-back-link:hover { color: var(--primary-light); }
 
-/* ─── Form header ─────────────────────────────────── */
+/* â”€â”€â”€ Form header â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .auth-form-header {
   margin-bottom: 24px;
 }
@@ -276,7 +282,7 @@
   justify-content: center;
   color: #fff;
   margin-bottom: 14px;
-  box-shadow: 0 4px 16px rgba(124, 58, 237, 0.35);
+  box-shadow: 0 4px 16px rgba(133, 57, 83, 0.25);
 }
 
 .auth-form-title {
@@ -293,11 +299,11 @@
   margin: 0;
 }
 
-/* ─── Tab group ──────────────────────────────────── */
+/* â”€â”€â”€ Tab group â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .auth-tab-group {
   display: flex;
-  background: rgba(255,255,255,0.04);
-  border: 1px solid rgba(139, 92, 246, 0.15);
+  background: #F7F9F9;
+  border: 1px solid var(--border);
   border-radius: 12px;
   padding: 4px;
   margin-bottom: 24px;
@@ -321,15 +327,15 @@
   transition: all 0.2s ease;
 }
 
-.auth-tab:hover { color: var(--text-dark); background: rgba(139, 92, 246, 0.08); }
+.auth-tab:hover { color: var(--text-dark); background: rgba(133, 57, 83, 0.06); }
 
 .auth-tab-active {
   background: linear-gradient(135deg, var(--primary), var(--primary-dark));
   color: #fff !important;
-  box-shadow: 0 3px 12px rgba(124, 58, 237, 0.35);
+  box-shadow: 0 3px 12px rgba(133, 57, 83, 0.25);
 }
 
-/* ─── Form layout ────────────────────────────────── */
+/* â”€â”€â”€ Form layout â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .auth-form {
   display: flex;
   flex-direction: column;
@@ -360,7 +366,7 @@
   letter-spacing: 0.1px;
 }
 
-/* ─── Input wrapper ──────────────────────────────── */
+/* â”€â”€â”€ Input wrapper â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .input-wrap {
   position: relative;
   display: flex;
@@ -391,7 +397,7 @@
   line-height: 1.5;
   border: 1.5px solid rgba(139, 92, 246, 0.25);
   border-radius: 12px;
-  background: rgba(255,255,255,0.04);
+  background: #F7F9F9;
   color: var(--text-dark);
   transition: border-color 0.18s, box-shadow 0.18s, background 0.18s;
   outline: none;
@@ -401,8 +407,8 @@
 
 .form-input:focus {
   border-color: var(--primary);
-  background: rgba(124, 58, 237, 0.06);
-  box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.15);
+  background: rgba(133, 57, 83, 0.06);
+  box-shadow: 0 0 0 3px rgba(133, 57, 83, 0.15);
 }
 
 .input-error {
@@ -429,7 +435,7 @@ input[type="date"] {
 }
 .input-eye:hover { color: var(--primary-light); }
 
-/* ─── Field error / success ──────────────────────── */
+/* â”€â”€â”€ Field error / success â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .field-error {
   display: flex;
   align-items: center;
@@ -448,7 +454,7 @@ input[type="date"] {
   margin: 0;
 }
 
-/* ─── Password strength bar ──────────────────────── */
+/* â”€â”€â”€ Password strength bar â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .strength-bar-wrap {
   display: flex;
   align-items: center;
@@ -478,7 +484,7 @@ input[type="date"] {
   transition: color 0.3s;
 }
 
-/* ─── OTP grid ───────────────────────────────────── */
+/* â”€â”€â”€ OTP grid â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .otp-label-row {
   display: flex;
   align-items: center;
@@ -531,7 +537,7 @@ input[type="date"] {
   font-family: 'League Spartan', monospace;
   border: 1.5px solid rgba(139, 92, 246, 0.25);
   border-radius: 10px;
-  background: rgba(255,255,255,0.04);
+  background: #F7F9F9;
   color: var(--text-dark);
   outline: none;
   caret-color: var(--primary-light);
@@ -543,10 +549,10 @@ input[type="date"] {
 }
 .otp-filled {
   border-color: rgba(139, 92, 246, 0.5);
-  background: rgba(124, 58, 237, 0.08);
+  background: rgba(133, 57, 83, 0.08);
 }
 
-/* ─── Gender pills ───────────────────────────────── */
+/* â”€â”€â”€ Gender pills â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .gender-group {
   display: flex;
   flex-wrap: wrap;
@@ -575,7 +581,7 @@ input[type="date"] {
   box-shadow: 0 3px 12px rgba(124, 58, 237, 0.3);
 }
 
-/* ─── Checkbox ───────────────────────────────────── */
+/* â”€â”€â”€ Checkbox â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .checkbox-label {
   display: flex;
   align-items: flex-start;
@@ -593,7 +599,7 @@ input[type="date"] {
   flex-shrink: 0;
   border-radius: 6px;
   border: 1.5px solid rgba(139, 92, 246, 0.35);
-  background: rgba(255,255,255,0.04);
+  background: #F7F9F9;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -625,7 +631,7 @@ input[type="date"] {
   line-height: 1.5;
 }
 
-/* ─── Divider ────────────────────────────────────── */
+/* â”€â”€â”€ Divider â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .auth-divider {
   display: flex;
   align-items: center;
@@ -645,7 +651,7 @@ input[type="date"] {
   white-space: nowrap;
 }
 
-/* ─── Google button ──────────────────────────────── */
+/* â”€â”€â”€ Google button â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .google-btn {
   width: 100%;
   display: flex;
@@ -655,7 +661,7 @@ input[type="date"] {
   padding: 11px 20px;
   border-radius: 12px;
   border: 1.5px solid rgba(139, 92, 246, 0.2);
-  background: rgba(255,255,255,0.04);
+  background: #F7F9F9;
   color: var(--text-dark);
   font-family: 'League Spartan', sans-serif;
   font-size: 14px;
@@ -691,7 +697,7 @@ input[type="date"] {
   flex-shrink: 0;
 }
 
-/* ─── Submit button ──────────────────────────────── */
+/* â”€â”€â”€ Submit button â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .auth-submit-btn {
   width: 100%;
   display: flex;
@@ -708,7 +714,7 @@ input[type="date"] {
   border: none;
   cursor: pointer;
   transition: all 0.22s ease;
-  box-shadow: 0 4px 18px rgba(124, 58, 237, 0.35);
+  box-shadow: 0 4px 18px rgba(133, 57, 83, 0.25);
   margin-bottom: 16px;
   letter-spacing: 0.1px;
 }
@@ -721,7 +727,7 @@ input[type="date"] {
   cursor: not-allowed;
 }
 
-/* ─── Misc ───────────────────────────────────────── */
+/* â”€â”€â”€ Misc â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .auth-forgot-row {
   display: flex;
   justify-content: flex-end;
@@ -748,7 +754,7 @@ input[type="date"] {
 
 .auth-muted { color: var(--text-light); font-size: 12.5px; }
 
-/* ─── Success state ──────────────────────────────── */
+/* â”€â”€â”€ Success state â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .auth-success {
   display: flex;
   flex-direction: column;
@@ -765,7 +771,7 @@ input[type="date"] {
 
 .success-icon { color: #4ade80; }
 
-/* ─── Spin animation ─────────────────────────────── */
+/* â”€â”€â”€ Spin animation â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .spin {
   animation: spinAnim 0.8s linear infinite;
 }
@@ -775,7 +781,7 @@ input[type="date"] {
   to   { transform: rotate(360deg); }
 }
 
-/* ─── Responsive ─────────────────────────────────── */
+/* â”€â”€â”€ Responsive â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 @media (max-width: 768px) {
   .auth-wrapper {
     flex-direction: column;
@@ -798,3 +804,4 @@ input[type="date"] {
   .otp-grid { gap: 5px; }
   .otp-cell { height: 42px; font-size: 17px; }
 }
+

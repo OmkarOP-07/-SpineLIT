@@ -1,4 +1,4 @@
-/* ─── Landing Page Light Theme ────────────────────── */
+﻿/* â”€â”€â”€ Landing Page Light Theme â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .landing-page {
   --lp-bg: #F7F5F6;
   --lp-card: #FFFFFF;
@@ -18,7 +18,7 @@
   min-height: 100vh;
 }
 
-/* ─── Navbar ─────────────────────────────────────── */
+/* â”€â”€â”€ Navbar â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .lp-navbar {
   position: sticky;
   top: 0;
@@ -101,7 +101,7 @@
   box-shadow: 0 6px 20px rgba(133, 57, 83, 0.4);
 }
 
-/* ─── Hero ────────────────────────────────────────── */
+/* â”€â”€â”€ Hero â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .lp-hero {
   padding: 80px 24px 60px;
   position: relative;
@@ -216,7 +216,7 @@
   gap: 6px;
 }
 
-/* ─── Analysis Card (Hero Right) ─────────────────── */
+/* â”€â”€â”€ Analysis Card (Hero Right) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .lp-analysis-card {
   background: var(--lp-card);
   border: 1px solid var(--lp-border);
@@ -342,7 +342,7 @@
   margin-bottom: 6px;
 }
 .lp-findings li::before {
-  content: '•';
+  content: 'â€¢';
   color: var(--lp-purple-light);
   font-size: 16px;
   line-height: 1;
@@ -370,7 +370,7 @@
   color: var(--lp-purple);
 }
 
-/* ─── Stats Section ──────────────────────────────── */
+/* â”€â”€â”€ Stats Section â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .lp-stats {
   padding: 48px 24px;
   border-top: 1px solid var(--lp-border);
@@ -425,7 +425,7 @@
   margin-top: 2px;
 }
 
-/* ─── Section Title ──────────────────────────────── */
+/* â”€â”€â”€ Section Title â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .lp-section-title {
   text-align: center;
   margin-bottom: 48px;
@@ -442,7 +442,7 @@
   color: var(--lp-text-muted);
 }
 
-/* ─── How It Works ───────────────────────────────── */
+/* â”€â”€â”€ How It Works â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .lp-how {
   padding: 80px 24px;
   background: var(--lp-card);
@@ -510,7 +510,7 @@
   flex-shrink: 0;
 }
 
-/* ─── Features ───────────────────────────────────── */
+/* â”€â”€â”€ Features â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .lp-features {
   padding: 80px 24px;
 }
@@ -556,7 +556,7 @@
   line-height: 1.6;
 }
 
-/* ─── Agentic AI Pipeline ─────────────────────────── */
+/* â”€â”€â”€ Agentic AI Pipeline â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .lp-agents {
   padding: 80px 24px;
   background: var(--lp-card);
@@ -667,7 +667,7 @@
   display: none; /* handled by border-left on card */
 }
 
-/* ─── Longitudinal Intelligence ─────────────────── */
+/* â”€â”€â”€ Longitudinal Intelligence â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .lp-longitudinal {
   padding: 80px 24px;
 }
@@ -723,7 +723,7 @@
   line-height: 1.5;
 }
 
-/* ─── CTA Banner ─────────────────────────────────── */
+/* â”€â”€â”€ CTA Banner â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .lp-cta {
   padding: 0 24px 80px;
 }
@@ -805,7 +805,7 @@
   gap: 6px;
 }
 
-/* ─── Footer ─────────────────────────────────────── */
+/* â”€â”€â”€ Footer â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .lp-footer {
   padding: 60px 24px 32px;
   border-top: 1px solid var(--lp-border);
@@ -912,7 +912,7 @@
   color: var(--lp-text-dim);
 }
 
-/* ─── Responsive ─────────────────────────────────── */
+/* â”€â”€â”€ Responsive â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 @media (max-width: 1024px) {
   .lp-hero-inner { grid-template-columns: 1fr; }
   .lp-stats-inner { grid-template-columns: repeat(2, 1fr); }
@@ -936,3 +936,4 @@
   .lp-stats-inner { grid-template-columns: 1fr; }
   .lp-footer-inner { grid-template-columns: 1fr; }
 }
+

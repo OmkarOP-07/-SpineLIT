@@ -25,47 +25,50 @@ export default function TopBar() {
 
   return (
     <header style={{
-      height: '68px', background: 'var(--bg-warm)', borderBottom: '1px solid rgba(139, 92, 246, 0.15)',
+      height: '68px',
+      background: '#f2f2f2ff',
+      borderBottom: '1px solid #D9E3E3',
       display: 'flex', alignItems: 'center', justifyContent: 'flex-end',
-      padding: '0 36px', position: 'sticky', top: 0, zIndex: 20,
-      boxShadow: '0 1px 8px rgba(0,0,0,0.15)', gap: '12px'
+      padding: '0 32px', position: 'sticky', top: 0, zIndex: 20,
+      boxShadow: '0 1px 4px rgba(0,0,0,0.05)', gap: '12px'
     }}>
 
       {/* Notification Bell */}
       <div style={{ position: 'relative' }}>
         <button style={{
-          width: '42px', height: '42px', borderRadius: '12px', border: '1px solid rgba(139, 92, 246, 0.15)',
-          background: 'var(--bg-card)', cursor: 'pointer', display: 'flex',
+          width: '40px', height: '40px', borderRadius: '10px',
+          border: '1px solid #D9E3E3',
+          background: '#F7F9F9', cursor: 'pointer', display: 'flex',
           alignItems: 'center', justifyContent: 'center',
-          transition: 'background 0.15s'
+          transition: 'all 0.15s'
         }}
-          onMouseEnter={e => e.currentTarget.style.background = 'rgba(124, 58, 237, 0.15)'}
-          onMouseLeave={e => e.currentTarget.style.background = 'var(--bg-card)'}
+          onMouseEnter={e => { e.currentTarget.style.background = '#F3E8EE'; e.currentTarget.style.borderColor = '#853953'; }}
+          onMouseLeave={e => { e.currentTarget.style.background = '#F7F9F9'; e.currentTarget.style.borderColor = '#D9E3E3'; }}
         >
-          <Bell size={20} color="var(--text-muted)" />
+          <Bell size={18} color="#667085" />
         </button>
         <span style={{
           position: 'absolute', top: '6px', right: '6px',
-          width: '18px', height: '18px', borderRadius: '999px',
-          background: 'var(--danger)', color: 'white', fontSize: '10px', fontWeight: 700,
+          width: '16px', height: '16px', borderRadius: '999px',
+          background: '#C94B4B', color: 'white', fontSize: '9px', fontWeight: 700,
           display: 'flex', alignItems: 'center', justifyContent: 'center',
-          border: '2px solid var(--bg-warm)'
+          border: '2px solid #FFFFFF'
         }}>3</span>
       </div>
 
       {/* Divider */}
-      <div style={{ width: '1px', height: '32px', background: 'rgba(139, 92, 246, 0.15)' }} />
+      <div style={{ width: '1px', height: '28px', background: '#D9E3E3' }} />
 
       {/* User Profile */}
       <button
         onClick={() => navigate('/dashboard/profile')}
         style={{
-          display: 'flex', alignItems: 'center', gap: '12px',
-          padding: '6px 12px', borderRadius: '14px', border: 'none',
+          display: 'flex', alignItems: 'center', gap: '10px',
+          padding: '6px 10px', borderRadius: '12px', border: 'none',
           background: 'transparent', cursor: 'pointer',
           transition: 'background 0.15s'
         }}
-        onMouseEnter={e => e.currentTarget.style.background = 'rgba(124, 58, 237, 0.1)'}
+        onMouseEnter={e => e.currentTarget.style.background = '#F3E8EE'}
         onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
       >
         {photoUrl ? (
@@ -74,28 +77,26 @@ export default function TopBar() {
             alt={displayName}
             referrerPolicy="no-referrer"
             style={{
-              width: '40px', height: '40px', borderRadius: '12px', flexShrink: 0,
-              objectFit: 'cover', border: '1.5px solid rgba(167, 139, 250, 0.4)',
-              boxShadow: '0 4px 12px rgba(124, 58, 237, 0.25)'
+              width: '38px', height: '38px', borderRadius: '10px', flexShrink: 0,
+              objectFit: 'cover', border: '1.5px solid #D9E3E3',
             }}
           />
         ) : (
           <div style={{
-            width: '40px', height: '40px', borderRadius: '12px', flexShrink: 0,
-            background: 'linear-gradient(135deg, var(--primary), var(--primary-dark))',
+            width: '38px', height: '38px', borderRadius: '10px', flexShrink: 0,
+            background: '#853953',
             display: 'flex', alignItems: 'center', justifyContent: 'center',
-            color: 'white', fontSize: '14px', fontWeight: 700,
-            boxShadow: '0 4px 12px rgba(124, 58, 237, 0.3)'
+            color: 'white', fontSize: '13px', fontWeight: 700,
           }}>
             {getInitials(displayName)}
           </div>
         )}
 
         <div style={{ textAlign: 'left' }}>
-          <p style={{ fontSize: '14px', fontWeight: 700, color: 'white', lineHeight: 1 }}>{formattedName}</p>
-          <p style={{ fontSize: '12px', color: 'var(--text-muted)', marginTop: '4px' }}>{roleSubtitle}</p>
+          <p style={{ fontSize: '13.5px', fontWeight: 700, color: '#2C2C2C', lineHeight: 1 }}>{formattedName}</p>
+          <p style={{ fontSize: '11.5px', color: '#667085', marginTop: '3px' }}>{roleSubtitle}</p>
         </div>
-        <ChevronDown size={16} color="var(--text-muted)" />
+        <ChevronDown size={15} color="#667085" />
       </button>
     </header>
   )

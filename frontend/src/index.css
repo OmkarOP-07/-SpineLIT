@@ -1,8 +1,8 @@
-@import url('https://fonts.googleapis.com/css2?family=League+Spartan:wght@300;400;500;600;700;800;900&display=swap');
+﻿@import url('https://fonts.googleapis.com/css2?family=League+Spartan:wght@300;400;500;600;700;800;900&display=swap');
 
 @import "tailwindcss";
 
-/* ─── Base Reset ─────────────────────────────────── */
+/* â”€â”€â”€ Base Reset â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 *,
 *::before,
 *::after {
@@ -20,9 +20,10 @@ body {
   background-color: var(--bg-warm);
   color: var(--text-dark);
   line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
 }
 
-/* ─── Button base ────────────────────────────────── */
+/* â”€â”€â”€ Button base â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 button,
 [role="button"] {
   cursor: pointer;
@@ -50,10 +51,10 @@ a {
   text-decoration: none;
 }
 
-/* ─── Unified Sleek Thin Scrollbar ────────────────── */
+/* â”€â”€â”€ Unified Sleek Thin Scrollbar â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 html, body, * {
   scrollbar-width: thin;
-  scrollbar-color: rgba(133, 57, 83, 0.25) transparent;
+  scrollbar-color: #D9E3E3 transparent;
 }
 
 *::-webkit-scrollbar {
@@ -66,20 +67,20 @@ html, body, * {
 }
 
 *::-webkit-scrollbar-thumb {
-  background: rgba(133, 57, 83, 0.25);
+  background: rgba(133, 57, 83, 0.3);
   border-radius: 999px;
   transition: background 0.2s ease;
 }
 
 *::-webkit-scrollbar-thumb:hover {
-  background: rgba(168, 90, 117, 0.6);
+  background: rgba(133, 57, 83, 0.55);
 }
 
 *::-webkit-scrollbar-corner {
   background: transparent;
 }
 
-/* ─── Animations ─────────────────────────────────── */
+/* â”€â”€â”€ Animations â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 @keyframes fadeInUp {
   from {
     opacity: 0;
@@ -179,26 +180,39 @@ html, body, * {
   animation-delay: 0.50s;
 }
 
-/* ─── Design tokens ──────────────────────────────── */
+/* â”€â”€â”€ Design tokens â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 :root {
-  --primary: #853953;
-  --primary-dark: #612D53;
+  /* Brand */
+  --primary:       #853953;
+  --primary-dark:  #612D53;
   --primary-light: #A85A75;
-  --accent: #853953;
-  --success: #10B981;
-  --warning: #F59E0B;
-  --danger: #EF4444;
-  --bg-warm: #F7F5F6;
-  --bg-card: #FFFFFF;
-  --text-dark: #2C2C2C;
-  --text-mid: #6B6B6B;
-  --text-muted: #6B6B6B;
-  --text-light: #6B6B6B;
-  --border: #E5E1E3;
-  --hover: #F1E7EC;
+  --brand-tint:    #F3E8EE;
+
+  /* Backgrounds */
+  --bg-sidebar:    #E8F3F3;
+  --bg-warm:       #F7F9F9;
+  --bg-card:       #FFFFFF;
+
+  /* Text */
+  --text-dark:     #2C2C2C;
+  --text-mid:      #667085;
+  --text-muted:    #667085;
+  --text-light:    #667085;
+
+  /* Border */
+  --border:        #D9E3E3;
+  --hover:         #F3E8EE;
+
+  /* Status */
+  --success:       #3F8F72;
+  --warning:       #D49A3A;
+  --danger:        #C94B4B;
+
+  /* Aliases kept for compatibility */
+  --accent:        #853953;
 }
 
-/* ─── Gradient text ──────────────────────────────── */
+/* â”€â”€â”€ Gradient text â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .gradient-text {
   background: linear-gradient(135deg, var(--primary-light) 0%, var(--primary) 100%);
   -webkit-background-clip: text;
@@ -206,12 +220,12 @@ html, body, * {
   background-clip: text;
 }
 
-/* ─── Hero bg ────────────────────────────────────── */
+/* â”€â”€â”€ Hero bg â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .hero-bg {
   background: linear-gradient(135deg, var(--bg-warm) 0%, var(--bg-card) 50%, var(--primary-dark) 100%);
 }
 
-/* ─── Glass card ─────────────────────────────────── */
+/* â”€â”€â”€ Glass card â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .glass {
   background: rgba(255, 255, 255, 0.05);
   backdrop-filter: blur(12px);
@@ -219,7 +233,7 @@ html, body, * {
   border: 1px solid rgba(133, 57, 83, 0.15);
 }
 
-/* ─── Card hover lift ────────────────────────────── */
+/* â”€â”€â”€ Card hover lift â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .card-lift {
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
@@ -229,14 +243,14 @@ html, body, * {
   box-shadow: 0 16px 48px rgba(133, 57, 83, 0.15);
 }
 
-/* ─── Sidebar active ─────────────────────────────── */
+/* â”€â”€â”€ Sidebar active â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .sidebar-active {
   background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
   color: white !important;
   box-shadow: 0 4px 18px rgba(133, 57, 83, 0.35);
 }
 
-/* ─── Status badges ──────────────────────────────── */
+/* â”€â”€â”€ Status badges â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .badge-completed {
   background: #D1FAE5;
   color: #065F46;
@@ -276,7 +290,7 @@ html, body, * {
   white-space: nowrap;
 }
 
-/* ─── Severity pills ─────────────────────────────── */
+/* â”€â”€â”€ Severity pills â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .severity-1 {
   background: #D1FAE5;
   color: #065F46;
@@ -316,7 +330,7 @@ html, body, * {
   white-space: nowrap;
 }
 
-/* ─── Chat bubbles ───────────────────────────────── */
+/* â”€â”€â”€ Chat bubbles â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .chat-bubble-bot {
   background: var(--bg-card);
   border: 1px solid rgba(133, 57, 83, 0.15);
@@ -329,7 +343,7 @@ html, body, * {
   border-radius: 14px 0 14px 14px;
 }
 
-/* ─── Btn helpers (supplement Tailwind) ──────────── */
+/* â”€â”€â”€ Btn helpers (supplement Tailwind) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .btn {
   display: inline-flex;
   align-items: center;
@@ -385,7 +399,7 @@ html, body, * {
   border-radius: 14px;
 }
 
-/* ─── Form inputs ────────────────────────────────── */
+/* â”€â”€â”€ Form inputs â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .form-input {
   width: 100%;
   padding: 11px 16px;

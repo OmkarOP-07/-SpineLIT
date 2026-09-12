@@ -245,8 +245,8 @@ export default function SignupPage() {
       <div className="auth-blob auth-blob-2" />
       <div className="auth-blob auth-blob-3" />
 
-      <div className="auth-wrapper auth-wrapper-wide animate-fadeInUp">
-        {/* Left panel */}
+      <div className="auth-wrapper auth-wrapper-signup animate-fadeInUp">
+        {/* Left panel
         <div className="auth-left">
           <div className="auth-left-content">
             <div className="auth-brand">
@@ -270,7 +270,6 @@ export default function SignupPage() {
               ))}
             </ul>
 
-            {/* Password requirements checklist */}
             {form.password && (
               <div className="auth-checklist">
                 <p className="auth-checklist-title">Password Requirements</p>
@@ -286,10 +285,10 @@ export default function SignupPage() {
               </div>
             )}
           </div>
-        </div>
+        </div> */}
 
         {/* Right panel */}
-        <div className="auth-right auth-right-scroll">
+        <div className="auth-right">
           <Link to="/login" className="auth-back-link">
             <ChevronLeft size={16} /> Back to Login
           </Link>

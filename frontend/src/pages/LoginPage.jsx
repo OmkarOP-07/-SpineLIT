@@ -269,7 +269,7 @@ export default function LoginPage() {
       <div className="auth-blob auth-blob-3" />
 
       <div className="auth-wrapper animate-fadeInUp">
-        {/* Left panel */}
+        {/* Left panel
         <div className="auth-left">
           <div className="auth-left-content">
             <div className="auth-brand">
@@ -302,7 +302,7 @@ export default function LoginPage() {
               ))}
             </div>
           </div>
-        </div>
+        </div> */}
 
         {/* Right panel */}
         <div className="auth-right">
