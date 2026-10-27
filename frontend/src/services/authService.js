@@ -70,11 +70,24 @@ export async function requestDoctorOtp(email) {
   })
 }
 
-// ── Doctor login (Firebase ID token + OTP) ─────────────────────────
-export async function loginDoctor(firebaseIdToken, otp) {
+// ── Doctor login (Email + OTP, with optional Firebase token) ──────
+export async function loginDoctor(param1, param2) {
+  let body = {}
+  if (typeof param1 === 'object' && param1 !== null) {
+    body = {
+      email: param1.email,
+      otp: param1.otp,
+      firebase_id_token: param1.firebaseIdToken || param1.firebase_id_token || null,
+    }
+  } else {
+    body = {
+      firebase_id_token: param1,
+      otp: param2,
+    }
+  }
   return request('/api/auth/login/doctor', {
     method: 'POST',
-    body: JSON.stringify({ firebase_id_token: firebaseIdToken, otp }),
+    body: JSON.stringify(body),
   })
 }
 

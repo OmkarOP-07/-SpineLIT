@@ -18,8 +18,23 @@ app.use(express.urlencoded({ extended: true }))
 app.use(morgan(process.env.NODE_ENV === 'production' ? 'combined' : 'dev'))
 
 // ─── CORS ─────────────────────────────────────────────
+const rawFrontendUrls = process.env.FRONTEND_URL || 'http://localhost:5173'
+const allowedOrigins = [
+  ...rawFrontendUrls.split(',').map(u => u.trim()),
+  'https://spinelit-e64d6.web.app',
+  'https://spinelit-e64d6.firebaseapp.com',
+  'http://localhost:5173',
+  'http://localhost:5174',
+]
+
 app.use(cors({
-  origin: process.env.FRONTEND_URL || 'http://localhost:5173',
+  origin: function (origin, callback) {
+    if (!origin) return callback(null, true)
+    if (allowedOrigins.includes(origin) || allowedOrigins.includes('*')) {
+      return callback(null, true)
+    }
+    return callback(null, false)
+  },
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],

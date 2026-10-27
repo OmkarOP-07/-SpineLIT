@@ -172,16 +172,22 @@ export default function LoginPage() {
   function validate() {
     const e = {}
     const emailErr = validateEmail(email)
-    const passErr  = validatePassword(password)
     if (emailErr) e.email = emailErr
-    if (passErr)  e.password = passErr
+
+    if (tab === 'patient') {
+      const passErr = validatePassword(password)
+      if (passErr) e.password = passErr
+    }
+
     if (tab === 'doctor') {
-      if (!otpSent) e.otp = 'Please request and enter the OTP first.'
-      else {
+      if (!otpSent) {
+        e.otp = 'Please click "Send OTP" to receive your verification code.'
+      } else {
         const otpErr = validateOtp(otp)
         if (otpErr) e.otp = otpErr
       }
     }
+
     setErrors(e)
     return Object.keys(e).length === 0
   }
@@ -228,18 +234,30 @@ export default function LoginPage() {
     if (!validate()) return
     setSubmitting(true)
     try {
-      // Step 1: Firebase signs in and returns an ID token
-      const idToken = await signInWithEmail(email, password)
+      let result = null
 
-      // Step 2: Send ID token (+ OTP for doctors) to our backend
-      const result = tab === 'patient'
-        ? await loginPatient(idToken)
-        : await loginDoctor(idToken, otp)
+      if (tab === 'doctor') {
+        // Doctor login: verified via email OTP
+        let idToken = null
+        if (password) {
+          try {
+            idToken = await signInWithEmail(email, password)
+          } catch (fbErr) {
+            console.log('Firebase password bypassed; verifying doctor via email OTP')
+          }
+        }
+        result = await loginDoctor({ email, otp, firebaseIdToken: idToken })
+      } else {
+        // Patient login: email + password via Firebase
+        const idToken = await signInWithEmail(email, password)
+        result = await loginPatient(idToken)
+      }
 
       // Step 3: Store tokens & redirect
       loginWithCredentials(result)
       setSuccess(true)
-      setTimeout(() => navigate(from, { replace: true }), 800)
+      const redirectPath = tab === 'doctor' ? '/dashboard/doctor-portal' : from
+      setTimeout(() => navigate(redirectPath, { replace: true }), 800)
     } catch (err) {
       // Firebase errors have a .code, backend errors have a .detail
       const msg = err.detail
@@ -389,7 +407,9 @@ export default function LoginPage() {
 
               {/* Password */}
               <div className="form-group">
-                <label htmlFor="login-password" className="form-label">Password</label>
+                <label htmlFor="login-password" className="form-label">
+                  Password {tab === 'doctor' && <span style={{ fontSize: '0.82em', color: '#64748b', fontWeight: 'normal' }}>(Optional for verified OTP doctors)</span>}
+                </label>
                 <div className="input-wrap">
                   <Lock size={16} className="input-icon" />
                   <input

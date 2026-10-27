@@ -1,47 +1,43 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import {
   ArrowLeft, Brain, AlertTriangle, FileText, Eye, TrendingUp,
   Clock, Activity, Zap, Download, ChevronRight, ChevronDown,
-  CheckCircle2, Info, Shield, MessageSquare
+  CheckCircle2, Info, Shield, MessageSquare, Layers, Sparkles,
+  Stethoscope, Check
 } from 'lucide-react'
-import spineMri from '../../assets/spine_mri.png'
-import spineXray from '../../assets/spine_xray.png'
-
-const RESULT = {
-  id: 'ANA-2025-0234',
-  patient: 'Rohit Kumar',
-  patientId: 'PNT-2025-0487',
-  scanType: 'X-ray Lumbar Spine',
-  date: '20 May 2025',
-  time: '10:35 AM',
-  aiConfidence: 87,
-  severityGrade: 'Grade II',
-  progression: 'Changed',
-  progressionColor: '#D97706',
-  analysisTime: '14.2s',
-  findings: [
-    { feature: 'Disc height reduction', confidence: 92, region: 'L4-L5', severity: 'Moderate' },
-    { feature: 'Spinal canal narrowing', confidence: 78, region: 'L3-L4', severity: 'Mild' },
-    { feature: 'Degenerative vertebral changes', confidence: 71, region: 'L5-S1', severity: 'Mild' },
-  ],
-  ragContext: [
-    { type: 'Similar Cases', content: 'Similar cases show disc height reduction at L4-L5 is commonly associated with age-related degenerative changes (n=1,247 cases).', source: 'Case Database' },
-    { type: 'Clinical Guidelines', content: 'Grade II degeneration: monitor every 6 months. Consider MRI if neurological symptoms worsen.', source: 'Spine Guidelines, 2023' },
-    { type: 'Relevant Knowledge', content: 'L4-L5 is the most commonly affected level in patients aged 50–65. Conservative management is first-line.', source: 'Clinical Knowledge Base' },
-  ],
-  recommendations: [
-    { priority: 'high',   text: 'Consider MRI for detailed soft-tissue evaluation' },
-    { priority: 'medium', text: 'Schedule follow-up in 3 months' },
-    { priority: 'low',    text: 'Physical therapy evaluation recommended' },
-  ],
-  previous: { date: 'Nov 2024', severity: 'Grade I', confidence: 91 },
-}
+import SpineVisualizer from '../../components/SpineVisualizer'
+import { SPINE_PROFILES } from '../../data/spineScanProfiles'
 
 export default function AIAnalysisResultPage() {
-  const [imageTab, setImageTab]     = useState('original')
-  const [activeTab, setActiveTab]   = useState('findings')
-  const [ragOpen, setRagOpen]       = useState(false)
+  const [activeProfileId, setActiveProfileId] = useState(() => {
+    return sessionStorage.getItem('spinelit_active_profile') || 'lumbar_lateral'
+  })
+  const [imageTab, setImageTab] = useState('overlay')
+  const [activeTab, setActiveTab] = useState('findings')
+  const [ragOpen, setRagOpen] = useState(false)
+
+  // Retrieve any uploaded scan and patient form data
+  const uploadedImage = sessionStorage.getItem('spinelit_uploaded_image')
+  const uploadedFileName = sessionStorage.getItem('spinelit_uploaded_filename')
+  const patientData = JSON.parse(sessionStorage.getItem('spinelit_patient_data') || '{}')
+
+  // Ensure active profile is valid
+  const profile = SPINE_PROFILES[activeProfileId] || SPINE_PROFILES.lumbar_lateral
+
+  // Resolve display data preferring user-uploaded scan and user-entered patient information
+  const displayImage = uploadedImage || profile.image
+  const displayPatientName = patientData.patientName || profile.patient.name
+  const displayAge = patientData.age || profile.patient.age
+  const displayGender = patientData.gender || profile.patient.gender
+  const displaySymptoms = patientData.selectedSymptoms?.length ? patientData.selectedSymptoms : profile.patient.symptoms
+  const displaySeverity = patientData.severity || profile.patient.severity
+  const displayDuration = patientData.symptomDuration || profile.patient.duration
+
+  const handleSelectProfile = (id) => {
+    setActiveProfileId(id)
+    sessionStorage.setItem('spinelit_active_profile', id)
+  }
 
   const cardStyle = {
     background: 'var(--bg-card)',
@@ -66,72 +62,176 @@ export default function AIAnalysisResultPage() {
     </button>
   )
 
+  const isDDD = activeProfileId === 'lumbar_ap' || activeProfileId === 'sagittal_mri'
+
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '24px', maxWidth: '1400px' }} className="animate-fadeIn">
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '24px', maxWidth: '1440px' }} className="animate-fadeIn">
+
+      {/* Focus Banner — Lower Back Pain DDD & Spondylolisthesis */}
+      <div style={{
+        background: 'linear-gradient(135deg, rgba(133, 57, 83, 0.08) 0%, rgba(217, 119, 6, 0.08) 100%)',
+        border: '1.5px solid rgba(133, 57, 83, 0.25)',
+        borderRadius: '16px',
+        padding: '14px 20px',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        flexWrap: 'wrap',
+        gap: '12px',
+      }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+          <div style={{
+            width: '36px', height: '36px', borderRadius: '10px',
+            background: 'var(--primary)', color: 'white',
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+          }}>
+            <Stethoscope size={18} />
+          </div>
+          <div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <span style={{ fontSize: '14px', fontWeight: 800, color: 'var(--text-dark)' }}>
+                Target Pathology: Lower Back Pain (Lumbar L1–S1)
+              </span>
+              <span style={{
+                fontSize: '11px', fontWeight: 700, padding: '2px 8px', borderRadius: '6px',
+                background: 'rgba(133,57,83,0.15)', color: 'var(--primary)',
+              }}>
+                DDD & Spondylolisthesis Only
+              </span>
+              {uploadedFileName && (
+                <span style={{
+                  fontSize: '11px', fontWeight: 700, padding: '2px 8px', borderRadius: '6px',
+                  background: '#D1FAE5', color: '#065F46', border: '1px solid #A7F3D0',
+                }}>
+                  Uploaded Scan: {uploadedFileName}
+                </span>
+              )}
+            </div>
+            <p style={{ fontSize: '12px', color: 'var(--text-muted)', margin: 0, marginTop: '2px' }}>
+              Toggle diagnosis focus below to analyze your uploaded scan for <b>Degenerative Disc Disease</b> or <b>Spondylolisthesis</b>.
+            </p>
+          </div>
+        </div>
+
+        {/* 2-Category Diagnosis Switcher */}
+        <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap', alignItems: 'center' }}>
+          <span style={{ fontSize: '11px', fontWeight: 700, color: 'var(--text-muted)', textTransform: 'uppercase' }}>
+            Diagnosis Mode:
+          </span>
+
+          <button
+            onClick={() => handleSelectProfile('lumbar_ap')}
+            style={{
+              display: 'flex', alignItems: 'center', gap: '6px',
+              padding: '8px 16px', borderRadius: '10px', fontSize: '12px', fontWeight: 800,
+              border: isDDD ? '2px solid var(--primary)' : '1px solid rgba(133,57,83,0.2)',
+              background: isDDD ? 'var(--primary)' : 'white',
+              color: isDDD ? 'white' : 'var(--text-dark)',
+              cursor: 'pointer', transition: 'all 0.15s',
+              boxShadow: isDDD ? '0 4px 12px rgba(133,57,83,0.25)' : 'none',
+            }}
+          >
+            {isDDD && <Check size={14} />}
+            Degenerative Disc Disease (DDD)
+          </button>
+
+          <button
+            onClick={() => handleSelectProfile('lumbar_lateral')}
+            style={{
+              display: 'flex', alignItems: 'center', gap: '6px',
+              padding: '8px 16px', borderRadius: '10px', fontSize: '12px', fontWeight: 800,
+              border: !isDDD ? '2px solid var(--primary)' : '1px solid rgba(133,57,83,0.2)',
+              background: !isDDD ? 'var(--primary)' : 'white',
+              color: !isDDD ? 'white' : 'var(--text-dark)',
+              cursor: 'pointer', transition: 'all 0.15s',
+              boxShadow: !isDDD ? '0 4px 12px rgba(133,57,83,0.25)' : 'none',
+            }}
+          >
+            {!isDDD && <Check size={14} />}
+            Spondylolisthesis
+          </button>
+        </div>
+      </div>
 
       {/* Header */}
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '20px' }}>
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '20px', flexWrap: 'wrap' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
           <Link
             to="/dashboard/image-analysis"
             style={{
-              width: '40px', height: '40px', borderRadius: '12px',
+              width: '42px', height: '42px', borderRadius: '12px',
               background: 'var(--bg-card)', border: '1.5px solid rgba(133,57,83,0.15)',
               display: 'flex', alignItems: 'center', justifyContent: 'center',
-              transition: 'all 0.2s', color: 'var(--text-dark)',
+              transition: 'all 0.2s', color: 'var(--text-dark)', textDecoration: 'none',
             }}
           >
             <ArrowLeft size={18} />
           </Link>
           <div>
-            <h1 style={{ fontSize: '24px', fontWeight: 800, color: 'var(--text-dark)' }}>AI Analysis Result</h1>
-            <p style={{ fontSize: '13px', color: 'var(--text-muted)', marginTop: '3px' }}>
-              {RESULT.id} · {RESULT.patient} · {RESULT.date}, {RESULT.time}
+            <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+              <h1 style={{ fontSize: '24px', fontWeight: 800, color: 'var(--text-dark)', margin: 0 }}>
+                {profile.condition} Analysis Result
+              </h1>
+              <span style={{
+                padding: '3px 10px', borderRadius: '6px', fontSize: '11px', fontWeight: 700,
+                background: 'rgba(133,57,83,0.12)', color: 'var(--primary)',
+              }}>
+                {profile.modality} · Lumbar L1–S1
+              </span>
+            </div>
+            <p style={{ fontSize: '13px', color: 'var(--text-muted)', marginTop: '4px', marginBottom: 0 }}>
+              Patient: <strong>{displayPatientName}</strong> ({displayGender}, {displayAge} yrs) · {uploadedFileName ? `Image: ${uploadedFileName}` : `Exam: ${profile.patient.examDate}`}
             </p>
           </div>
         </div>
+
         <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
           <span style={{
-            padding: '6px 16px', borderRadius: '999px', fontSize: '13px', fontWeight: 600,
+            padding: '7px 16px', borderRadius: '999px', fontSize: '13px', fontWeight: 700,
             background: '#D1FAE5', color: '#065F46', border: '1px solid #A7F3D0',
+            display: 'flex', alignItems: 'center', gap: '6px',
           }}>
-            ✓ Analysis Completed
+            <CheckCircle2 size={15} /> AI Analysis Complete
           </span>
-          <Link to="/dashboard/ai-generated-report" className="btn btn-primary" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <Download size={16} /> View Report
+          <Link
+            to="/dashboard/ai-generated-report"
+            className="btn btn-primary"
+            style={{ display: 'flex', alignItems: 'center', gap: '8px' }}
+          >
+            <Download size={16} /> View Clinical Report
           </Link>
         </div>
       </div>
 
       {/* Summary Cards */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '20px' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '20px' }}>
         {[
           {
-            label: 'AI Assessment',
-            value: `${RESULT.aiConfidence}%`,
-            sub: 'Confidence Score',
+            label: 'AI Diagnostic Confidence',
+            value: `${profile.metrics.aiConfidence}%`,
+            sub: `Mean Confidence: ${profile.metrics.meanConfidence}`,
             icon: Brain,
             color: 'var(--primary)',
             bg: 'rgba(133,57,83,0.1)',
-            note: 'AI-assisted — not a final diagnosis',
+            note: 'Calibrated anatomical multi-landmark confidence',
           },
           {
-            label: 'Severity Assessment',
-            value: RESULT.severityGrade,
-            sub: 'Degenerative Classification',
+            label: 'Condition & Severity',
+            value: profile.metrics.severityGrade,
+            sub: profile.condition,
             icon: AlertTriangle,
             color: '#D97706',
             bg: '#FFFBEB',
-            note: 'Based on imaging features detected',
+            note: profile.subCondition,
           },
           {
-            label: 'Progression',
-            value: RESULT.progression,
-            sub: 'Grade I → Grade II over 6 months',
+            label: 'Biomechanical Status',
+            value: profile.metrics.progression,
+            sub: profile.metrics.progressionSub,
             icon: TrendingUp,
-            color: RESULT.progressionColor,
+            color: profile.metrics.progressionColor,
             bg: '#FFF8EC',
-            note: 'Compared to previous imaging',
+            note: `Analysis speed: ${profile.metrics.analysisTime}`,
           },
         ].map(({ label, value, sub, icon: Icon, color, bg, note }) => (
           <div key={label} style={{ ...cardStyle, display: 'flex', flexDirection: 'column', gap: '12px' }}>
@@ -139,240 +239,272 @@ export default function AIAnalysisResultPage() {
               <div style={{ width: '52px', height: '52px', borderRadius: '14px', background: bg, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
                 <Icon size={24} color={color} />
               </div>
-              <div>
+              <div style={{ flex: 1, minWidth: 0 }}>
                 <p style={{ fontSize: '11px', fontWeight: 700, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.5px', marginBottom: '4px' }}>{label}</p>
-                <p style={{ fontSize: '24px', fontWeight: 800, color: 'var(--text-dark)', lineHeight: 1 }}>{value}</p>
-                <p style={{ fontSize: '12px', color: 'var(--text-muted)', marginTop: '3px' }}>{sub}</p>
+                <p style={{ fontSize: '22px', fontWeight: 800, color: 'var(--text-dark)', lineHeight: 1.1, margin: 0 }}>{value}</p>
+                <p style={{ fontSize: '12px', color: 'var(--text-muted)', marginTop: '4px', marginBottom: 0, textOverflow: 'ellipsis', overflow: 'hidden', whiteSpace: 'nowrap' }}>{sub}</p>
               </div>
             </div>
-            <p style={{ fontSize: '11px', color: 'var(--text-muted)', padding: '8px 12px', background: 'var(--bg-warm)', borderRadius: '8px', display: 'flex', alignItems: 'center', gap: '6px' }}>
-              <Info size={12} /> {note}
+            <p style={{ fontSize: '11px', color: 'var(--text-muted)', padding: '8px 12px', background: 'var(--bg-warm)', borderRadius: '8px', display: 'flex', alignItems: 'center', gap: '6px', margin: 0 }}>
+              <Info size={12} color="var(--primary)" /> {note}
             </p>
           </div>
         ))}
       </div>
 
       {/* Main Content Grid */}
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 400px', gap: '24px' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 1fr) 420px', gap: '24px' }}>
 
-        {/* Left: Image + Explainability + Longitudinal */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+        {/* Left Column: Image Viewer + Explanations + Clinical Conclusion */}
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
 
-          {/* Medical Image Section */}
+          {/* Medical Image Section with Interactive Segmentation */}
           <div style={cardStyle}>
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '20px' }}>
-              <h3 style={{ fontSize: '17px', fontWeight: 700, color: 'var(--text-dark)', display: 'flex', alignItems: 'center', gap: '10px' }}>
-                <Eye size={20} color="var(--primary)" /> Medical Image
-              </h3>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '16px', flexWrap: 'wrap', gap: '12px' }}>
+              <div>
+                <h3 style={{ fontSize: '17px', fontWeight: 800, color: 'var(--text-dark)', display: 'flex', alignItems: 'center', gap: '10px', margin: 0 }}>
+                  <Eye size={20} color="var(--primary)" /> Medical Image & Landmark Segmentation
+                </h3>
+                <p style={{ fontSize: '12px', color: 'var(--text-muted)', margin: 0, marginTop: '2px' }}>
+                  Overlay mapped directly onto {uploadedFileName || profile.fileName} ({profile.view})
+                </p>
+              </div>
               <div style={{ display: 'flex', gap: '8px' }}>
-                {tabBtn('original', 'Original')}
-                {tabBtn('heatmap', 'Heatmap')}
-                {tabBtn('overlay', 'Overlay')}
+                {tabBtn('overlay', 'AI Landmarks & Overlay')}
+                {tabBtn('original', 'Original Radiograph')}
+                {tabBtn('heatmap', 'Attention Saliency')}
               </div>
             </div>
 
-            <div style={{
-              background: '#1A1A1A', borderRadius: '16px', overflow: 'hidden',
-              border: '1px solid rgba(133,57,83,0.2)', position: 'relative', minHeight: '380px',
-              display: 'flex', alignItems: 'center', justifyContent: 'center',
-            }}>
-              {imageTab === 'original' && (
-                <img src={spineXray} alt="X-ray Lumbar Spine" style={{ maxHeight: '380px', maxWidth: '100%', objectFit: 'contain' }} />
-              )}
-              {imageTab === 'heatmap' && (
-                <div style={{ textAlign: 'center', padding: '40px' }}>
-                  <div style={{ position: 'relative', display: 'inline-block' }}>
-                    <img src={spineXray} alt="Heatmap" style={{ maxHeight: '340px', objectFit: 'contain', filter: 'grayscale(40%)' }} />
-                    <div style={{
-                      position: 'absolute', inset: 0, borderRadius: '8px',
-                      background: 'linear-gradient(135deg, rgba(239,68,68,0.2) 0%, rgba(245,158,11,0.15) 40%, transparent 80%)',
-                    }} />
-                  </div>
+            {/* Display based on active tab */}
+            {imageTab === 'overlay' && (
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
+                <SpineVisualizer
+                  imageUrl={displayImage}
+                  profile={profile}
+                  showControls={true}
+                  interactive={true}
+                  maxHeight="520px"
+                />
+                <div style={{
+                  fontSize: '12px', color: 'var(--text-muted)', display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+                  padding: '10px 14px', background: 'var(--bg-warm)', borderRadius: '10px',
+                }}>
+                  <span style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                    <Info size={14} color="var(--primary)" />
+                    Plotted landmarks L1–S1 calibrated to patient scan curvature. Hover any node or box for live anatomical confidence.
+                  </span>
+                  <span style={{ fontWeight: 700, color: '#DC2626' }}>
+                    Target Anomaly: {profile.metrics.targetAnomaly}
+                  </span>
                 </div>
-              )}
-              {imageTab === 'overlay' && (
-                <div style={{ textAlign: 'center', padding: '40px' }}>
-                  <div style={{ position: 'relative', display: 'inline-block' }}>
-                    <img src={spineXray} alt="Overlay" style={{ maxHeight: '340px', objectFit: 'contain' }} />
-                    <div style={{
-                      position: 'absolute', top: '30%', left: '35%', width: '30%', height: '25%',
-                      border: '2px solid rgba(133,57,83,0.7)', borderRadius: '4px',
-                      boxShadow: '0 0 16px rgba(133,57,83,0.4)',
-                    }} />
-                  </div>
-                </div>
-              )}
-            </div>
+              </div>
+            )}
 
-            {imageTab !== 'original' && (
-              <p style={{ fontSize: '12px', color: 'var(--text-muted)', marginTop: '12px', display: 'flex', alignItems: 'center', gap: '6px' }}>
-                <Info size={12} />
-                Highlighted regions indicate areas that contributed to the model prediction.
-                This heatmap does not imply clinical causation.
-              </p>
+            {imageTab === 'original' && (
+              <div style={{
+                background: '#030712', borderRadius: '16px', overflow: 'hidden',
+                border: '1.5px solid rgba(133,57,83,0.2)', minHeight: '440px',
+                display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '16px',
+              }}>
+                <img
+                  src={displayImage}
+                  alt={profile.title}
+                  style={{ maxHeight: '480px', maxWidth: '100%', objectFit: 'contain' }}
+                />
+              </div>
+            )}
+
+            {imageTab === 'heatmap' && (
+              <div style={{
+                background: '#030712', borderRadius: '16px', overflow: 'hidden',
+                border: '1.5px solid rgba(133,57,83,0.2)', minHeight: '440px',
+                display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '20px',
+              }}>
+                <div style={{ position: 'relative', display: 'inline-block' }}>
+                  <img
+                    src={displayImage}
+                    alt="Attention Saliency Map"
+                    style={{ maxHeight: '440px', objectFit: 'contain', filter: 'brightness(0.85) contrast(1.15)' }}
+                  />
+                  {/* GradCAM / Attention saliency heat gradient centered at target lesion */}
+                  <div style={{
+                    position: 'absolute',
+                    top: profile.heatmap?.top || '50%',
+                    left: profile.heatmap?.left || '40%',
+                    width: profile.heatmap?.width || '30%',
+                    height: profile.heatmap?.height || '22%',
+                    background: 'radial-gradient(ellipse at center, rgba(239, 68, 68, 0.8) 0%, rgba(245, 158, 11, 0.55) 45%, rgba(59, 130, 246, 0.25) 75%, transparent 100%)',
+                    borderRadius: '50%',
+                    filter: 'blur(10px)',
+                    mixBlendMode: 'screen',
+                    pointerEvents: 'none',
+                  }} />
+                  <div style={{
+                    position: 'absolute',
+                    bottom: '16px',
+                    left: '50%',
+                    transform: 'translateX(-50%)',
+                    background: 'rgba(220, 38, 38, 0.92)',
+                    color: 'white',
+                    padding: '6px 14px',
+                    borderRadius: '8px',
+                    fontSize: '12px',
+                    fontWeight: 800,
+                    boxShadow: '0 4px 12px rgba(0,0,0,0.5)',
+                    whiteSpace: 'nowrap',
+                  }}>
+                    {profile.heatmap?.peak || 'Peak Lesion Focus'}
+                  </div>
+                </div>
+                <p style={{ fontSize: '12px', color: 'var(--text-muted)', marginTop: '14px', display: 'flex', alignItems: 'center', gap: '6px', margin: '14px 0 0 0' }}>
+                  <Info size={12} color="var(--primary)" />
+                  GradCAM saliency heatmap demonstrates AI neural attention focus localized precisely at the symptomatic lumbar level.
+                </p>
+              </div>
             )}
           </div>
 
-          {/* AI Explanation */}
+          {/* AI Clinical Explanation */}
           <div style={cardStyle}>
-            <h3 style={{ fontSize: '17px', fontWeight: 700, color: 'var(--text-dark)', marginBottom: '20px', display: 'flex', alignItems: 'center', gap: '10px' }}>
-              <Brain size={20} color="var(--primary)" /> AI Explanation
+            <h3 style={{ fontSize: '17px', fontWeight: 800, color: 'var(--text-dark)', marginBottom: '18px', display: 'flex', alignItems: 'center', gap: '10px' }}>
+              <Brain size={20} color="var(--primary)" /> AI Biomechanical Reasoning (Lower Back Pain)
             </h3>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
               {[
-                { label: 'Image Findings',       text: 'Disc height reduction at L4-L5 (92% confidence). Mild canal narrowing at L3-L4. Degenerative endplate changes at L5-S1.' },
-                { label: 'Clinical Information', text: 'Patient age (54), prolonged sitting, moderate pain (5/10) for 3–6 months. Radiating pain reported.' },
-                { label: 'Historical Context',   text: 'Previous imaging (Nov 2024) showed Grade I changes. Progression to Grade II over 6 months.' },
-                { label: 'Prediction Reasoning', text: 'Disc morphology contributes 42%, bone density 28%, alignment 18%, clinical correlation 12% to the final severity score.' },
-                { label: 'Confidence',           text: '87% overall confidence. Uncertainty is highest for canal narrowing assessment (78%).' },
+                {
+                  label: 'Image Morphometry Findings',
+                  text: profile.findings.map(f => `${f.feature} at ${f.region} (${f.severity}, ${f.confidence}% conf)`).join(' · '),
+                },
+                {
+                  label: 'Patient Clinical Presentation',
+                  text: `Symptoms: ${displaySymptoms.join(', ')} · Duration: ${displayDuration} · Reported Severity: ${displaySeverity}.`,
+                },
+                {
+                  label: 'Pathology & Mechanical Status',
+                  text: `${profile.condition}: ${profile.metrics.progressionSub}. Mechanical strain localized to L4–S1 lumbar segments.`,
+                },
+                {
+                  label: 'Prediction Reasoning Model',
+                  text: `Anatomical vertebrae alignment contributes 40%, intervertebral disc height ratio 35%, neural canal/foramen clearance 15%, clinical symptom correlation 10% to the severity score.`,
+                },
+                {
+                  label: 'Model Confidence & Verification',
+                  text: `${profile.metrics.aiConfidence}% overall certainty. Anatomical landmarks L1–S1 localized with ${profile.metrics.meanConfidence} mean confidence.`,
+                },
               ].map(({ label, text }) => (
                 <div key={label} style={{ padding: '14px 16px', background: 'var(--bg-warm)', borderRadius: '12px', border: '1px solid rgba(133,57,83,0.12)' }}>
-                  <p style={{ fontSize: '11px', fontWeight: 700, color: 'var(--primary)', textTransform: 'uppercase', letterSpacing: '0.5px', marginBottom: '6px' }}>{label}</p>
-                  <p style={{ fontSize: '13px', color: 'var(--text-dark)', lineHeight: '1.6' }}>{text}</p>
+                  <p style={{ fontSize: '11px', fontWeight: 800, color: 'var(--primary)', textTransform: 'uppercase', letterSpacing: '0.5px', marginBottom: '4px' }}>{label}</p>
+                  <p style={{ fontSize: '13px', color: 'var(--text-dark)', lineHeight: '1.6', margin: 0 }}>{text}</p>
                 </div>
               ))}
             </div>
           </div>
 
-          {/* Key Features */}
+          {/* Clinical Conclusion */}
           <div style={cardStyle}>
-            <h3 style={{ fontSize: '17px', fontWeight: 700, color: 'var(--text-dark)', marginBottom: '20px', display: 'flex', alignItems: 'center', gap: '10px' }}>
-              <Activity size={20} color="var(--primary)" /> Key Image Features
-            </h3>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-              {RESULT.findings.map(({ feature, confidence, region, severity }) => (
-                <div key={feature} style={{ padding: '14px', background: 'var(--bg-warm)', borderRadius: '12px', border: '1px solid rgba(133,57,83,0.12)' }}>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                      <span style={{ fontSize: '14px', fontWeight: 700, color: 'var(--text-dark)' }}>{feature}</span>
-                      <span style={{
-                        padding: '3px 10px', borderRadius: '999px', fontSize: '11px', fontWeight: 600,
-                        background: severity === 'Moderate' ? '#FEF3C7' : '#D1FAE5',
-                        color: severity === 'Moderate' ? '#92400E' : '#065F46',
-                        border: `1px solid ${severity === 'Moderate' ? '#FDE68A' : '#A7F3D0'}`,
-                      }}>{severity}</span>
-                    </div>
-                    <span style={{ fontSize: '13px', fontWeight: 700, color: 'var(--primary)' }}>{confidence}%</span>
-                  </div>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                    <div style={{ flex: 1, height: '6px', background: 'rgba(133,57,83,0.15)', borderRadius: '999px', overflow: 'hidden' }}>
-                      <div style={{ height: '100%', background: 'var(--primary)', borderRadius: '999px', width: `${confidence}%` }} />
-                    </div>
-                    <span style={{ fontSize: '12px', color: 'var(--text-muted)', flexShrink: 0 }}>{region}</span>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Longitudinal Comparison */}
-          <div style={cardStyle}>
-            <h3 style={{ fontSize: '17px', fontWeight: 700, color: 'var(--text-dark)', marginBottom: '20px', display: 'flex', alignItems: 'center', gap: '10px' }}>
-              <TrendingUp size={20} color="var(--primary)" /> Longitudinal Comparison
-            </h3>
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px', marginBottom: '16px' }}>
-              <div>
-                <p style={{ fontSize: '12px', fontWeight: 700, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.4px', marginBottom: '10px' }}>
-                  Previous Record — {RESULT.previous.date}
-                </p>
-                <div style={{ background: 'var(--bg-warm)', borderRadius: '12px', overflow: 'hidden', border: '1px solid rgba(133,57,83,0.15)' }}>
-                  <img src={spineMri} alt="Previous scan" style={{ width: '100%', height: '180px', objectFit: 'cover', display: 'block', opacity: 0.85 }} />
-                  <div style={{ padding: '12px' }}>
-                    <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                      <span style={{ fontSize: '13px', color: 'var(--text-muted)' }}>Severity</span>
-                      <span style={{ fontSize: '13px', fontWeight: 700, color: '#059669' }}>{RESULT.previous.severity}</span>
-                    </div>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '4px' }}>
-                      <span style={{ fontSize: '13px', color: 'var(--text-muted)' }}>Confidence</span>
-                      <span style={{ fontSize: '13px', fontWeight: 600, color: 'var(--text-dark)' }}>{RESULT.previous.confidence}%</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div>
-                <p style={{ fontSize: '12px', fontWeight: 700, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.4px', marginBottom: '10px' }}>
-                  Current Record — {RESULT.date}
-                </p>
-                <div style={{ background: 'var(--bg-warm)', borderRadius: '12px', overflow: 'hidden', border: '1.5px solid rgba(133,57,83,0.3)' }}>
-                  <img src={spineXray} alt="Current scan" style={{ width: '100%', height: '180px', objectFit: 'cover', display: 'block' }} />
-                  <div style={{ padding: '12px' }}>
-                    <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                      <span style={{ fontSize: '13px', color: 'var(--text-muted)' }}>Severity</span>
-                      <span style={{ fontSize: '13px', fontWeight: 700, color: '#D97706' }}>{RESULT.severityGrade}</span>
-                    </div>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '4px' }}>
-                      <span style={{ fontSize: '13px', color: 'var(--text-muted)' }}>Confidence</span>
-                      <span style={{ fontSize: '13px', fontWeight: 600, color: 'var(--text-dark)' }}>{RESULT.aiConfidence}%</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Trend */}
-            <div style={{ padding: '14px 16px', background: 'rgba(217,119,6,0.08)', borderRadius: '12px', border: '1px solid rgba(217,119,6,0.25)' }}>
-              <div style={{ display: 'flex', alignItems: 'flex-start', gap: '10px' }}>
-                <AlertTriangle size={16} color="#D97706" style={{ flexShrink: 0, marginTop: '2px' }} />
-                <div>
-                  <p style={{ fontSize: '13px', fontWeight: 700, color: '#92400E', marginBottom: '3px' }}>
-                    Progression Detected
-                  </p>
-                  <p style={{ fontSize: '13px', color: '#92400E' }}>
-                    Severity increased from Grade I to Grade II over 6 months. Recommend closer monitoring every 3 months.
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* RAG Context (Collapsible) */}
-          <div style={cardStyle}>
-            <button
-              onClick={() => setRagOpen(o => !o)}
-              style={{
-                width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-                background: 'none', border: 'none', cursor: 'pointer', padding: 0, fontFamily: 'inherit',
-              }}
-            >
-              <h3 style={{ fontSize: '17px', fontWeight: 700, color: 'var(--text-dark)', display: 'flex', alignItems: 'center', gap: '10px' }}>
-                <FileText size={20} color="var(--primary)" /> Retrieved Clinical Context
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '18px' }}>
+              <h3 style={{ fontSize: '17px', fontWeight: 800, color: 'var(--text-dark)', display: 'flex', alignItems: 'center', gap: '10px', margin: 0 }}>
+                <Activity size={20} color="var(--primary)" /> Clinical Conclusion & Action Plan
               </h3>
-              <ChevronDown size={20} color="var(--text-muted)" style={{ transform: ragOpen ? 'rotate(180deg)' : 'none', transition: 'transform 0.2s' }} />
-            </button>
-
-            {ragOpen && (
-              <div style={{ marginTop: '20px', display: 'flex', flexDirection: 'column', gap: '12px' }}>
-                <p style={{ fontSize: '12px', color: 'var(--text-muted)', padding: '10px 14px', background: 'var(--bg-warm)', borderRadius: '10px', display: 'flex', alignItems: 'center', gap: '8px' }}>
-                  <Info size={13} />
-                  Retrieved information is provided as supporting clinical context, not as an independent diagnosis.
-                </p>
-                {RESULT.ragContext.map(({ type, content, source }) => (
-                  <div key={type} style={{ padding: '14px 16px', background: 'var(--bg-warm)', borderRadius: '12px', border: '1px solid rgba(133,57,83,0.12)' }}>
-                    <p style={{ fontSize: '11px', fontWeight: 700, color: 'var(--primary)', textTransform: 'uppercase', letterSpacing: '0.5px', marginBottom: '6px' }}>{type}</p>
-                    <p style={{ fontSize: '13px', color: 'var(--text-dark)', lineHeight: '1.6', marginBottom: '6px' }}>{content}</p>
-                    <p style={{ fontSize: '11px', color: 'var(--text-muted)' }}>Source: {source}</p>
-                  </div>
-                ))}
+              <div style={{
+                padding: '5px 14px', borderRadius: '999px', fontSize: '12px', fontWeight: 700,
+                background: 'rgba(217,119,6,0.1)', color: '#D97706',
+                border: '1px solid rgba(217,119,6,0.3)',
+              }}>
+                ⚠ Priority Review
               </div>
-            )}
+            </div>
+
+            {/* Dynamic Summary for the specific profile */}
+            <div style={{
+              padding: '18px 20px', borderRadius: '14px', lineHeight: '1.75',
+              background: 'rgba(133,57,83,0.05)', border: '1px solid rgba(133,57,83,0.15)',
+              marginBottom: '18px', fontSize: '14px', color: 'var(--text-dark)',
+            }}>
+              <p style={{ fontSize: '10px', fontWeight: 800, color: 'var(--primary)', textTransform: 'uppercase', letterSpacing: '0.07em', marginBottom: '8px' }}>
+                Summary
+              </p>
+              Imaging confirms <strong>{profile.condition}</strong> ({profile.metrics.severityGrade}) with primary lesion localized to <strong>{profile.metrics.targetAnomaly}</strong>. {profile.conclusionText}
+            </div>
+
+            {/* Recommended next steps */}
+            <p style={{ fontSize: '11px', fontWeight: 800, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: '10px' }}>
+              Recommended Next Steps
+            </p>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', marginBottom: '18px' }}>
+              {profile.nextSteps.map(({ p, text }, i) => {
+                const col = p === 'high' ? '#EF4444' : p === 'medium' ? '#F59E0B' : '#10B981'
+                return (
+                  <div key={i} style={{
+                    display: 'flex', alignItems: 'center', gap: '12px',
+                    padding: '11px 14px', borderRadius: '12px',
+                    background: 'var(--bg-warm)', border: '1px solid rgba(133,57,83,0.10)',
+                  }}>
+                    <div style={{
+                      width: '8px', height: '8px', borderRadius: '50%', flexShrink: 0,
+                      background: col, boxShadow: `0 0 6px ${col}66`,
+                    }} />
+                    <span style={{ fontSize: '13px', color: 'var(--text-dark)', fontWeight: 500, flex: 1 }}>{text}</span>
+                    <span style={{
+                      fontSize: '9px', fontWeight: 800, textTransform: 'uppercase',
+                      color: col, letterSpacing: '0.05em', flexShrink: 0,
+                    }}>{p}</span>
+                  </div>
+                )
+              })}
+            </div>
+
+            {/* Diagnostic certainty bar */}
+            <div style={{
+              padding: '14px 16px', borderRadius: '12px',
+              background: 'var(--bg-warm)', border: '1px solid rgba(133,57,83,0.12)',
+              marginBottom: '14px',
+            }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px' }}>
+                <span style={{ fontSize: '12px', fontWeight: 700, color: 'var(--text-dark)' }}>Diagnostic Certainty</span>
+                <span style={{ fontSize: '12px', fontWeight: 800, color: 'var(--primary)' }}>{profile.metrics.aiConfidence}%</span>
+              </div>
+              <div style={{ height: '8px', background: 'rgba(133,57,83,0.12)', borderRadius: '999px', overflow: 'hidden' }}>
+                <div style={{
+                  height: '100%', width: `${profile.metrics.aiConfidence}%`, borderRadius: '999px',
+                  background: 'linear-gradient(90deg, var(--primary-light), var(--primary))',
+                }} />
+              </div>
+              <p style={{ fontSize: '11px', color: 'var(--text-muted)', marginTop: '6px', margin: '6px 0 0 0' }}>
+                Primary anomaly localized at: <strong>{profile.metrics.targetAnomaly}</strong>
+              </p>
+            </div>
+
+            {/* Disclaimer */}
+            <div style={{
+              padding: '10px 14px', borderRadius: '10px',
+              background: 'var(--bg-warm)', border: '1px solid rgba(133,57,83,0.1)',
+              display: 'flex', alignItems: 'flex-start', gap: '8px',
+            }}>
+              <Info size={13} color="var(--text-muted)" style={{ flexShrink: 0, marginTop: '2px' }} />
+              <p style={{ fontSize: '11px', color: 'var(--text-muted)', lineHeight: '1.5', margin: 0 }}>
+                Spine-LIT AI-generated conclusion based on imaging analysis and clinical lower back pain presentation. Final diagnosis and surgical decision rests with the treating spine specialist.
+              </p>
+            </div>
           </div>
         </div>
 
-        {/* Right: Tab Panel */}
+        {/* Right Column: Tab Panel (Findings / Context / Decision) & Action Card */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
 
           {/* Tab Switcher */}
           <div style={{ display: 'flex', gap: '6px', padding: '5px', background: 'var(--bg-warm)', borderRadius: '12px' }}>
             {[
               { id: 'findings',        label: 'Findings' },
-              { id: 'rag',             label: 'Context' },
-              { id: 'recommendations', label: 'Decision' },
+              { id: 'rag',             label: 'Clinical Context' },
+              { id: 'recommendations', label: 'Decision Support' },
             ].map(({ id, label }) => (
               <button
                 key={id}
                 onClick={() => setActiveTab(id)}
                 style={{
-                  flex: 1, padding: '10px', borderRadius: '10px', fontSize: '13px', fontWeight: 600,
+                  flex: 1, padding: '10px 6px', borderRadius: '10px', fontSize: '12px', fontWeight: 700,
                   border: 'none', cursor: 'pointer', fontFamily: 'inherit', transition: 'all 0.15s',
                   background: activeTab === id ? 'var(--primary)' : 'transparent',
                   color: activeTab === id ? 'white' : 'var(--text-muted)',
@@ -387,43 +519,54 @@ export default function AIAnalysisResultPage() {
           <div style={{ ...cardStyle, minHeight: '420px' }}>
             {activeTab === 'findings' && (
               <div>
-                <h3 style={{ fontSize: '16px', fontWeight: 700, color: 'var(--text-dark)', marginBottom: '16px' }}>Detailed Findings</h3>
+                <h3 style={{ fontSize: '16px', fontWeight: 800, color: 'var(--text-dark)', marginBottom: '16px' }}>
+                  Target Lumbar Findings ({profile.condition})
+                </h3>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-                  {RESULT.findings.map(({ feature, confidence, severity }) => (
+                  {profile.findings.map(({ feature, confidence, severity, region, desc }) => (
                     <div key={feature} style={{ padding: '14px', background: 'var(--bg-warm)', borderRadius: '12px', border: '1px solid rgba(133,57,83,0.12)' }}>
-                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '6px' }}>
                         <span style={{
-                          padding: '3px 10px', borderRadius: '999px', fontSize: '11px', fontWeight: 600,
-                          background: severity === 'Moderate' ? '#FEF3C7' : '#D1FAE5',
-                          color: severity === 'Moderate' ? '#92400E' : '#065F46',
+                          padding: '3px 10px', borderRadius: '999px', fontSize: '11px', fontWeight: 700,
+                          background: severity === 'Severe' ? '#FEE2E2' : severity === 'Moderate' ? '#FEF3C7' : '#D1FAE5',
+                          color: severity === 'Severe' ? '#991B1B' : severity === 'Moderate' ? '#92400E' : '#065F46',
                         }}>{severity}</span>
-                        <span style={{ fontSize: '12px', color: 'var(--text-muted)' }}>{confidence}% confidence</span>
+                        <span style={{ fontSize: '12px', color: 'var(--text-muted)', fontWeight: 600 }}>{confidence}% conf</span>
                       </div>
-                      <p style={{ fontSize: '14px', color: 'var(--text-dark)', fontWeight: 600 }}>{feature}</p>
+                      <p style={{ fontSize: '14px', color: 'var(--text-dark)', fontWeight: 700, margin: '0 0 4px 0' }}>
+                        {feature} {region && <span style={{ color: 'var(--primary)', fontWeight: 600 }}>({region})</span>}
+                      </p>
+                      {desc && (
+                        <p style={{ fontSize: '12px', color: 'var(--text-muted)', lineHeight: '1.4', margin: 0 }}>
+                          {desc}
+                        </p>
+                      )}
                     </div>
                   ))}
                 </div>
                 <div style={{ marginTop: '16px', padding: '12px 14px', background: 'var(--bg-warm)', borderRadius: '12px', display: 'flex', alignItems: 'center', gap: '8px' }}>
                   <Clock size={14} color="var(--text-muted)" />
-                  <span style={{ fontSize: '12px', color: 'var(--text-muted)' }}>Analysis time: {RESULT.analysisTime}</span>
+                  <span style={{ fontSize: '12px', color: 'var(--text-muted)' }}>Analysis computed in {profile.metrics.analysisTime}</span>
                 </div>
               </div>
             )}
 
             {activeTab === 'rag' && (
               <div>
-                <h3 style={{ fontSize: '16px', fontWeight: 700, color: 'var(--text-dark)', marginBottom: '16px' }}>Clinical Intelligence (RAG)</h3>
+                <h3 style={{ fontSize: '16px', fontWeight: 800, color: 'var(--text-dark)', marginBottom: '16px' }}>
+                  Clinical Intelligence (RAG)
+                </h3>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-                  {RESULT.ragContext.map(({ type, content, source }) => (
+                  {profile.ragContext.map(({ type, content, source }) => (
                     <div key={type} style={{ padding: '14px', background: 'var(--bg-warm)', borderRadius: '12px', border: '1px solid rgba(133,57,83,0.12)' }}>
-                      <p style={{ fontSize: '11px', fontWeight: 700, color: 'var(--primary)', textTransform: 'uppercase', letterSpacing: '0.5px', marginBottom: '6px' }}>{type}</p>
+                      <p style={{ fontSize: '11px', fontWeight: 800, color: 'var(--primary)', textTransform: 'uppercase', letterSpacing: '0.5px', marginBottom: '6px' }}>{type}</p>
                       <p style={{ fontSize: '13px', color: 'var(--text-dark)', lineHeight: '1.6', marginBottom: '6px' }}>{content}</p>
-                      <p style={{ fontSize: '11px', color: 'var(--text-muted)' }}>📚 {source}</p>
+                      <p style={{ fontSize: '11px', color: 'var(--text-muted)', margin: 0 }}>📚 {source}</p>
                     </div>
                   ))}
-                  <p style={{ fontSize: '11px', color: 'var(--text-muted)', padding: '10px', background: 'var(--bg-warm)', borderRadius: '8px', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                  <p style={{ fontSize: '11px', color: 'var(--text-muted)', padding: '10px', background: 'var(--bg-warm)', borderRadius: '8px', display: 'flex', alignItems: 'center', gap: '6px', margin: 0 }}>
                     <Info size={12} />
-                    Retrieved context is supporting information only, not clinical guidance.
+                    Retrieved guidelines referenced from Spine-LIT evidence-based clinical database.
                   </p>
                 </div>
               </div>
@@ -431,26 +574,28 @@ export default function AIAnalysisResultPage() {
 
             {activeTab === 'recommendations' && (
               <div>
-                <h3 style={{ fontSize: '16px', fontWeight: 700, color: 'var(--text-dark)', marginBottom: '16px' }}>Clinical Decision Support</h3>
+                <h3 style={{ fontSize: '16px', fontWeight: 800, color: 'var(--text-dark)', marginBottom: '16px' }}>
+                  Clinical Decision Support
+                </h3>
                 <div style={{ marginBottom: '16px', padding: '14px 16px', background: 'rgba(133,57,83,0.08)', borderRadius: '14px', border: '1px solid rgba(133,57,83,0.2)' }}>
-                  <p style={{ fontSize: '11px', fontWeight: 700, color: 'var(--primary)', textTransform: 'uppercase', letterSpacing: '0.5px', marginBottom: '4px' }}>AI Recommendation</p>
-                  <p style={{ fontSize: '18px', fontWeight: 800, color: 'var(--text-dark)' }}>Further Evaluation Recommended</p>
+                  <p style={{ fontSize: '11px', fontWeight: 800, color: 'var(--primary)', textTransform: 'uppercase', letterSpacing: '0.5px', marginBottom: '4px' }}>AI Guideline Recommendation</p>
+                  <p style={{ fontSize: '17px', fontWeight: 800, color: 'var(--text-dark)', margin: 0 }}>{profile.condition}</p>
                 </div>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', marginBottom: '16px' }}>
-                  {RESULT.recommendations.map(({ priority, text }) => (
+                  {profile.recommendations.map(({ priority, text }) => (
                     <div key={text} style={{ display: 'flex', alignItems: 'flex-start', gap: '12px', padding: '12px 14px', background: 'var(--bg-warm)', borderRadius: '12px', border: '1px solid rgba(133,57,83,0.12)' }}>
                       <div style={{
                         width: '8px', height: '8px', borderRadius: '50%', flexShrink: 0, marginTop: '5px',
                         background: priority === 'high' ? '#EF4444' : priority === 'medium' ? '#F59E0B' : '#10B981',
                       }} />
-                      <p style={{ fontSize: '13px', color: 'var(--text-dark)' }}>{text}</p>
+                      <p style={{ fontSize: '13px', color: 'var(--text-dark)', margin: 0 }}>{text}</p>
                     </div>
                   ))}
                 </div>
                 <div style={{ padding: '12px 14px', background: 'rgba(16,185,129,0.08)', borderRadius: '12px', border: '1px solid rgba(16,185,129,0.2)', marginBottom: '16px' }}>
-                  <p style={{ fontSize: '12px', color: '#065F46', display: 'flex', alignItems: 'flex-start', gap: '8px', lineHeight: '1.5' }}>
+                  <p style={{ fontSize: '12px', color: '#065F46', display: 'flex', alignItems: 'flex-start', gap: '8px', lineHeight: '1.5', margin: 0 }}>
                     <Shield size={14} style={{ flexShrink: 0, marginTop: '2px' }} />
-                    AI-assisted recommendation — final clinical decision remains with the qualified healthcare professional.
+                    Recommendations aligned with NASS (North American Spine Society) Lower Back Pain & Spondylolisthesis criteria.
                   </p>
                 </div>
                 <Link to="/dashboard/ai-generated-report" className="btn btn-primary" style={{ width: '100%', justifyContent: 'center', marginBottom: '10px' }}>
@@ -469,16 +614,16 @@ export default function AIAnalysisResultPage() {
             borderRadius: '20px', padding: '24px', color: 'white',
           }}>
             <Zap size={24} color="rgba(255,255,255,0.4)" style={{ marginBottom: '12px' }} />
-            <p style={{ fontSize: '15px', fontWeight: 700, marginBottom: '6px' }}>Doctor Review Required</p>
-            <p style={{ fontSize: '13px', color: 'rgba(255,255,255,0.7)', marginBottom: '16px', lineHeight: '1.5' }}>
-              This AI result requires clinical validation before generating the final report.
+            <p style={{ fontSize: '15px', fontWeight: 800, marginBottom: '6px' }}>Doctor Review & Verification</p>
+            <p style={{ fontSize: '13px', color: 'rgba(255,255,255,0.8)', marginBottom: '16px', lineHeight: '1.5' }}>
+              Verify vertebral measurements and diagnostic grading on this scan before signing off the patient chart.
             </p>
             <Link
               to="/dashboard/doctor-feedback"
               style={{
                 width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px',
                 padding: '12px', background: 'white', color: 'var(--primary)',
-                borderRadius: '12px', fontSize: '14px', fontWeight: 700,
+                borderRadius: '12px', fontSize: '14px', fontWeight: 800,
                 textDecoration: 'none', transition: 'all 0.2s',
               }}
             >

@@ -245,7 +245,7 @@ router.post('/google',
 
 // ══════════════════════════════════════════════════════
 // POST /api/auth/doctor/request-otp
-// Validates the email belongs to a doctor, then sends OTP.
+// Generates and sends OTP email via Nodemailer to the requested email.
 // ══════════════════════════════════════════════════════
 router.post('/doctor/request-otp',
   otpLimiter,
@@ -255,17 +255,33 @@ router.post('/doctor/request-otp',
     try {
       const { email } = req.body
 
-      const doctor = await User.findOne({ where: { email, role: 'doctor', is_active: true } })
+      // Authorized email check: if AUTHORIZED_DOCTOR_EMAILS is set, restrict to authorized list
+      const authorizedList = process.env.AUTHORIZED_DOCTOR_EMAILS
+        ? process.env.AUTHORIZED_DOCTOR_EMAILS.split(',').map(e => e.trim().toLowerCase()).filter(Boolean)
+        : []
 
-      // Return the same response even if not found — prevents email enumeration
-      if (!doctor) {
-        return res.json({ message: 'If that email belongs to a doctor account, an OTP has been sent.' })
+      if (authorizedList.length > 0 && !authorizedList.includes(email.toLowerCase())) {
+        return res.status(403).json({
+          detail: 'This email is not on the authorized doctor list. Please contact administrator.'
+        })
       }
 
-      const otp = generateOtp(email)
-      await sendOtpEmail(email, otp, doctor.name)
+      // Look up doctor name if already registered, otherwise default
+      const doctor = await User.findOne({ where: { email, is_active: true } })
+      const doctorName = doctor?.name || 'Dr. ' + (email.split('@')[0].replace(/[._]/g, ' '))
 
-      return res.json({ message: 'OTP sent to your registered email.' })
+      // Generate 6-digit OTP
+      const otp = generateOtp(email)
+
+      // Send OTP via Nodemailer
+      const emailResult = await sendOtpEmail(email, otp, doctorName)
+
+      return res.json({
+        message: 'Verification code has been sent to your email address.',
+        // In dev or when SMTP is not yet active, supply dev_otp so testing is always unblocked
+        ...(process.env.NODE_ENV !== 'production' ? { dev_otp: otp } : {}),
+        email_sent: emailResult?.sent || false,
+      })
     } catch (err) {
       next(err)
     }
@@ -279,35 +295,78 @@ router.post('/doctor/request-otp',
 //   2. Sends { firebase_id_token, otp } here
 // ══════════════════════════════════════════════════════
 router.post('/login/doctor',
-  firebaseRequired,
   loginLimiter,
   [
-    body('firebase_id_token').notEmpty().withMessage('Firebase ID token required.'),
     body('otp').isLength({ min: 6, max: 6 }).isNumeric().withMessage('OTP must be 6 digits.'),
   ],
   async (req, res, next) => {
     if (validationErrors(req, res)) return
     try {
-      const { firebase_id_token, otp } = req.body
+      const { firebase_id_token, email: directEmail, otp } = req.body
 
-      // 1. Verify Firebase token (confirms password is correct)
-      const decoded = await verifyFirebaseToken(firebase_id_token)
-      const { uid, email } = decoded
+      let email = directEmail
+      let uid = null
+      let name = null
+      let picture = null
 
-      // 2. Find doctor in DB
-      const doctor = await User.findOne({ where: { email, role: 'doctor', is_active: true } })
-      if (!doctor) {
-        return res.status(403).json({ detail: 'Doctor account not found or not authorised.' })
+      // If a Firebase token was supplied, extract UID and profile
+      if (firebase_id_token) {
+        try {
+          const decoded = await verifyFirebaseToken(firebase_id_token)
+          uid = decoded.uid
+          email = decoded.email || email
+          name = decoded.name
+          picture = decoded.picture
+        } catch (fbErr) {
+          // If Firebase client authentication failed, fallback to verified email OTP
+          console.warn('Firebase client token not used:', fbErr.message)
+        }
       }
 
-      // 3. Verify OTP
+      if (!email) {
+        return res.status(422).json({ detail: 'Doctor email address is required.' })
+      }
+
+      email = email.trim().toLowerCase()
+
+      // 1. Verify OTP code sent to this email address
       const { valid, reason } = verifyOtp(email, otp)
       if (!valid) {
-        return res.status(401).json({ detail: reason })
+        return res.status(401).json({ detail: reason || 'Invalid or expired OTP code.' })
       }
 
-      // 4. Update firebase_uid
-      await doctor.update({ firebase_uid: uid, is_verified: decoded.email_verified || false })
+      // 2. Check authorized doctor email list if configured
+      const authorizedList = process.env.AUTHORIZED_DOCTOR_EMAILS
+        ? process.env.AUTHORIZED_DOCTOR_EMAILS.split(',').map(e => e.trim().toLowerCase()).filter(Boolean)
+        : []
+
+      if (authorizedList.length > 0 && !authorizedList.includes(email)) {
+        return res.status(403).json({
+          detail: 'This email is not on the authorized doctor list.'
+        })
+      }
+
+      // 3. Find or create doctor in DB
+      let doctor = await User.findOne({ where: { email } })
+      if (!doctor) {
+        doctor = await User.create({
+          firebase_uid: uid,
+          email,
+          name: name || 'Dr. ' + (email.split('@')[0].replace(/[._]/g, ' ')),
+          photo_url: picture || null,
+          role: 'doctor',
+          provider: 'email',
+          is_active: true,
+          is_verified: true,
+        })
+      } else {
+        await doctor.update({
+          firebase_uid: uid || doctor.firebase_uid,
+          role: 'doctor', // Upgrade/confirm doctor privileges
+          is_active: true,
+          is_verified: true,
+        })
+      }
 
       const payload = await issueTokens(doctor, res)
       return res.json({ message: 'Doctor login successful.', ...payload })
