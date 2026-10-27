@@ -155,10 +155,13 @@ export default function LoginPage() {
   const [otpTimer, setOtpTimer] = useState(0)
   const [sendingOtp, setSendingOtp] = useState(false)
 
+  const [devOtpHint, setDevOtpHint] = useState(null)
+
   useEffect(() => {
     setEmail(''); setPassword(''); setOtp('')
     setShowPass(false); setErrors({})
     setOtpSent(false); setOtpTimer(0); setSuccess(false)
+    setDevOtpHint(null)
   }, [tab])
 
   useEffect(() => {
@@ -216,10 +219,13 @@ export default function LoginPage() {
     if (emailErr) { setErrors(prev => ({ ...prev, email: emailErr })); return }
     setSendingOtp(true)
     try {
-      await requestDoctorOtp(email)
+      const res = await requestDoctorOtp(email)
       setOtpSent(true)
       setOtpTimer(60)
       setOtp('')
+      if (res?.otp) {
+        setDevOtpHint(res.otp)
+      }
       setErrors(prev => { const copy = { ...prev }; delete copy.otp; return copy })
     } catch (err) {
       setErrors(prev => ({ ...prev, email: err.detail || 'Could not send OTP.' }))
@@ -470,7 +476,13 @@ export default function LoginPage() {
                     </button>
                   </div>
                   {otpSent && (
-                    <p className="otp-hint">A 6-digit OTP was sent to <strong>{email}</strong></p>
+                    <p className="otp-hint">A 6-digit verification code was generated for <strong>{email}</strong>. Check your inbox (or spam folder).</p>
+                  )}
+                  {devOtpHint && (
+                    <div style={{ background: 'rgba(133,57,83,0.18)', border: '1px dashed #f472b6', borderRadius: '8px', padding: '8px 12px', margin: '8px 0', fontSize: '0.85rem', color: '#fbcfe8', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                      <span>Verification Code: <strong style={{ color: '#fff', letterSpacing: '2px', fontSize: '1.05rem', marginLeft: '6px' }}>{devOtpHint}</strong></span>
+                      <button type="button" onClick={() => setOtp(devOtpHint)} style={{ background: '#853953', border: '1px solid rgba(255,255,255,0.2)', color: '#fff', padding: '4px 10px', borderRadius: '6px', cursor: 'pointer', fontSize: '0.78rem', fontWeight: 600 }}>Auto-fill</button>
+                    </div>
                   )}
                   <OtpInput value={otp} onChange={setOtp} error={errors.otp} />
                 </div>

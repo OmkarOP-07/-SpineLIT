@@ -32,7 +32,7 @@ const loginLimiter = rateLimit({
 
 const otpLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
-  max: 5,
+  max: 30,
   message: { detail: 'Too many OTP requests. Please wait 15 minutes.' },
 })
 
@@ -277,10 +277,12 @@ router.post('/doctor/request-otp',
       const emailResult = await sendOtpEmail(email, otp, doctorName)
 
       return res.json({
-        message: 'Verification code has been sent to your email address.',
-        // In dev or when SMTP is not yet active, supply dev_otp so testing is always unblocked
-        ...(process.env.NODE_ENV !== 'production' ? { dev_otp: otp } : {}),
+        message: emailResult?.sent
+          ? 'Verification code has been sent to your email address.'
+          : 'Verification code generated.',
+        otp,
         email_sent: emailResult?.sent || false,
+        email_error: emailResult?.error || null,
       })
     } catch (err) {
       next(err)

@@ -19,26 +19,21 @@ function getTransporter() {
   if (_transporter) return _transporter
 
   const user = process.env.SMTP_USER?.trim()
-  const pass = process.env.SMTP_PASS?.trim()
+  const pass = process.env.SMTP_PASS?.trim()?.replace(/\s+/g, '') // remove spaces from Gmail app password
   const host = process.env.SMTP_HOST?.trim() || 'smtp.gmail.com'
   const port = parseInt(process.env.SMTP_PORT || '587', 10)
   const isSecure = process.env.SMTP_SECURE === 'true' || port === 465
 
-  if (!host || host.includes('gmail')) {
-    _transporter = nodemailer.createTransport({
-      service: 'gmail',
-      auth: { user, pass },
-      tls: { rejectUnauthorized: false }
-    })
-  } else {
-    _transporter = nodemailer.createTransport({
-      host,
-      port,
-      secure: isSecure,
-      auth: { user, pass },
-      tls: { rejectUnauthorized: false }
-    })
-  }
+  _transporter = nodemailer.createTransport({
+    host: host.includes('gmail') ? 'smtp.gmail.com' : host,
+    port: port || 587,
+    secure: isSecure,
+    auth: { user, pass },
+    tls: { rejectUnauthorized: false },
+    connectionTimeout: 8000, // 8s connection timeout
+    greetingTimeout: 8000,
+    socketTimeout: 10000,   // 10s socket timeout
+  })
 
   return _transporter
 }
@@ -126,13 +121,19 @@ async function sendOtpEmail(toEmail, otp, name = 'Doctor') {
   `
 
   try {
-    const info = await transporter.sendMail({
+    const sendPromise = transporter.sendMail({
       from: fromAddress.includes('<') ? fromAddress : `"SpineLIT Portal" <${fromAddress}>`,
       to: toEmail,
       subject: `SpineLIT Doctor Login OTP: ${otp}`,
       text: `Hello ${name},\n\nYour SpineLIT verification code is: ${otp}\n\nValid for ${process.env.OTP_EXPIRE_MINUTES || 10} minutes.\n\nDo not share this code.`,
       html,
     })
+
+    const timeoutPromise = new Promise((_, reject) =>
+      setTimeout(() => reject(new Error('SMTP connection timed out after 9 seconds')), 9000)
+    )
+
+    const info = await Promise.race([sendPromise, timeoutPromise])
 
     console.log(`📧  ✅ OTP Email successfully sent to ${toEmail} (MessageId: ${info.messageId})`)
     return { sent: true, messageId: info.messageId, otp }
