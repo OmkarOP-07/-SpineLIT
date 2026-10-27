@@ -9,6 +9,20 @@ function getFirebaseApp() {
   if (_app) return _app
   if (_initError) throw _initError
 
+  // Check if credentials provided via environment variable (ideal for Render/Cloud)
+  if (process.env.FIREBASE_SERVICE_ACCOUNT_JSON) {
+    try {
+      const serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT_JSON)
+      _app = admin.initializeApp({
+        credential: admin.credential.cert(serviceAccount),
+      })
+      console.log('✅  Firebase Admin initialised from environment variable')
+      return _app
+    } catch (err) {
+      console.error('❌  Failed to parse FIREBASE_SERVICE_ACCOUNT_JSON:', err.message)
+    }
+  }
+
   const keyPath = path.resolve(
     process.env.FIREBASE_SERVICE_ACCOUNT_PATH || 'serviceAccountKey.json'
   )
