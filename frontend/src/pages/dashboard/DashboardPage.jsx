@@ -79,11 +79,11 @@ export default function DashboardPage() {
         {/* Info */}
         <div style={{ minWidth: '180px' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '6px' }}>
-            <span style={{ fontSize: '20px', fontWeight: 800, color: 'var(--text-dark)' }}>Rohit Kumar</span>
+            <span style={{ fontSize: '20px', fontWeight: 800, color: 'var(--text-dark)' }}>Omkar Potdar</span>
             <Mars size={18} color="var(--text-dark)" />
           </div>
           <p style={{ fontSize: '14px', color: 'var(--text-muted)', lineHeight: '1.7' }}>PID: PNT-2025-0487</p>
-          <p style={{ fontSize: '14px', color: 'var(--text-muted)' }}>Age: 54 Years &nbsp;|&nbsp; Gender: Male</p>
+          <p style={{ fontSize: '14px', color: 'var(--text-muted)' }}>Age: 20 Years &nbsp;|&nbsp; Gender: Male</p>
           <p style={{ fontSize: '14px', color: 'var(--text-muted)' }}>Phone: +91 98765 43210</p>
         </div>
 
